@@ -1,0 +1,25 @@
+\documentclass[a4paper, 11pt]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools, amssymb, graphicx}
+
+\title{Notes on Information Theory}
+\author{Michele Laurenti, Lorenzo Madeddu, Cristian Di Pietrantonio}
+
+
+%math symbol
+\def\lc{\left\lceil}   
+\def\rc{\right\rceil}
+
+%abbreviations
+\newcommand{\msgset}{\mathcal{M}}                                   %the set of all messages
+\newcommand{\hball}[2]{B_H(\underline{#1}, #2)}                     %the Hamming ball
+\newcommand{\hdist}[2]{d_H(\underline{#1}, \underline{#2})}         %Hamming distance
+\newcommand{\hweight}[1]{w_H(\underline{#1})}                      %Hamming weight
+\begin{document}
+	\maketitle
+	
+	\chapter{Introduction}
+	\input{lessons/l01}
+	\input{lessons/l02}
+	\input{lessons/l03} % October 2016, 4th
+\end{document}
