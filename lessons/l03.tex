@@ -33,7 +33,7 @@ Obviously $r$ needn't to be an integer (use the \emph{floor} function). Here are
 \end{itemize}
 
 What we can say about $B_H(\underline{x}, r)$? For simplicity sake, consider $B_H(\underline{0}, r)$. Then the following holds:
-\begin{equation}
+\begin{equation}\label{eq:volume}
 	|B_H(\underline{0}, r)| = \sum_{i = 0}^{\lfloor r \rfloor} \binom{n}{i}
 \end{equation}
 
@@ -44,7 +44,10 @@ $$\underline{y} \in \hball{0}{r} \Rightarrow \hweight{y} > r \Rightarrow \hdist{
 
 So it is true that
 
-$$\hball{0}{n} = \hball{1}{r'} = \hball{1}{n - r - 1}.$$ (DA VERIFICARE)
+$$\overline{\hball{0}{n}} = \hball{1}{r'} = \hball{1}{n - r - 1}.$$
 
 In other words the Hamming space can be partitioned into two Hamming balls. If $n$ is odd an Hamming space can be partitioned in the following way: $$\{0, 1\}^n = \hball{0}{\lfloor \dfrac{n}{2}\rfloor } \cup \hball{1}{\lfloor \dfrac{n}{2}\rfloor}$$
-The Hamming space cannot be partitioned into three balls.
+The Hamming space cannot be partitioned into three balls. In how many balls can $\{0, 1\}^n$ be partitioned? It cannot partitioned be partititoned into $s$ balls with $3 \leq s \leq n + 1$.
+
+\subsection{The volume of an Hamming Ball}
+It's useful to understand the magnitude of the volume of the Hamming ball. We have seen that the volume of a generic $H_B$ is \ref{eq:volume}. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$. If $r \geq n/2$ then $2^{n-1} \leq |\hball(0, r)| \leq 2^n$.
