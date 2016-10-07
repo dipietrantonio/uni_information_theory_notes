@@ -1,7 +1,7 @@
 %October 2016, the 4th
 \section{Lesson 3 - Hamming Space}
 
-A space is a set that has structure. Consider the set of all binary strings $\{0, 1\}^*$; we can define a space with the distance metric. The \textbf{distance} is defined as a function $d: X \times X \rightarrow \mathbb{R}^+_0$. This function has the following properties:
+A space is a set that has structure. Consider the set of all binary strings $\{0, 1\}^*$; we can define a space with the distance metric. The \textbf{distance} is defined as a function $d: X \times X \rightarrow \mathbb{R}^+_0$. A metric has the following properties:
 \begin{enumerate}
 	\item \begin{enumerate}
 		\item $d(x, y) \geq 0,\ \forall (x, y) \in X \times X$
@@ -13,7 +13,7 @@ A space is a set that has structure. Consider the set of all binary strings $\{0
 
 What is the Hamming metric? Consider $\underline{x}, \underline{y}  \in \{0, 1\}^n$. Then the Hamming distance is defined as
 \begin{equation}
-	d_H(\underline{x},\underline{y}) = |\{i\ |\ x_i \not= y_i\}
+	d_H(\underline{x},\underline{y}) = |\{i\ |\ x_i \not= y_i\}|
 \end{equation}
 
 Why is it a metric? Consider $\underline{x}$, $\underline{y}$, $\underline{z} \in \{0,1\}^n$. Then, with $D = \{i\ |\ x_i \not= y_i\}$ is true that 
@@ -50,4 +50,4 @@ In other words the Hamming space can be partitioned into two Hamming balls. If $
 The Hamming space cannot be partitioned into three balls. In how many balls can $\{0, 1\}^n$ be partitioned? It cannot partitioned be partititoned into $s$ balls with $3 \leq s \leq n + 1$.
 
 \subsection{The volume of an Hamming Ball}
-It's useful to understand the magnitude of the volume of the Hamming ball. We have seen that the volume of a generic $H_B$ is \ref{eq:volume}. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$. If $r \geq n/2$ then $2^{n-1} \leq |\hball(0, r)| \leq 2^n$.
+It's useful to understand the magnitude of the volume of the Hamming ball. We have seen that the volume of a generic $H_B$ is \ref{eq:volume}. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$. If $r \geq n/2$ then $2^{n-1} \leq |\hball{0}{r}| \leq 2^n$.
