@@ -49,8 +49,8 @@ $$\overline{\hball{0}{n}} = \hball{1}{r'} = \hball{1}{n - r - 1}.$$
 In other words the Hamming space can be partitioned into two Hamming balls. If $n$ is odd an Hamming space can be partitioned in the following way: $$\{0, 1\}^n = \hball{0}{\lfloor \dfrac{n}{2}\rfloor } \cup \hball{1}{\lfloor \dfrac{n}{2}\rfloor}$$
 The Hamming space cannot be partitioned into three balls. In how many balls can $\{0, 1\}^n$ be partitioned? It cannot partitioned be partititoned into $s$ balls with $3 \leq s \leq n + 1$.
 
-\subsection{The volume of an Hamming ball}
-We have seen that the volume of a generic Hamming ball is described by equation \ref{eq:volume}. We can use the Pascal triangle to get a feeling about the order of magnitude of the Hamming ball. Consider the $n$th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$; instead, the volume of the ball with radius $n/2$ (in the triangle's point of split) is $2^n/2 = 2^n2^{-1} = 2^{n-1}$. So, if $r \geq n/2$ then $2^{n-1} \leq |\hball{0}{r}| \leq 2^n$. Can we bound the volume for $r < n/2$?
+\subsection{The volume of a Hamming ball}
+We have seen that the volume of a generic Hamming ball is described by equation \ref{eq:volume}. We can use the Pascal triangle to get a feeling about the order of magnitude of the Hamming ball. Consider the $n$th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$; instead, the volume of the ball with radius $n/2$ (in the triangle's point of split) is $\ifrac{2^n}{2} = 2^n2^{-1} = 2^{n-1}$. So, if $r \geq \ifrac{n}{2}$ then $2^{n-1} \leq |\hball{0}{r}| \leq 2^n$. Can we bound the volume for $r < \ifrac{n}{2}$?
 
 First we introduce the notion of \textbf{entropy}, a function $h: [0, 1] \rightarrow [0, 1]$ defined as follows:
 \begin{center}
@@ -64,4 +64,4 @@ The plot of $h$ looks like this:
 	\caption{The entropy function.}
 \end{figure}
 
-This function is not defined for the values $0$ and $1$ but we have limits defined on these points, and they are both $0$. So we artificially set $h(0) = 0$ and $h(1) = 0$. It is better to think about it as probability distribution $(t, 1 - t)$ and entropy is a number attached to it. Entropy measures symmetry and with $t = 1/2$ we have maximum chaos (the future outcomes are equally likely).
+This function is not defined for the values $0$ and $1$ but we have limits defined on these points, and they are both $0$. So we artificially set $h(0) = 0$ and $h(1) = 0$. It is better to think about it as probability distribution $(t, 1 - t)$ and entropy is a number attached to it. Entropy measures symmetry and with $t = \ifrac{1}{2}$ we have maximum chaos (the future outcomes are equally likely).

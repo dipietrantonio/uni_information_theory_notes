@@ -1,8 +1,8 @@
 \section{Lesson 4}
 
 \begin{thm}
-	The upper bound on the volume of a Hamming ball, if $ r \leq \dfrac{n}{2}$, is
-	$$|\hball{0}{r}| \leq 2^{nh(\frac{r}{n})}$$
+	The upper bound on the volume of a Hamming ball, if $ r \leq \ifrac{n}{2}$, is
+	$$|\hball{0}{r}| \leq 2^{nh\left(\sfrac{r}{n}\right)}$$
 \end{thm}
 
 In order to prove this theorem an analogy is introduced. Suppose there is a box with a number of chickens in it. We want to count those animals without withdrawing all of them out of the box. What can be done is to take the lightest one and measure its weight $w$; then also the weight $W$ of the box is measured. The number of the total chickens in the box can't be greater than $\ifrac{w}{W}$.\\
@@ -21,25 +21,25 @@ $$1 = P^n(\{0, 1\}^n) \geq P^n(\hball{0}{r}) = \sum_{\str{x} \in \hball{0}{r}} P
 at this point we ``take out the lightest chicken'' and write
 $$\sum_{\str{x} \in \hball{0}{r}} P^n(\str{x}) \geq |\hball{0}{r}| \cdot \min_{\str{x} \in \hball{0}{r}}P^n(\str{x})$$
 
-Which are the lightest chickens? Because we assume $r \leq n/2$ then
+Which are the lightest chickens? Because we assume $r \leq \ifrac{n}{2}$ then
 $$r \leq \dfrac{n}{2} \Rightarrow P(1) = \dfrac{r}{n} \leq \dfrac{1}{2} \Rightarrow P(1) \leq P(0).$$
 It follows that the the lightest strings are the ones on the border of the ball, with $r$ $1$'s. We now compute their weight.
 
 \[\min_{\str{x} \in \hball{0}{r}}P^n(\str{x}) = [P(1)]^r\cdot[P(0)]^{n-r} = \] 
-\[ = \left(\dfrac{r}{n}\right)^r \left(1 - \dfrac{r}{n}\right)^{n-r} = \]  \[ = \left(\dfrac{r}{n}\right)^{n\frac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{n\left(1 - \frac{r}{n}\right)} =\]
-\[ = [\left(\dfrac{r}{n}\right)^{\frac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{\left(1 - \frac{r}{n}\right)}]^n =\] 
-\[ =2^{n\log_2[\left(\frac{r}{n}\right)^{\frac{r}{n}}  \left(1 - \frac{r}{n}\right)^{\left(1 - \frac{r}{n}\right)}]} = \]
-\[ =2^{n[\frac{r}{n}\log_2\frac{r}{n} + \left(1 - \frac{r}{n}\right)\log_2\left(1 - \frac{r}{n}\right)]} = 2^{-nh(\frac{r}{n})}\]
+\[ = \left(\dfrac{r}{n}\right)^r \left(1 - \dfrac{r}{n}\right)^{n-r} = \]  \[ = \left(\dfrac{r}{n}\right)^{n\sfrac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{n\left(1 - \sfrac{r}{n}\right)} =\]
+\[ = [\left(\dfrac{r}{n}\right)^{\sfrac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{\left(1 - \sfrac{r}{n}\right)}]^n =\] 
+\[ =2^{n\log_2[\left(\sfrac{r}{n}\right)^{\sfrac{r}{n}}  \left(1 - \sfrac{r}{n}\right)^{\left(1 - \sfrac{r}{n}\right)}]} = \]
+\[ =2^{n[\sfrac{r}{n}\log_2\sfrac{r}{n} + \left(1 - \sfrac{r}{n}\right)\log_2\left(1 - \sfrac{r}{n}\right)]} = 2^{-nh\left(\sfrac{r}{n}\right)}\]
 
 So we have 
 
-\[1 \geq |\hball{0}{r}| \dfrac{1}{2^{nh(\frac{r}{n})}} \Rightarrow |\hball{0}{r}| \leq 2^{nh(\frac{r}{n})}\] 
+\[1 \geq |\hball{0}{r}| \dfrac{1}{2^{nh(\sfrac{r}{n})}} \Rightarrow |\hball{0}{r}| \leq 2^{nh\left(\sfrac{r}{n}\right)}\] 
 \hfill$\Box$
 
 
 \begin{thm}
-	The lower bound on the volume of a Hamming ball, if $ r \leq \dfrac{n}{2}$, is
-	$$|\hball{0}{r}| \geq \dfrac{1}{n+1}2^{nh(\frac{r}{n})}$$
+	The lower bound on the volume of a Hamming ball, if $ r \leq \ifrac{n}{2}$, is
+	$$|\hball{0}{r}| \geq \dfrac{1}{n+1}2^{nh(\sfrac{r}{n})}$$
 \end{thm}
 
 \noindent\textbf{Proof.} $$P(1) = \dfrac{r}{n},\ P(0) = 1 - P(1),\ P^n(\{0, 1\}^n) = 1.$$
@@ -47,9 +47,9 @@ Consider the set of all strings of length $n$ and partition it in the following 
 $$\Tau_q^n = \{\str{x}\ |\ \hweight{x} = q\},$$
 obtaining $n +1$ classes. Then we have
 
-\[ 1 = P^n(\{0, 1\}^n) = \sum_{q=0}^nP^n(\Tau_q) \leq (n + 1) P^n(\Tau_r) = (n+1)|\Tau_r|2^{-nh\left(\frac{r}{n}\right)}.\]
+\[ 1 = P^n(\{0, 1\}^n) = \sum_{q=0}^nP^n(\Tau_q) \leq (n + 1) P^n(\Tau_r) = (n+1)|\Tau_r|2^{-nh\left(\sfrac{r}{n}\right)}.\]
 
-We know that $|\Tau_q^n| = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight; we want to prove $$ |T_r| \geq \dfrac{1}{n+1}2^{nh(\frac{r}{n})}.$$ There is not symmetry in the weight of the partitions so there is a weight $r$ so that
+We know that $|\Tau_q^n| = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight; we want to prove $$ |T_r| \geq \dfrac{1}{n+1}2^{nh\left(\sfrac{r}{n}\right)}.$$ There is not symmetry in the weight of the partitions so there is a weight $r$ so that
 $$ \dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} \leq 1,\ \forall q$$
 In the formula above there are binomials we want to bound.
 
