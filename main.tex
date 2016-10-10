@@ -1,20 +1,23 @@
 \documentclass[a4paper, 11pt]{book}
 \usepackage[utf8]{inputenc}
-\usepackage{mathtools, amssymb, graphicx}
+\usepackage{mathtools, amssymb, graphicx, amsmath, epstopdf}
 
 \title{Notes on Information Theory}
-\author{Michele Laurenti, Lorenzo Madeddu, Cristian Di Pietrantonio}
+\author{Cristian Di Pietrantonio, Michele Laurenti, Lorenzo Madeddu}
 
+%ambients
+\newtheorem{thm}{Theorem}
+\newtheorem{obs}{Observation}
 
-%math symbol
-\def\lc{\left\lceil}   
-\def\rc{\right\rceil}
+%math symbols
+\newcommand{\Tau}{\mathrm{T}}                         %Capital Tau
+\newcommand{\ifrac}[2]{{#1}/{#2}}                     %Inline fraction
+\newcommand{\str}[1]{\underline{#1}}                  %String 
+\newcommand{\msgset}{\mathcal{M}}                     %the set of all messages
+\newcommand{\hball}[2]{B_H(\str{#1}, #2)}             %the Hamming ball
+\newcommand{\hdist}[2]{d_H(\str{#1}, \str{#2})}       %Hamming distance
+\newcommand{\hweight}[1]{w_H(\str{#1})}               %Hamming weight
 
-%abbreviations
-\newcommand{\msgset}{\mathcal{M}}                                   %the set of all messages
-\newcommand{\hball}[2]{B_H(\underline{#1}, #2)}                     %the Hamming ball
-\newcommand{\hdist}[2]{d_H(\underline{#1}, \underline{#2})}         %Hamming distance
-\newcommand{\hweight}[1]{w_H(\underline{#1})}                      %Hamming weight
 \begin{document}
 	\maketitle
 	
@@ -22,4 +25,5 @@
 	\input{lessons/l01}
 	\input{lessons/l02}
 	\input{lessons/l03} % October 2016, 4th
+	\input{lessons/l04}
 \end{document}

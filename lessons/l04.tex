@@ -1,0 +1,68 @@
+\section{Lesson 4}
+
+\begin{thm}
+	The upper bound on the volume of a Hamming ball, if $ r \leq \dfrac{n}{2}$, is
+	$$|\hball{0}{r}| \leq 2^{nh(\frac{r}{n})}$$
+\end{thm}
+
+In order to prove this theorem an analogy is introduced. Suppose there is a box with a number of chickens in it. We want to count those animals without withdrawing all of them out of the box. What can be done is to take the lightest one and measure its weight $w$; then also the weight $W$ of the box is measured. The number of the total chickens in the box can't be greater than $\ifrac{w}{W}$.\\
+
+\noindent\textbf{Proof.} In this proof we will use a similar technique. Consider $\{0, 1\}^n$. We ``sparkle'' a substance on the strings in the set; this substance looks like probability, but it doesn't matter. Define the weight of $1$ and $0$ as 
+$$P(1) = \dfrac{r}{n},\ P(0) = 1 - P(1).$$
+
+Notice that is not an uniform distribution. Define the weight of a string as
+$$P^n(\str{x}) = \prod_{i = 1}^n P(x_i).$$
+
+If $A \subseteq \{0, 1\}^n$ then the weight of the set $A$ is $$P^n(A) = \sum_{\str{x} \in A} P^n(\str{x}).$$
+
+$P^n(\{0, 1\}^n)$ is the total weight of the substance sparkled on the strings and it is the probability distribution of binomial. For this reason one can claim that
+$$1 = P^n(\{0, 1\}^n) \geq P^n(\hball{0}{r}) = \sum_{\str{x} \in \hball{0}{r}} P^n(\str{x})$$
+
+at this point we ``take out the lightest chicken'' and write
+$$\sum_{\str{x} \in \hball{0}{r}} P^n(\str{x}) \geq |\hball{0}{r}| \cdot \min_{\str{x} \in \hball{0}{r}}P^n(\str{x})$$
+
+Which are the lightest chickens? Because we assume $r \leq n/2$ then
+$$r \leq \dfrac{n}{2} \Rightarrow P(1) = \dfrac{r}{n} \leq \dfrac{1}{2} \Rightarrow P(1) \leq P(0).$$
+It follows that the the lightest strings are the ones on the border of the ball, with $r$ $1$'s. We now compute their weight.
+
+\[\min_{\str{x} \in \hball{0}{r}}P^n(\str{x}) = [P(1)]^r\cdot[P(0)]^{n-r} = \] 
+\[ = \left(\dfrac{r}{n}\right)^r \left(1 - \dfrac{r}{n}\right)^{n-r} = \]  \[ = \left(\dfrac{r}{n}\right)^{n\frac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{n\left(1 - \frac{r}{n}\right)} =\]
+\[ = [\left(\dfrac{r}{n}\right)^{\frac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{\left(1 - \frac{r}{n}\right)}]^n =\] 
+\[ =2^{n\log_2[\left(\frac{r}{n}\right)^{\frac{r}{n}}  \left(1 - \frac{r}{n}\right)^{\left(1 - \frac{r}{n}\right)}]} = \]
+\[ =2^{n[\frac{r}{n}\log_2\frac{r}{n} + \left(1 - \frac{r}{n}\right)\log_2\left(1 - \frac{r}{n}\right)]} = 2^{-nh(\frac{r}{n})}\]
+
+So we have 
+
+\[1 \geq |\hball{0}{r}| \dfrac{1}{2^{nh(\frac{r}{n})}} \Rightarrow |\hball{0}{r}| \leq 2^{nh(\frac{r}{n})}\] 
+\hfill$\Box$
+
+
+\begin{thm}
+	The lower bound on the volume of a Hamming ball, if $ r \leq \dfrac{n}{2}$, is
+	$$|\hball{0}{r}| \geq \dfrac{1}{n+1}2^{nh(\frac{r}{n})}$$
+\end{thm}
+
+\noindent\textbf{Proof.} $$P(1) = \dfrac{r}{n},\ P(0) = 1 - P(1),\ P^n(\{0, 1\}^n) = 1.$$
+Consider the set of all strings of length $n$ and partition it in the following way.
+$$\Tau_q^n = \{\str{x}\ |\ \hweight{x} = q\},$$
+obtaining $n +1$ classes. Then we have
+
+\[ 1 = P^n(\{0, 1\}^n) = \sum_{q=0}^nP^n(\Tau_q) \leq (n + 1) P^n(\Tau_r) = (n+1)|\Tau_r|2^{-nh\left(\frac{r}{n}\right)}.\]
+
+We know that $|\Tau_q^n| = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight; we want to prove $$ |T_r| \geq \dfrac{1}{n+1}2^{nh(\frac{r}{n})}.$$ There is not symmetry in the weight of the partitions so there is a weight $r$ so that
+$$ \dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} \leq 1,\ \forall q$$
+In the formula above there are binomials we want to bound.
+
+\begin{obs}
+	$$\dfrac{k!}{l!} \leq k^{k-l}.$$
+\end{obs}
+
+\noindent\textbf{Proof}. We are going to prove this observation in two steps.
+\begin{itemize}
+	\item $k \geq l$. 
+		$$\dfrac{k!}{l!} = \dfrac{k(k-1) \cdots l(l -1) \cdots 1}{l(l -1) \cdots 1} \leq k^{k-l}.$$
+		
+	\item $k < l$.
+		$$\dfrac{k!}{l!} = \dfrac{k(k-1) \cdots 1}{l(l -1) \cdots k(k-1) \cdots 1} \leq \left(\dfrac{1}{k+1}\right)^{l-k} < \left(\dfrac{1}{k}\right)^{l-k} = k^{k-l}.$$
+\end{itemize}
+\hfill$\Box$
