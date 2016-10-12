@@ -45,10 +45,7 @@ So we have
 \noindent\textbf{Proof.} $$P(1) = \dfrac{r}{n},\ P(0) = 1 - P(1),\ P^n(\{0, 1\}^n) = 1.$$
 Consider the set of all strings of length $n$ and partition it in the following way.
 $$\Tau_q^n = \{\str{x}\ |\ \hweight{x} = q\},$$
-obtaining $n +1$ classes. Then we have
-
-\[ 1 = P^n(\{0, 1\}^n) = \sum_{q=0}^nP^n(\Tau_q) \leq (n + 1) P^n(\Tau_r) = (n+1)|\Tau_r|2^{-nh\left(\sfrac{r}{n}\right)}.\]
-
+obtaining $n +1$ classes. 
 We know that $|\Tau_q^n| = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight; we want to prove $$ |T_r| \geq \dfrac{1}{n+1}2^{nh\left(\sfrac{r}{n}\right)}.$$ There is not symmetry in the weight of the partitions so there is a weight $r$ so that
 $$ \dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} \leq 1,\ \forall q$$
 In the formula above there are binomials we want to bound.
@@ -66,3 +63,30 @@ In the formula above there are binomials we want to bound.
 		$$\dfrac{k!}{l!} = \dfrac{k(k-1) \cdots 1}{l(l -1) \cdots k(k-1) \cdots 1} \leq \left(\dfrac{1}{k+1}\right)^{l-k} < \left(\dfrac{1}{k}\right)^{l-k} = k^{k-l}.$$
 \end{itemize}
 \hfill$\Box$
+
+% Lesson5
+Define $p = \ifrac{r}{n}$  so that we have a distribution $P(p, 1-p)$ that picks a set and concentrate the weight (probability) on it. We observe that the probability of each string in a class depends only on the number of $1$'s in it. So we can write
+
+\[\dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} = \dfrac{p^q(1-p)^{n-q}|\Tau_q|}{p^r(1-p)^{n-r}|\Tau_q|} = p^{q-r}(1-p)^{r-q} \dfrac{\frac{n!}{q!(n-q)!}}{\frac{n!}{r!(n-r)!}} = \]
+\[ = p^{q-r}(1-p)^{r-q}\dfrac{r!}{q!}\dfrac{(n-r)!}{(n-q)!} \leq p^{q-r}(1-p)^{r-q}r^{r-q}(n-r)^{q-r} = \]
+
+considering that $r = np$ it follows that
+
+\[p^{q-r}(1-p)^{r-q} (np)^{r-q}[n(1-p)]^{q-r}=p^{q-r}(1-p)^{r-q}n^{r-q+q-r}p^{r-q}(1-p)^{q-r} = \]
+
+\[ = p^{q-r + r-q}(1-p)^{r-q+q-r} = 1.\]
+
+So we can write
+
+\[1 = P^n(\{0,1\}^n) = P^n\left(\bigcup_{q=0}^nT_q\right) = \sum_{q=0}^nP^n(T_q)\leq(n+1) \max_qP^n(T_q) = \]
+
+\[=(n+1)P^n(T_r) = (n + 1)|T_r|2^{-nh\sfrac{r}{n}}\]
+	
+From the previous result we know $|T_r| \geq \dfrac{1}{n+1}2^{nh(\sfrac{r}{n})}$ and $T_r \subseteq \hball{0}{r}$ so it follows that $|T_r| \leq |\hball{0}{r}|$. \hfill $\Box$
+
+So this proof is important because of two reasons:
+
+\begin{enumerate}
+	\item something related to entropy. [LISTEN THE REGISTRATION];
+	\item Cardinality of the Hamming ball comes up in error correction (a string that has been haltered at most $r$ times is in a certain radius from the original string).
+\end{enumerate}
