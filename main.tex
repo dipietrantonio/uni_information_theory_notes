@@ -3,21 +3,10 @@
 \usepackage{mathtools, amssymb, graphicx, amsmath, epstopdf}
 
 \title{Notes on Information Theory}
-\author{Cristian Di Pietrantonio, Michele Laurenti, Lorenzo Madeddu}
+\author{Cristian Di Pietrantonio, Michele Laurenti}
 
-%ambients
-\newtheorem{thm}{Theorem}
-\newtheorem{obs}{Observation}
-
-%math symbols
-\newcommand{\sfrac}{\frac}
-\newcommand{\Tau}{\mathrm{T}}                         %Capital Tau
-\newcommand{\ifrac}[2]{{#1}/{#2}}                     %Inline fraction
-\newcommand{\str}[1]{\underline{#1}}                  %String 
-\newcommand{\msgset}{\mathcal{M}}                     %the set of all messages
-\newcommand{\hball}[2]{B_H(\str{#1}, #2)}             %the Hamming ball
-\newcommand{\hdist}[2]{d_H(\str{#1}, \str{#2})}       %Hamming distance
-\newcommand{\hweight}[1]{w_H(\str{#1})}               %Hamming weight
+%PLEASE: see the macros defined and use them!
+\input{macros}
 
 \begin{document}
 	\maketitle
@@ -28,4 +17,5 @@
 	\input{lessons/l03} % October 2016, 4th
 	\input{lessons/l04}
 	\input{lessons/l05}
+	\input{lessons/l06}
 \end{document}

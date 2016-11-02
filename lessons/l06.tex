@@ -1,0 +1,81 @@
+\section{The log-sum inequality}
+\begin{obs}\label{obs:cap-convex}
+	The logarithm function is cap-convex ($\cap$-Convex). Remember that $\ln(t) \leq t - 1$ (with equality iff $t=1$) and $\log_2(t) = \dfrac{\ln(t)}{\ln(2)}$.
+	
+\end{obs}
+
+\begin{prop}[Log-sum inequality]\label{prop:logsum}
+	Let $a_i \geq 0, i = 1, 2, \ldots, t$ with $a = \sum_{i = 1}^t a_i$ and $b_i \geq 0, i = 1, 2, \ldots, t$, with $b = \sum_{i = 1}^t b_i$, then $$\sum_{i= 1}^ta_i\log\left(\dfrac{a_i}{b_i}\right)\geq a\log\left(\dfrac{a}{b}\right).$$
+\end{prop}
+
+We are ignoring for now the cases where $a_i$ or $b_i = 0$. The relation is with equality if and only if  the two sets are proportionate, \emph{i.e.} $\exists c \ |\ a_i = cb_i,\ \forall i$. When $a = b = 1$ we have two distributions $P|[t]$ and $Q|[t]$. So:
+\[
+\sum_{i = 1}^tP(i)log\left(\dfrac{P(i)}{Q(i)}\right)\geq 0
+ \]
+ and we have equality iff $P = Q$. We call this $D(P||Q)$, called the informational divergence of $P$ from $Q$. This is not a measure, but a ``dissimilarity'' measure. It's called also Kullback-Leibler divergence. 
+ 
+ Proposition \ref{prop:logsum} is based on the Observation \ref{obs:cap-convex}. The Proposition will be proved for the natural logarithm.
+ 
+ \noindent\textbf{Proof}. So $$\sum_{i= 1}^ta_i\log\left(\dfrac{a_i}{b_i}\right)\geq a\log\left(\dfrac{a}{b}\right)$$ when $b_i = 0$ and $a_i = 0$, we have $$0\ln(\dfrac{0}{0}) = 0$$ by [PEZZO MANCANTE]
+ 
+ The reason why? $[t] \subset [w]$, you can think of $\{a_i\}$ as a subset of some other set where the other values are all $0$s. Otherwise, if $a_i \geq 0$ and $b_i = 0$, we convene that $$a_i\log\left(\dfrac{a_i}{b_i}\right) = +\infty.$$ We accept this convention since $b_i \geq 0$, so we can think of $\ifrac{a_i}{0}$ as the limit of $\ifrac{a_i}{f_n}$, for some $f_n\geq 0$ such that $fn \rightarrow 0$. The third case is [NEED REVISION]
+ 
+\[
+  \sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=\hat{b} + 1}^t 0\log\left(\dfrac{0}{b_i}\right)
+ \]
+ with $\hat{t} < t$ and $\hat{b} < b$. Here we convene that $$0\log\left(\dfrac{0}{b_i}\right) = 0.$$ Notice that 
+ 
+\[
+\sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=b + 1}^t 0\log\left(\dfrac{0}{b_i}\right) \geq a\log\left(\dfrac{a}{\hat{b}}\right) + 0 \geq a\log\left(\dfrac{a}{b}\right).
+\]
+
+Now the proof. First, suppose $a=b$. Notice that $$\ln\left(\dfrac{1}{x}\right)\geq x - 1\ \text{and}\ \ln\left(\dfrac{1}{x}\right)\leq \dfrac{1}{x} - 1.$$
+
+So
+
+\[
+\sum_{i=1}^ta_i\ln\left(\dfrac{a_i}{b_i}\right) \geq \sum_{i=1}^ta_i\left(1-\dfrac{b_i}{a_i}\right) =  
+\]
+
+with equality iff $a=b$ (the case then they are different can be easily reduced to this one.)
+
+\[
+= \sum_{i = 1}^ta_i - \sum_{i=1}^ta_i\dfrac{b_i}{a_i} = a -b = 0.
+\]
+
+Assume $b = ca$, for $c \not=1$ we introduce $$b_i = a\hat{b}_i \Rightarrow \hat{b}_i = \dfrac{b_i}{c}.$$
+
+\[
+\sum_{i = 1}^t a_i\ln\left(\dfrac{a_i}{c\hat{b}_i} \right) = \]
+\[ = \sum_{i=1}^{t}a_i\ln\left(\dfrac{1}{c} \right) + \sum_{i=1}^ta_i\ln\left(\dfrac{a_i}{\hat{b}_i} \right) \geq  \sum_{i=1}^{t}a_i\ln\left(\dfrac{1}{c} \right) + a\ln\left(\dfrac{a}{a} \right) = \]
+
+with equality iff $a_i = \hat{b}_i,\ \forall i$
+\[
+ = a\ln\left(\dfrac{1}{c}\right) + a\ln\left(\dfrac{a}{a}\right) = a\ln\left(\dfrac{a}{ca} \right) = a\ln\left(\dfrac{a}{b} \right).
+ \]
+ 
+\section{Variable-length codes}
+
+A variable-length binary code is a function $f:\msgset \rightarrow \{0, 1\}^*$ for $\msgset < \infty$ and $\{0, 1\}^* = \bigcup_{i = 1}^\infty \{0, 1\}^i$. Consider $$f:[m] \rightarrow \{0, 1\}^*$$ defined as $f(i) = 0^i$ is injective. However, consider $f^*:\msgset^* \rightarrow \{0, 1\}^*$, the extension by concatenation, defined as $$f^*(m_1, \ldots, m_e) = f(m_1)\ldots f(m_e).$$ The function $f^*$ is not injective!
+
+When $f$ is prefix-free (or just prefix), \emph{i.e.} let $\str{x}, \str{y} \in \{0, 1\}^*$, $\str{x}$ is prefix of $\str{y}$ id $\str{x} = \str{y}$ or $\exists \str{z} \in \{0, 1\}^*$ such that $\str{x}\str{z} = \str{y}$. So, $f$ is prefix-free if $$m'\not=m'' \Rightarrow f(m') \not\pref f(m''),$$ where ``$\pref$'' is the ``is prefix of'' relation. If $f$ id prefix-free, $f^*$ is injective. 
+
+\begin{prop}[Kraft's inequality]
+	If $f:\msgset \rightarrow \{0, 1\}^*$ is a prefix code, then $$\sum_{m\in\msgset}2^{-f(m)}\leq 1.$$
+\end{prop}
+
+$|f(m)| = l \Leftrightarrow f(m) \in \{0, 1\}^l$. This proposition tells us that lots of short codewords imply that the set of message is small.
+
+\noindent\textbf{Proof}. Let $\str{x}, \str{y} \in \{0, 1\}^*$. Define
+$$Y_l(\str{x}) = \{\str{y}\ |\ \str{y} \in \{0, 1\}^L \wedge \str{x} \pref \str{y} \}.$$
+Notice that $L < |\str{x}| \Rightarrow Y_L = \emptyset.$ Now, either $Y_L(\str{x}) \cap Y_L(\str{v}) \not= \emptyset$, or $Y_L(\str{x}) \cap Y_L(\str{v}) \not= \emptyset$, and maybe $Y_L(\str{x}) \subset Y_L(\str{v})$ or the other way. 
+$$\str{x} \pref \str{v} \Rightarrow Y_L(\str{x}) \subseteq Y_L(\str{v}).$$
+$$\str{x} \not\pref \str{v} \wedge \str{v} \not\pref \str{x} \Rightarrow Y_L(\str{x}) \cap Y_L(\str{v}) = \emptyset.$$
+
+We say that $\prol{\str{x}}$ and $\prol{\str{y}}$ (???) can never be in ``general position''. Let $A, B$ be two sets. They are in general position if $A\cap B$, $A \setminus B$, $B \setminus A$, $\overline{A\cup B}$ are all non-empty. For a prefix code, fiven $m'\not= m''$, then $$\prol{f(m')} \cap \prol{f(m'')} = \emptyset.$$ So consider $$\{0, 1\}^L \supseteq \bigcup_{m \in\msgset}\prol{f(m)},$$ and since $|\{0, 1\}^L| = 2^L$ and $$|\{0, 1\}^L| \geq \left|\bigcup_{m\in\msgset}\prol{f(m)}\right| = \sum_{m\in\msgset} |\prol{f(m)}| = \sum_{m \in \msgset} 2^{L - |f(m)|}.$$ Of course $L \geq \max_m |f(m)|$. Now, we have
+$$2^L \geq \sum_{m\in\msgset}2^{L - |f(m)|} \Rightarrow 1 \geq \sum_{m\in\msgset} 2^{-|f(m)|}.$$
+$\hfill\Box$
+
+\begin{prop}
+	If $f$ id a prefix code then, for any distribution $P|\msgset$, $$\sum_{m\in\msgset}|f(m)| \geq H(P).$$
+\end{prop}
