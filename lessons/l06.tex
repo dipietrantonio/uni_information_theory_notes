@@ -16,20 +16,20 @@ We are ignoring for now the cases where $a_i$ or $b_i = 0$. The relation is with
  
  Proposition \ref{prop:logsum} is based on the Observation \ref{obs:cap-convex}. The Proposition will be proved for the natural logarithm.
  
- \noindent\textbf{Proof}. So $$\sum_{i= 1}^ta_i\log\left(\dfrac{a_i}{b_i}\right)\geq a\log\left(\dfrac{a}{b}\right)$$ when $b_i = 0$ and $a_i = 0$, we have $$0\ln(\dfrac{0}{0}) = 0$$ by [PEZZO MANCANTE]
+ \noindent\textbf{Proof}. So $$\sum_{i= 1}^ta_i\log\left(\dfrac{a_i}{b_i}\right)\geq a\log\left(\dfrac{a}{b}\right)$$ when $b_i = 0$ and $a_i = 0$, we have $$0\ln(\dfrac{0}{0}) = 0$$ by convention.
  
- The reason why? $[t] \subset [w]$, you can think of $\{a_i\}$ as a subset of some other set where the other values are all $0$s. Otherwise, if $a_i \geq 0$ and $b_i = 0$, we convene that $$a_i\log\left(\dfrac{a_i}{b_i}\right) = +\infty.$$ We accept this convention since $b_i \geq 0$, so we can think of $\ifrac{a_i}{0}$ as the limit of $\ifrac{a_i}{f_n}$, for some $f_n\geq 0$ such that $fn \rightarrow 0$. The third case is [NEED REVISION]
+ The reason why? $[t] \subset [w]$, you can think of $\{a_i\}$ as a subset of some other set where the other values are all $0$s. Otherwise, if $a_i \geq 0$ and $b_i = 0$, we convene that $$a_i\log\left(\dfrac{a_i}{b_i}\right) = +\infty.$$ We accept this convention since $b_i \geq 0$, so we can think of $\ifrac{a_i}{0}$ as the limit of $\ifrac{a_i}{f_n}$, for some $f_n\geq 0$ such that $fn \rightarrow 0$. The third case is
  
 \[
-  \sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=\hat{b} + 1}^t 0\log\left(\dfrac{0}{b_i}\right)
+  \sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=\hat{t} + 1}^t 0\log\left(\dfrac{0}{b_i}\right)
  \]
- with $\hat{t} < t$ and $\hat{b} < b$. Here we convene that $$0\log\left(\dfrac{0}{b_i}\right) = 0.$$ Notice that 
+ with $\hat{t} < t$. Here we convene that $$0\log\left(\dfrac{0}{b_i}\right) = 0.$$ Notice that 
  
 \[
-\sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=b + 1}^t 0\log\left(\dfrac{0}{b_i}\right) \geq a\log\left(\dfrac{a}{\hat{b}}\right) + 0 \geq a\log\left(\dfrac{a}{b}\right).
+\sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=\hat{t} + 1}^t 0\log\left(\dfrac{0}{b_i}\right) \geq a\log\left(\dfrac{a}{\hat{b}}\right) + 0 \geq a\log\left(\dfrac{a}{b}\right),
 \]
 
-Now the proof. First, suppose $a=b$. Notice that $$\ln\left(\dfrac{1}{x}\right)\geq x - 1\ \text{and}\ \ln\left(\dfrac{1}{x}\right)\leq \dfrac{1}{x} - 1.$$
+with $\hat{b} < b$. Now the proof. First, suppose $a=b$. Notice that $$\ln\left(\dfrac{1}{x}\right)\geq x - 1\ \text{and}\ \ln\left(\dfrac{1}{x}\right)\leq \dfrac{1}{x} - 1.$$
 
 So
 
@@ -60,7 +60,7 @@ A variable-length binary code is a function $f:\msgset \rightarrow \{0, 1\}^*$ f
 
 When $f$ is prefix-free (or just prefix), \emph{i.e.} let $\str{x}, \str{y} \in \{0, 1\}^*$, $\str{x}$ is prefix of $\str{y}$ id $\str{x} = \str{y}$ or $\exists \str{z} \in \{0, 1\}^*$ such that $\str{x}\str{z} = \str{y}$. So, $f$ is prefix-free if $$m'\not=m'' \Rightarrow f(m') \not\pref f(m''),$$ where ``$\pref$'' is the ``is prefix of'' relation. If $f$ id prefix-free, $f^*$ is injective. 
 
-\begin{prop}[Kraft's inequality]
+\begin{prop}[Kraft's inequality]\label{prop:kraft}
 	If $f:\msgset \rightarrow \{0, 1\}^*$ is a prefix code, then $$\sum_{m\in\msgset}2^{-f(m)}\leq 1.$$
 \end{prop}
 
@@ -77,5 +77,38 @@ $$2^L \geq \sum_{m\in\msgset}2^{L - |f(m)|} \Rightarrow 1 \geq \sum_{m\in\msgset
 $\hfill\Box$
 
 \begin{prop}
-	If $f$ id a prefix code then, for any distribution $P|\msgset$, $$\sum_{m\in\msgset}|f(m)| \geq H(P).$$
+	If $f$ id a prefix code then, for any distribution $P|\msgset$, $$\sum_{m\in\msgset}|f(m)|P(m) \geq H(P).$$
 \end{prop}
+
+\noindent\textbf{Proof}.
+\[
+\sum_{m \in\msgset}P(m) \log\left(\dfrac{P(m)}{2^{-|f(m)|}}\right) \geq 0
+\]
+with equality iff $P(m) = 2^{-|f(m)|}$.
+\[
+\sum_{m\in\msgset}P(m)\log(P(m)) - \sum_{m\in\msgset}P(m)\log(2^{-|f(m)|}) =
+\]
+\[
+= -H(P) + \sum_{m\in\msgset}P(m)|f(m)| \geq 0 \Rightarrow H(P) \leq \sum_{m\in\msgset}P(m)|f(m)| 
+\]
+We have equality when $P(m) = 2^{-|f(m)|}.\hfill\Box$
+
+\begin{obs}
+	Given $P|\msgset$ it is true that $H(P) < \log(|\msgset|)$, with equality iff $P$ is the equidistribution.
+\end{obs}
+\noindent\textbf{Proof}.
+\[
+\sum_{m\in\msgset}P(m)\log\left(\dfrac{P(m)}{\sfrac{1}{|\msgset|}} \right) \geq 0
+\]
+with equality iff $P(m) = \ifrac{1}{|\msgset|}$
+\[
+\sum_{m\in\msgset}P(m)\log\left(\dfrac{P(m)}{\sfrac{1}{|\msgset|}} \right) = -H(P)+\log(|\msgset|).
+\]
+$\hfill\Box$
+
+\begin{thm}[Kraft]
+	Suppose $l:\msgset \rightarrow \mathbb{N}$, a prescribed codeword length, satisfies Kraft's inequality (\ref{prop:kraft}). Then 
+	$\exists f:\msgset \rightarrow \{0, 1\}^*$ prefix such that $|f(m)| = P(m),\ \forall m$.
+\end{thm}
+
+\noindent\textbf{Proof}. We prove this with a greedy algorithm. [TO BE CONTINUED].
