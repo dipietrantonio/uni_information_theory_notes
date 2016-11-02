@@ -89,7 +89,7 @@ with equality iff $P(m) = 2^{-|f(m)|}$.
 \sum_{m\in\msgset}P(m)\log(P(m)) - \sum_{m\in\msgset}P(m)\log(2^{-|f(m)|}) =
 \]
 \[
-= -H(P) + \sum_{m\in\msgset}P(m)|f(m)| \geq 0 \Rightarrow H(P) \leq \sum_{m\in\msgset}P(m)|f(m)| 
+= -H(P) + \sum_{m\in\msgset}P(m)|f(m)| \geq 0 \Rightarrow H(P) \leq \sum_{m\in\msgset}P(m)|f(m)|.
 \]
 We have equality when $P(m) = 2^{-|f(m)|}.\hfill\Box$
 
@@ -111,4 +111,25 @@ $\hfill\Box$
 	$\exists f:\msgset \rightarrow \{0, 1\}^*$ prefix such that $|f(m)| = P(m),\ \forall m$.
 \end{thm}
 
-\noindent\textbf{Proof}. We prove this with a greedy algorithm. [TO BE CONTINUED].
+\noindent\textbf{Proof}. We prove this with a greedy algorithm. We'll find an ordering of $\msgset$, which helps us with being greedy. We order $\msgset$ so that $l(m_1) \leq l(m_2) \leq \ldots \leq l(m_{|\msgset|})$.
+
+\noindent\textbf{First step.} Set $L = l(m_{|\msgset|}) = \max_ml(m)$. We work with strings of length $L$ and then we shorten them. Choose arbitrary $\hat{\str{x}}^{(1)} \in \{0, 1\}^L$ and let $f(m_1)$ be the prefix of $\hat{\str{x}}^{(1)}$ of length $l(m_1)$. We then exclude the set of $L - l(m_1)$ extensions of $f(m_1)$.
+
+\noindent\textbf{General step.} After constructing strings $\str{x}_1,\str{x}_2, \ldots, \str{x}_{t-1}$. We choose $\hat{\str{x}}^{(t)}$ from $\{0, 1\}^L \setminus (\prol{\str{x}_1} \cup \cdots \cup \prol{\str{x}_{t-1}})$; then $\str{x}_t = $ the prefix of length $l(m_t)$ of $\hat{\str{x}}^{(t)}$. We have to prove that the algorithm does end, and that it builds a prefix code.
+
+\noindent\emph{The algorithm stops} at step $t$ iff $\{0, 1\}^L = \bigcup_{i = 1}^{t-1}\prol{\str{x}_i}$. We have seen that $|\prol{\str{x}_i}| = 2^{L - l(m_i)}$. This means that
+
+\[
+2^L = \left|\bigcup_{i=1}^{t-1}\prol{\str{x}_i} \right| \leq \sum_{i=1}^{t-1}|\prol{\str{x}_i}| = \sum_{i=1}^{t-1} 2^{L-l(m_i)}
+\]
+dividing by $2^L$ we obtain
+$$1 \leq \sum_{i=1}^{t-1}2^{-l(m_i)}$$
+in contradiction with Kraft's inequality (Proposition \ref{prop:kraft}), since we have at least $t$ messages. If $t < |\msgset|$ then $$\sum_{i=1}^{t} 2^{L-l(m_i)} < 2^L$$ so the procedure terminates.
+
+\noindent\emph{Correctness}. $f$ is a prefix-code. We have to show that $$i \not= j \Rightarrow \prol{\str{x}_i} \cap \prol{\str{x}_j} = \emptyset.$$
+Since they are not in general position, we just have to show that they don't contain one another. $$\prol{\str{x}_t} \not\supset \prol{\str{x}_i},\ i < t$$, since $l(m_i) \leq l(m_t)$, $|\prol{\str{x}_i} \geq |\prol{\str{x}_t}|$. The sets get smaller and smaller. On the other hand
+
+$$\prol{\str{x}_t} \not\subset \prol{\str{x}_i},\ i < t$$
+recall that $\hat{\str{x}}^{(t)}$ was chosen in such a way that $\hat{\str{x}}^{(t)} \in \prol{\str{x}_t}$, and that $\hat{\str{x}}^{(t)} \not\in \prol{\str{x}_i},\ \forall i < t$. So $\prol{\str{x}_t}$ has an element not in $\prol{\str{x}_i}$, so i can't be included.
+
+If our code does not satisfy Kraft's inequality to equality, \emph{i.e.} $$\sum_{m\in\msgset}2^{|f(m)|} < 1,$$ then $\exists \lambda \geq L, \lambda \in \mathbb{N}$ t.c. $$\sum_{m\in\msgset}2^{-|f(m)|} + 2^{-\lambda} \leq 1$$ with $l(m_1) \leq \cdots \leq l(m_{|\msgset|}) \leq \lambda$ so we could add some more words to our code. A maximal prefix code is a prefix code to which you can't add more codewords (and still get a prefix-code).
