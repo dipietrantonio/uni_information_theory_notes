@@ -1,0 +1,135 @@
+\chapter{Variable-length codes}
+
+A variable-length binary code is a function 
+\[f:\msgset \rightarrow \{0, 1\}^*,\ |\msgset| < \infty,\ \{0, 1\}^* = \bigcup_{i = 1}^\infty \{0, 1\}^i.
+\]
+that can be extended by concatenation. If $m \in M^* \Rightarrow \exists i\ m \in M^i$. We can write $$m = m_1m_2\ldots m_i.$$ It follows that $f$ must be invertible, even after concatenation. However, the function $f^*:\msgset^* \rightarrow \{0, 1\}^*$, the extension by concatenation, defined as $$f^*(m_1\ldots m_i) = f(m_1)\ldots f(m_i),$$ is not invertible. What is needed is the prefix-free property for $f^*$.
+
+Let $\str{x}, \str{y} \in \{0, 1\}^*$. We say that $\str{x}$ is prefix of $\str{y}$ if $\str{x} = \str{y}$ or $\exists \str{z} \in \{0, 1\}^*$ such that $\str{x}\str{z} = \str{y}$.
+
+ So, $f$ is prefix-free if $$m'\not=m'' \Rightarrow f(m') \not\pref f(m''),$$ where ``$\pref$'' is the ``is prefix of'' relation. If $f$ is prefix-free, $f^*$ is invertible. $|f(m)| = l \Leftrightarrow f(m) \in \{0, 1\}^l$. This proposition tells us that lots of short codewords imply that the set of messages is small.
+
+\begin{prop}[Kraft's inequality]\label{prop:kraft}
+	If $f:\msgset \rightarrow \{0, 1\}^*$ is a prefix code, then $$\sum_{m\in\msgset}2^{-|f(m)|}\leq 1.$$
+\end{prop}
+
+\noindent\textbf{Proof}. Let $\str{x}, \str{v} \in \{0, 1\}^*$. Define $Y$ to be the set of all extension strings of $\str{x}$ of length $L$
+$$Y_L(\str{x}) = \{\str{y}\ |\ \str{y} \in \{0, 1\}^L \wedge \str{x} \pref \str{y} \}.$$
+Notice that $L < |\str{x}| \Rightarrow Y_L = \emptyset.$ Now, either $Y_L(\str{x}) \cap Y_L(\str{v}) \not= \emptyset$, or $Y_L(\str{x}) \cap Y_L(\str{v}) = \emptyset$, and maybe $Y_L(\str{x}) \subset Y_L(\str{v})$ or the other way. 
+$$\str{x} \pref \str{v} \Rightarrow Y_L(\str{x}) \subseteq Y_L(\str{v}).$$
+$$\str{x} \not\pref \str{v} \wedge \str{v} \not\pref \str{x} \Rightarrow Y_L(\str{x}) \cap Y_L(\str{v}) = \emptyset.$$
+
+We say that $\prol{\str{x}}$ and $\prol{\str{v}}$ can never be in \emph{general position}.
+
+ Let $A$ and  $B$ be two sets. They are in general position if $$A\cap B,\ A \setminus B,\ B \setminus A,\ \overline{A\cup B}$$ are all non-empty. For a prefix code, given $m'\not= m''$, then $$\prol{f(m')} \cap \prol{f(m'')} = \emptyset.$$ So consider $$\{0, 1\}^L \supseteq \bigcup_{m \in\msgset}\prol{f(m)},$$ and since $|\{0, 1\}^L| = 2^L$ and $$|\{0, 1\}^L| \geq \left|\bigcup_{m\in\msgset}\prol{f(m)}\right| = \sum_{m\in\msgset} |\prol{f(m)}| = \sum_{m \in \msgset} 2^{L - |f(m)|}.$$ Of course, $L \geq \max_{m \in \msgset} |f(m)|$. Now, we have
+$$2^L \geq \sum_{m\in\msgset}2^{L - |f(m)|} \Rightarrow 1 \geq \sum_{m\in\msgset} 2^{-|f(m)|}.$$
+$\hfill\Box$
+
+\begin{prop}
+	If $f$ is a prefix code then, for any distribution $P|\msgset$, $$\sum_{m\in\msgset}|f(m)|P(m) \geq H(P).$$
+\end{prop}
+
+\noindent\textbf{Proof}.
+\[
+\sum_{m \in\msgset}P(m) \log_2\left(\dfrac{P(m)}{2^{-|f(m)|}}\right) \geq 0
+\]
+with equality iff $P(m) = 2^{-|f(m)|}$.
+\[
+\sum_{m\in\msgset}P(m)\log_2(P(m)) - \sum_{m\in\msgset}P(m)\log_2(2^{-|f(m)|}) =
+\]
+\[
+= -H(P) + \sum_{m\in\msgset}P(m)|f(m)| \geq 0 \Rightarrow H(P) \leq \sum_{m\in\msgset}P(m)|f(m)|.
+\]
+We have equality when $P(m) = 2^{-|f(m)|}.\hfill\Box$
+
+\begin{obs}
+	Given $P|\msgset$ it is true that $H(P) < \log(|\msgset|)$, with equality iff $P$ is the equidistribution.
+\end{obs}
+
+\noindent\textbf{Proof}.
+\[
+\sum_{m\in\msgset}P(m)\log\left(\dfrac{P(m)}{\sfrac{1}{|\msgset|}} \right) \geq 0
+\]
+with equality iff $P(m) = \ifrac{1}{|\msgset|}$
+\[
+\sum_{m\in\msgset}P(m)\log\left(\dfrac{P(m)}{\sfrac{1}{|\msgset|}} \right) = -H(P)+\log(|\msgset|).
+\]
+$\hfill\Box$
+
+\begin{thm}[Kraft]
+	Suppose $l:\msgset \rightarrow \mathbb{N}$, a prescribed codeword length, satisfies Kraft's inequality (\ref{prop:kraft}). Then 
+	$\exists f:\msgset \rightarrow \{0, 1\}^*$ prefix code such that $|f(m)| = P(m),\ \forall m$.
+\end{thm}
+
+\noindent\textbf{Proof}. We prove this with a greedy algorithm. We'll find an ordering of $\msgset$, which helps us with being greedy. We order $\msgset$ so that $l(m_1) \leq l(m_2) \leq \ldots \leq l(m_{|\msgset|})$.
+
+\noindent\textbf{First step.} Set $L = l(m_{|\msgset|}) = \max_ml(m)$. We work with strings of length $L$ and then we shorten them. Choose arbitrary $\hat{\str{x}}^{(1)} \in \{0, 1\}^L$ and let $f(m_1)$ be the prefix of $\hat{\str{x}}^{(1)}$ of length $l(m_1)$. We then exclude the set of $2^{L - l(m_1)}$ extensions of $f(m_1)$.
+
+\noindent\textbf{General step.} After constructing strings $\str{x}_1,\str{x}_2, \ldots, \str{x}_{t-1}$, choose $\hat{\str{x}}^{(t)}$ from $\{0, 1\}^L \setminus (\prol{\str{x}_1} \cup \cdots \cup \prol{\str{x}_{t-1}})$. Then $\str{x}_t = $ the prefix of length $l(m_t)$ of $\hat{\str{x}}^{(t)}$. We have to prove that the algorithm does end, and that it builds a prefix code.
+
+\noindent\emph{The algorithm stops} at step $t$ iff $\{0, 1\}^L = \bigcup_{i = 1}^{t-1}\prol{\str{x}_i}$. We have seen that $|\prol{\str{x}_i}| = 2^{L - l(m_i)}$. This means that
+
+\[
+2^L = \left|\bigcup_{i=1}^{t-1}\prol{\str{x}_i} \right| \leq \sum_{i=1}^{t-1}|\prol{\str{x}_i}| = \sum_{i=1}^{t-1} 2^{L-l(m_i)}
+\]
+dividing by $2^L$ we obtain
+$$1 \leq \sum_{i=1}^{t-1}2^{-l(m_i)}$$
+in contradiction with Kraft's inequality (Proposition \ref{prop:kraft}), since we have at least $t$ messages. If $t < |\msgset|$ then $$\sum_{i=1}^{t} 2^{L-l(m_i)} < 2^L$$ so the procedure terminates.
+
+\noindent\emph{Correctness}. $f$ is a prefix-code. We have to show that $$i \not= j \Rightarrow \prol{\str{x}_i} \cap \prol{\str{x}_j} = \emptyset.$$
+Since they are not in general position, we just have to show that they don't contain one another. $$\prol{\str{x}_t} \not\supset \prol{\str{x}_i},\ i < t,$$ since $l(m_i) \leq l(m_t)$, $|\prol{\str{x}_i} \geq |\prol{\str{x}_t}|$. The sets get smaller and smaller. On the other hand
+
+$$\prol{\str{x}_t} \not\subset \prol{\str{x}_i},\ i < t$$
+recall that $\hat{\str{x}}^{(t)}$ was chosen in such a way that $\hat{\str{x}}^{(t)} \in \prol{\str{x}_t}$, and that $\hat{\str{x}}^{(t)} \not\in \prol{\str{x}_i},\ \forall i < t$. So $\prol{\str{x}_t}$ has an element not in $\prol{\str{x}_i}$, so i can't be included.
+
+If our code does not satisfy Kraft's inequality to equality, \emph{i.e.} $$\sum_{m\in\msgset}2^{|f(m)|} < 1,$$ then $\exists \lambda \geq L, \lambda \in \mathbb{N}$ t.c. $$\sum_{m\in\msgset}2^{-|f(m)|} + 2^{-\lambda} \leq 1$$ with $l(m_1) \leq \cdots \leq l(m_{|\msgset|}) \leq \lambda$ so we could add some more words to our code. A maximal prefix code is a prefix code to which you can't add more codewords (and still get a prefix-code).
+$\hfill\Box$
+
+\begin{prop}
+ $\forall P|\msgset\ \exists f:\msgset \rightarrow \{0, 1\}^*$ prefix code such that
+ \[
+  \sum_{m\in \msgset} P(m)|f(m)| < H(P) + 1
+ \]
+\end{prop}
+
+\noindent\textbf{Proof}. We'll give a prescription satisfying Kraft's inequality and this inequality too. 
+
+\[
+ H(P) = \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right)
+\]
+\[
+l(m) = \dfrac{1}{P(m)}
+\]
+
+is not always an integer and could not satisfy Kraft's inequality.
+
+we could choose
+
+\[
+l(m) = \left\lceil\log\left(\dfrac{1}{P(m)}\right)\right\rceil
+\]
+
+since $\left\lceil t \right\rceil < t + 1$ we can easily see that 
+\[
+\sum_{m \in M} P(m)\left\lceil\log\left(\dfrac{1}{P(m)}\right)\right\rceil < \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right) + \sum_{m \in \msgset} P(m) = 
+\]
+
+\[
+ = H(P) + 1.
+\]
+
+We now check that $l$ satisfies Kraft's inequality.
+
+\[
+\sum_{m \in \msgset} 2^{-l(m)} = \sum_{m \in \msgset} 2^{-\left\lceil\log\left(\sfrac{1}{P(m)}\right)\right\rceil} \leq
+\]
+(here we are using $\left\lceil t \right\rceil \geq t$)
+
+\[
+ \sum_{m \in \msgset} 2^{-\log\left(\dfrac{1}{P(m)}\right)} = \sum_{m \in \msgset} 2^{\log(P(m))} =
+\]
+
+\[
+ \sum_{m \in \msgset} P(M) = 1.
+\]
+$\hfill\Box$

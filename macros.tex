@@ -1,9 +1,37 @@
-%ambients
-\newtheorem{thm}{Theorem}
-\newtheorem{obs}{Observation}
-\newtheorem{lem}{Lemma}
-\newtheorem{prop}{Proposition}
 
+\newtheoremstyle{mys}
+{\topsep}
+{\topsep}%
+{}
+{}%
+{\bfseries}{}%
+{\newline}{}%
+\theoremstyle{mys}
+
+
+\newmdtheoremenv[%
+roundcorner = 10pt,
+linecolor=lightgray!28,
+backgroundcolor=lightgray!27,%
+innertopmargin=3pt]{prop}{Proposition}[chapter]
+
+\newmdtheoremenv[%
+roundcorner = 10pt,
+linecolor=lightgray!28,
+backgroundcolor=lightgray!27,%
+innertopmargin=3pt]{thm}{Theorem}[chapter]
+
+\newmdtheoremenv[%
+roundcorner = 10pt,
+linecolor=lightgray!28,
+backgroundcolor=lightgray!27,%
+innertopmargin=3pt]{obs}{Observation}[chapter]
+
+\newmdtheoremenv[%
+roundcorner = 10pt,
+linecolor=lightgray!28,
+backgroundcolor=lightgray!27,%
+innertopmargin=3pt]{lem}{Lemma}[chapter]
 
 %math symbols
 \newcommand{\sfrac}{\frac}
@@ -11,10 +39,11 @@
 \newcommand{\ifrac}[2]{{#1}/{#2}}                     %Inline fraction
 \newcommand{\str}[1]{\underline{#1}}                  %String 
 \newcommand{\msgset}{\mathcal{M}}                     %the set of all messages
-\newcommand{\hball}[2]{B_H(\str{#1}, #2)}             %the Hamming ball
+\newcommand{\hball}[2]{B_H\left(\str{#1}, #2\right)}  %the Hamming ball
 \newcommand{\hdist}[2]{d_H(\str{#1}, \str{#2})}       %Hamming distance
 \newcommand{\hweight}[1]{w_H(\str{#1})}               %Hamming weight
 \newcommand{\xset}{\mathcal{X}}                       %Alphabet
-
+\newcommand{\yset}{\mathcal{Y}}                       %Alphabet
+\newcommand{\im}{\text{Im}}                           %image of linear application
 \newcommand{\pref}{\hookleftarrow}                    %is prefix relation
-\newcommand{\prol}[1]{Y_L(#1)}                %all the strings that have x as prefix
+\newcommand{\prol}[1]{Y_L(#1)}                        %all the strings that have x as prefix

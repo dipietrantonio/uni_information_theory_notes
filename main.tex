@@ -1,6 +1,7 @@
 \documentclass[a4paper, 11pt]{book}
 \usepackage[utf8]{inputenc}
-\usepackage{mathtools, amssymb, graphicx, amsmath, epstopdf}
+\usepackage{mathtools, amssymb, graphicx, amsmath, epstopdf, amsthm, mdframed}
+\usepackage{xcolor}
 
 \title{Notes on Information Theory}
 \author{Cristian Di Pietrantonio, Michele Laurenti}
@@ -9,13 +10,16 @@
 \input{macros}
 
 \begin{document}
+	\frontmatter
 	\maketitle
+	%\input{preface}
 	
-	\chapter{Introduction}
-	\input{lessons/l01}
-	\input{lessons/l02}
-	\input{lessons/l03} % October 2016, 4th
-	\input{lessons/l04}
-	\input{lessons/l05}
-	\input{lessons/l06}
+	\mainmatter
+	\input{lessons/ch01-intro}
+	\input{lessons/ch02-hamming-ball}
+	\input{lessons/ch03-logsum-inequality}
+	\input{lessons/ch04-variable-length-codes}
+	\input{lessons/ch05-entropy-random-variables}
+	\input{lessons/ch06-ecc}
+	\input{lessons/the-communication-model}
 \end{document}
