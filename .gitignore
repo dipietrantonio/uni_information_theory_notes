@@ -3,5 +3,7 @@
 *.gz
 *.aux
 *.bak
+*.fdb_latexmk
+*.fls
 *.log
 *.backup
