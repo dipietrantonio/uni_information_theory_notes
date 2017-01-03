@@ -5,61 +5,107 @@ This Chapter introduces an important concept: the Hamming Ball.
 
 \section{Hamming space}
 
-A space is a set that has structure. Consider the set of all binary strings $\{0, 1\}^*$. To create give a structure to such set we can define a metric (or distance). In general, the distance is defined as a function $d: X \times X \rightarrow \mathbb{R}^+_0$ that has the following properties:
+A \emph{space} is a set that has structure.
+The set $\{0,1\}^{n}$ of binary strings of length $n$ can be made into a metric space.
+To make it a metric space we have define a metric (or distance) on it.
+
+A metric over set $\X$ is a function $d: \X \times \X \rightarrow \Reals$ that has the following properties:
 \begin{enumerate}
-	\item \begin{enumerate}
-		\item $d(x, y) \geq 0,\ \forall (x, y) \in X \times X$
-		\item $d(x, y) = 0 \Leftrightarrow x = y$
-	\end{enumerate}
-	\item $d(x, y) = d(y, x), \forall (x, y) \in X \times X$
-	\item $d(x, y) \leq d(x, z) + d(z, y)$
+	\item it's greater than zero, \ie $d(x, y) \geq 0$ $\forall (x, y) \in \X \times \X$, with equality when its arguments are the same, \ie $d(x, y) = 0 \iff x = y$;
+	\item it's symmetric, \ie $d(x, y) = d(y, x)$ $\forall (x, y) \in \X \times \X$;
+	\item it satisfies the triangular inequality, \ie $d(x, y) \leq d(x, z) + d(z, y)$.
 \end{enumerate}
 
-In our case it is the \emph{Hamming metric}. Consider $\str{x}, \str{y}  \in \{0, 1\}^n$. Then the Hamming distance is defined as
+For $\{0,1\}^{n}$ we define the \emph{Hamming metric}.
+Consider two strings, $\str{x}, \str{y}  \in \{0, 1\}^n$.
+Then their Hamming distance is defined as
 \begin{equation}
-	\hdist{x}{y} = |\{i\ |\ x_i \not= y_i\}|
+	\hdist{\str{x}, \str{y}} = \abs{\{i : x_i \not= y_i\}}.
 \end{equation}
 
-Why is it a metric? Consider $\str{x}$, $\str{y}$, $\str{z} \in \{0,1\}^n$. Then, with $D = \{i\ |\ x_i \not= y_i\}$, is it true that 
-\[
-	i \in D \Rightarrow x_i \not=y_i \Rightarrow \neg (z_i = x_i \wedge z_i = y_i) \Rightarrow d_H(x_i, y_i) \leq d_H(z_i, x_i) + d_H(z_i, y_i).
-\]
+The first two properties are trivial to see.
+For the third property, consider three strings $\str{x}$, $\str{y}$, $\str{z} \in \{0,1\}^n$.
+Let $D = \{i : x_i \not= y_i\}$ be the set of coordinates where they differ.
+If $i \in D$, we have $x_{i} \neq y_{i}$.
+What can happen to $z_{i}$?
+Either $z_{i} \neq x_{i}$ or $z_{i} \neq y_{i}$.
+If $i \not\in D$, $z_{i}$ is either equal to both $x_{i}$ and $y_{i}$, or it differs from both of them.
+Thus, $\hdist{x_{i},y_{i}} \le \hdist{x_{i},z_{i}} + \hdist{z_{i},y_{i}}$ for all $i$.
 
-By the additive property we can write $$d_H(x, y) = \sum_{i = 1}^n d_H(x_i, y_i).$$ Summing up gives the triangle inequality.
+Now, since the Hamming metric is additive, we have
+\begin{align*}
+	\hdist{\str{x},\str{y}} & =
+	\sum_{i = 1}^n \hdist{x_i,y_i} \\
+	& \le
+	\sum_{i = 1}^n \hdist{x_i,z_i} +
+	\sum_{i = 1}^n \hdist{z_i,y_i}
+	=
+	\hdist{\str{x},\str{z}} +
+	\hdist{\str{z},\str{y}}
+\end{align*}
+which gives us the triangular inequality.
 
-If a string $\str{x}$ has been changed $r$ times to become $\str{y}$ then $d_H(\str{x}, \str{y}) \leq r$. Define the \emph{Hamming ball} of radius $r$ around $\str{x}$ as 
-\begin{equation}
-B_H= \hball{x}{r} = \{\str{y}\ |\ \hdist{x}{y} \leq r\}.
-\end{equation}
-Obviously $r$ needn't to be an integer (use the \emph{floor} function). Here are some properties of Hamming balls:
-\begin{itemize}
-	\item if one subtracts $\hball{x}{r}$ to $\{0, 1\}^n$ then the result is also an Hamming ball;
-	\item $\{0, 1\}^n = \hball{x}{n},\ \forall \str{x} \in \{0, 1\}^n$, but if $r < n$ then the center is unique;
-\end{itemize}
+In general,  a distance is extended to a product space by summing the distances of the single components, as happens for the Hamming metric.
 
-What we can say about $\hball{x}{r}$? For simplicity sake, consider $\hball{0}{r}$. Then the following holds:
+Consider a storage device that has $n$ cells, each containing either $0$ or $1$.
+Suppose memory decays with time in some unknown way.
+After some time the string memorised in the device will be different.
+The Hamming distance tells us how much different.
+
+If a string $\str{x}$ has been changed no more than $r$ times to become $\str{y}$, then $d_H(\str{x}, \str{y}) \leq r$.
+We say that $\str{y}$ is in a \emph{Hamming Ball} of radius $r$ around $\str{x}$.
+
+\begin{definition}[Hamming Ball]
+	The Hamming Ball of radius $r$ and centre $\str{x}$ is the set
+	\begin{equation}
+		\hball{\str{x}}{r} = \{\str{y} : \hdist{\str{x},\str{y}} \leq r\}.
+	\end{equation}
+\end{definition}
+
+\begin{obs}
+	$r$ needs not to be an integer, but for $r \in \Reals$ it holds that
+	\begin{equation*}
+		\hball{\str{x}}{r} = \hball{\str{x}}{\floor{r}}.
+	\end{equation*}
+\end{obs}
+
+Note that $\{0,1\}^{n}$ is a Hamming Ball of radius $n$, for any centre.
+
+If you have a ball that is not the whole space, then the centre of this ball is unique.
+
+What we can say about the size of a generic Hamming Ball $\hball{\str{x}}{r}$, with $r > 0$?
+For the sake of simplicity, consider $\hball{\zero}{r}$, where $\zero$ is the string of all zeros.
+Then the size of this Hamming Ball is
 \begin{equation}\label{eq:volume}
-	|\hball{0}{r}| = \sum_{i = 0}^{\lfloor r \rfloor} \binom{n}{i}
+	\abs{\hball{\zero}{r}} = \sum_{i = 0}^{\floor{r}} \binom{n}{i}
 \end{equation}
+\ie the number of ways in which we can flip to 1 up to $r$ bits.
 
-That is the number of ways in which we can flip to 1 the bits. From this follows that $\hdist{0}{y} + \hdist{1}{y} = n$.
+\begin{definition}[Hamming weight]
+	The Hamming weight of a string is its distance from $\zero$, \ie
+	\begin{equation}
+	\hweight{\str{x}} = \hdist{\zero,\str{x}}.
+	\end{equation}
+\end{definition}
 
-We define the Hamming weight as 
-\begin{equation}
-\hweight{x} = \hdist{0}{x}.
-\end{equation}
+If one subtracts $\hball{\str{x}}{r}$ to $\{0, 1\}^n$, then the result is also an Hamming ball.
 
-Consider the chain of implications
-$$\str{y} \in \hball{0}{r} \Rightarrow \hweight{y} > r \Rightarrow \hdist{y}{1} < n - r \leq n -r - 1.$$
+To see this, consider a string $\str{y}$ that is not in $\hball{\zero}{r}$.
+Then it must be that $\hweight{\str{y}} > r$.
+What is its distance from the string of all ones, \ie $\hdist{\str{y},\str{1}}$?
+One can see that $\hdist{\str{y},\str{1}} = n - \hweight{\str{y}}$, since $\hdist{\zero,\str{x}} + \hdist{\str{1},\str{x}} \ge \hdist{\str{0},\str{1}} = n$.
+More in general we can bound the distance as $\hdist{\str{y},\str{1}} < n - r$, or $\hdist{\str{y},\str{1}} \le n - (r+1)$, which means that $\str{y}$ is in a Hamming Ball of radius $n - (r+1)$ with centre $\str{1}$.
 
 From it we derive the following result:
-
 \begin{equation}
-	\overline{\hball{0}{n}} = \hball{1}{r'} = \hball{1}{n - r - 1}.
+	\overline{\hball{\str{0}}{n}} = \{0,1\}^{n} \setminus \hball{\str{0}}{n} = \hball{\str{1}}{n - (r+1)}.
 \end{equation}
+In other words the Hamming space can be partitioned into two Hamming balls.
 
-In other words the Hamming space can be partitioned into two Hamming balls. If $n$ is odd an Hamming space can be partitioned in the following way: $$\{0, 1\}^n = \hball{0}{\lfloor \dfrac{n}{2}\rfloor } \cup \hball{1}{\lfloor \dfrac{n}{2}\rfloor}$$
-The Hamming space cannot be partitioned into three balls. In how many balls can $\{0, 1\}^n$ be partitioned? It cannot partitioned be partititoned into $s$ balls with $3 \leq s \leq n + 1$ (this result has not been demonstrated [NdR]).
+If $n$ is odd, the Hamming space can be partitioned in the following way: $$\{0, 1\}^n = \hball{0}{\floor{\frac{n}{2}}} \cup \hball{1}{\floor{\frac{n}{2}}}$$
+The Hamming space cannot be partitioned into three balls.
+In how many balls can $\{0, 1\}^n$ be partitioned?
+It cannot partitioned be partitioned into $s$ balls with $3 \leq s \leq n + 1$ (this result has not been demonstrated).
 
 \section{The volume of a Hamming ball}
 We have seen that the volume of a generic Hamming ball is described by Equation \ref{eq:volume}. We can use the Pascal triangle to get a feeling about the order of magnitude of the Hamming ball. Consider the $n$th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$. Instead, the volume of the ball with radius $n/2$ (in the triangle's point of split) is $\ifrac{2^n}{2} = 2^n2^{-1} = 2^{n-1}$. It follows, if $r \geq \ifrac{n}{2}$, that $2^{n-1} \leq |\hball{0}{r}| \leq 2^n$. Can we bound the volume for $r < \ifrac{n}{2}$?

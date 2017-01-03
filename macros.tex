@@ -6,14 +6,21 @@
 \newtheorem{lem}{Lemma}
 
 %math symbols
+\newcommand{\ie}{\textit{i.e.}, }
+\newcommand{\zero}{\str{0}}
+\newcommand{\X}{\mathfrak{X}}
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
 \newcommand{\sfrac}{\frac}
 \newcommand{\Tau}{\mathrm{T}}                         %Capital Tau
 \newcommand{\ifrac}[2]{{#1}/{#2}}                     %Inline fraction
 \newcommand{\str}[1]{\underline{#1}}                  %String 
 \newcommand{\msgset}{\mathcal{M}}                     %the set of all messages
-\newcommand{\hball}[2]{B_H\left(\str{#1}, #2\right)}  %the Hamming ball
-\newcommand{\hdist}[2]{d_H(\str{#1}, \str{#2})}       %Hamming distance
-\newcommand{\hweight}[1]{w_H(\str{#1})}               %Hamming weight
+\newcommand{\hball}[2]{B_H\left(#1, #2\right)}  %the Hamming ball
+\newcommand{\hdist}[1]{d_H \left({#1}\right)}       %Hamming distance
+\newcommand{\hweight}[1]{w_H\left(#1\right)}               %Hamming weight
 \newcommand{\xset}{\mathcal{X}}                       %Alphabet
 \newcommand{\yset}{\mathcal{Y}}                       %Alphabet
 \newcommand{\im}{\text{Im}}                           %image of linear application
