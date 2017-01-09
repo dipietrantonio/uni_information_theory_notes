@@ -123,10 +123,51 @@ $f:\msgset \rightarrow \{0, 1\}^*$ is \emph{uniquely decodable} (UD) id $f^*:M*\
 \[
  f^*(\str{m}) = f(m_1)f(m_2)\ldots f(m_t).
 \]
-If $f$ is a prefix code, $f$ is UD.
+If $f$ is a prefix code, $f$ is uniquely decodable (UD).
 
+\begin{thm}[Kraft - McMillon]
+If f is \emph{UD} then the Kraft's inequality holds, i.e.
+\[
+ \sum_{m \in \msgset} 2^{-|f(m)|} \leq 1
+\]
+\end{thm}
+\noindent\textbf{Proof}. Let
 
-[three pages missing 22/11/2016, uniquely decodable codes]
+\[
+ q = \sum_{m \in \msgset} 2^{-|f(m)|}.
+\]
+
+We would like to prove that $q \leq 1$. We consider instead $q^n$, which will involve the length of concatenations of code words. We will show that $q^n$ ``grows slowly'', i.e. it will not grow exponentially, and thus is less than or equal to 1. 
+
+\[
+ q^n = \left[\sum_{m \in \msgset} 2^{-|f(m)|}\right]^n = \prod_{i=1}^n \left[ \sum_{m_i \in \msgset} 2^{-|f(m_i)|} \right]
+\]
+
+\[
+ = \sum_{\str{m} \in \msgset^n}\left[\prod_{i=1}^n 2^{-|f(m_i)|}\right] = \sum_{\str{m} \in \msgset^n} 2^{-|f^*(\str{m})|} =
+\]
+
+$f^*(\str{m})$ is just a binary string. We can break up the summation over the length of these strings.
+
+\[
+ = \sum_{t = n}^{nL}\sum_{\str{m} \in \msgset^n:|f^*(\str{m})| = t} 2^{-|f^*(\str{m})|} =
+\]
+
+with $L = \max_{m \in \msgset} |f(m)|$. Now we use the fact that $f*(\cdot)$ is injective. Each binary string of length $t$ apppears just once in the sum. We can't have two strings os messages encoded by the same binary string.
+
+\[
+ = \sum_{t = n}^{nL} \sum_{\str{m} \in \msgset^n:|f^*(\str{m})| = t} 2^{-|f^*(\str{m})|} \leq \sum_{t = n}^{nL} 2^t \cdot 2^{-t} = nL.
+\]
+
+Thus $q^n \leq nL$, therefore $$q \leq \sqrt[n]{nL} = \sqrt[n]{n} \sqrt[n]{L} \rightarrow 1$$    
+
+and so $q \leq 1 \hfill\Box$
+
+\begin{thm}[Platkin bound]
+$$\delta \geq \dfrac{1}{2} \Rightarrow R(S) = 0$$
+\end{thm}
+
+Recall that
 
 \[M(n, d) = \max_{\mathcal{C} \subseteq\{0, 1\}^n | d_H(\mathcal{C}) \geq d}|\mathcal{C}|,\]
 
