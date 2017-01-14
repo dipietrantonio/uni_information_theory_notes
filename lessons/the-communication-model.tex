@@ -423,7 +423,7 @@ A colouring of $G$ is a function $f: V(G) \rightarrow C$ such that if $\{a, b\} 
 
 the first part comes from super-multiplicativity of $\omega(G)$, the second from the fact that the chromatic number of a graph is greater than the largest clique. Since $\chrom{G}$ is sub-multiplicative, we have $$\chrom{G^n} \leq [\chrom{G}]^n.$$
 
-To show that $\chrom{G}$ is sub-multiplicative, consider an optimal colouring of $G$. $$f:V(G) \rightarrow C\ \text{with}\ |C| = \chrom{G}$$ take $\str{x} \in V(G^n)$, we colour it [NON SE CAPISCE], for $x_i$ in $x_1\ldots x_n$. The function $f^n(\str{x})$, the extension by concatenation, id a correct colouring. If $\{\str{x}, \str{y}\} \in E(G^n)$, it must be that $\exists i : \{x_i, y_i\} \in E(G)$, but then, since $f(x_i) \not=f(y_i)$, $f^n(\str{x}) \not= f^n(\str(y))$. Also, the number of colours used by $f^n$ id no more than $|C^n| = [\chrom{G}]^n$, so
+To show that $\chrom{G}$ is sub-multiplicative, consider an optimal colouring of $G$. $$f:V(G) \rightarrow C\ \text{with}\ |C| = \chrom{G}$$ take $\str{x} \in V(G^n)$, we colour it separately, for $x_i$ in $x_1\ldots x_n$. The function $f^n(\str{x})$, the extension by concatenation, id a correct colouring. If $\{\str{x}, \str{y}\} \in E(G^n)$, it must be that $\exists i : \{x_i, y_i\} \in E(G)$, but then, since $f(x_i) \not=f(y_i)$, $f^n(\str{x}) \not= f^n(\str(y))$. Also, the number of colours used by $f^n$ id no more than $|C^n| = [\chrom{G}]^n$, so
 \[
  \omega(G) \leq \sqrt[n]{\omega(G^n)} \leq \chrom{G}
 \]
