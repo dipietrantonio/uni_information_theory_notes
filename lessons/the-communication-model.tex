@@ -123,4 +123,340 @@ This is true because:
 Is this upper bound achievable? We must make sure that $$\exists X\ H(Y) =1$$
 We can impose the uniform distribution when picking the input values, i.e. $Pr\{X = 0\} = \ifrac{1}{2}$.
 
-We will show that $1-h(2p)$ is an achievable rate if $p < \ifrac{1}{4}$. We will to this using error correcting codes.
+We will show that $1-h(2p)$ is an achievable rate if $p < \ifrac{1}{4}$. We will do this using error correcting codes.
+
+\begin{obs}
+ $1-h(2p)$ is an achievable rate if $p < \ifrac{1}{4}$.
+\end{obs}
+
+\noindent\textbf{Ver}. Choose $\str{x} \in \{0, 1\}^n$ arbitrary, but think of $\str{0}$ (it's easier). Consider the Hamming ball $\hball{\str{0}}{n(p+\epsilon)}$; we want that $$W^n(\phi^{-1}_n(\str{0}) | \str{0}) \rightarrow 1.$$ Consider a code for which $$\forall \str{x} \in \cwset\ \phi^{-1}_n(\str{x}) \supseteq \hball{\str{x}}{n(p+\epsilon)};$$ these H-balls should be disjoint. Is it true that $$W^n(\hball{\str{0}}{n(p+\epsilon)} | \str{0}) \rightarrow 1?$$ This is what we should achieve , and prove that $np$ is a good choice. Take what you receive: $\str{x} \oplus Z^n$. We say $Z^n \cdot \str{x} \oplus Y^n$ (?).
+\[
+ Y^n \in \hball{\str{0}}{n(p+\epsilon)} iff Z^n \text{has at most}\ n(p+\epsilon) 1s. 
+\]
+
+\[
+ \text{\#1s in }Z^n = \sum_{i=1}^n Z_i,
+\]
+where $Z_i \sim (1-p, p)$ is a random variable.
+
+\[
+ E(Z_i) = Pr[Z_i = 0]0 + Pr[Z_i = 1] = p
+\]
+
+$\{Z_i\}_{i=1}^n$ is an i.i.d. sequence of RVs.
+
+\[
+E(Z^n) = E(\sum_{i=1}^nZ_i) = \sum_{i=1}^nE(Z_i) = np
+\]
+
+by the law of large numbers 
+\[
+Pr\left[\left|\dfrac{1}{n} \sum_{i=1}^nZ_i -p \right| > \epsilon \right] \rightarrow 0
+\]
+
+the complement of this event has a probability that converges to 1. How can we guarantee that these H-balls of radius $n(p+\epsilon)$ are disjoint? This is guaranteed if $d_H(\str{x}',\str{x}'') \geq 2n(p+\epsilon)$. Thus $d_H(\cwset) \geq 2n(p+\epsilon)$. G.V. Bound says that
+
+\[
+\exists \cwset\ |\cwset | \gnsim 2^{n(1-h(\delta))},\ \delta < \ifrac{1}{2}
+\]
+
+and
+
+\[
+d_H(\cwset) \gnsim n\delta.
+\]
+
+We want $d_H(\cwset) \geq 2n(p+\epsilon)$, thus what we want is achievable iff
+
+\[
+2p + \epsilon < \dfrac{1}{2} \sim p < \dfrac{1}{4}
+\]
+$\hfill\Box$
+
+Shannon stated something stronger, namely that the capacity is $1 - h(p)$. Shannon uses ``maximum likelihood''. Chooses $2^{nR}$ strings at random from $\Tau^n_p$, given $P|\xset$.
+
+\begin{thm}[Converse part of Shannon's noisy channel coding theorem]
+	If $R$ is such that $\exists \{\cwset, \cwset\}_{n=1}^\infty$ with
+	$$\overline{\lim_{n \rightarrow \infty}} \dfrac{1}{n} \log|\cwset| \geq R$$
+	and
+	$$\lim_{n\rightarrow \infty} \cwset(W^n, \cwset, \varphi) = 0$$
+	then
+	$$R \leq \max_{X \in \xset:P_{Y|X} = W} I(W \wedge Y).$$
+\end{thm}
+
+\noindent\textbf{Proof.} Let $M_n$ be a RV uniformly distributed over $\cwset$. Take $(\ifrac{1}{n})H(M_n)$, the average entropy.
+\[
+ \dfrac{1}{n})H(M_n) ) \dfrac{1}{n})\log|\cwset|
+\]
+
+to get the upper bound, we manipulate the left hand side.
+
+\[
+ \dfrac{1}{n}H(M_n) = \dfrac{1}{n}[H(M_n) - H(M_n | \varphi_n(Y^n))] + \dfrac{1}{n}H(M_n|\varphi_n(Y^n))
+\]
+
+where $Y^n$ is the RV defined by $P_{Y^n|M_n} = W^n$. In the square brackets we have a mutual information.
+
+\[
+ \dfrac{1}{n}I(M_n \wedge \varphi_n(Y^n)) + \dfrac{1}{n}H(M_n|\varphi_n(Y^n))
+\]
+
+we should be able to prove that this is not more than the upper bound. We expect the other therm to be negligible; with high probability the result of deconding the received codeword is the codeword that was sent.
+
+\[
+ I(M_n\wedge \varphi_n(Y^n)) \leq I(M_n \wedge \varphi_n(Y^n))
+\]
+
+this is from the fact that information cannot be gained by processing the RVs. We see this by looking at
+
+\begin{equation}\label{eq:dis1}
+ I(M_n\wedge \varphi_n(Y^n)) \leq I(M_n \wedge \varphi_n(Y^n)Y^n) 
+\end{equation}
+
+since
+
+\[
+ H(M_n|\varphi_n(Y^n)) \geq H(M_n|\varphi_n(Y^n)Y^n),
+\]
+
+Disequation \ref{eq:dis1} follows. The right hand side of Disequation \ref{eq:dis1} can be written as
+
+\begin{align*}
+ I(M_n \wedge \varphi_n(Y^n)Y^n) & = I(M_n \wedge Y^n) + I(M_n + \varphi_n(Y^n)|Y^n) \\ & = I(M_n \wedge Y^n).
+\end{align*}
+
+we see that
+
+\[
+ I(M_n \wedge \varphi_n(Y^n)|Y^n) \leq H(\varphi_n(Y^n)|Y^n) = 0.
+\]
+
+So we obtain the following inequality:
+
+\[
+I(M_n \wedge \varphi_n(Y^n)) \leq I(M_n \wedge Y^n) 
+\]
+
+as notation, $M_n = X_1 \leq X_n$ is a vector of random variables. Thus,
+
+\[
+ I(M_n \wedge Y^n) = I(X^n \wedge Y^n)
+\]
+
+this we want to upper bound by the conjectured value of capacity. We write
+\[
+ I(X^n \wedge Y^n) = H(Y^n) -H(X^n |Y^n) \leq \sum_{i=1}^n H(Y_i) - H(Y^n | X^n)
+\]
+for $H(Y^n | X^n)$ we use the chain rule:
+
+\[
+ H(Y^n | X^n) = \sum_{i=1}^n H(Y_i | X^nY_1\ldots Y_{i-1}).
+\]
+
+But in a discrete memoryless channel we have that
+\[
+ H(Y_i | X^nY_1\ldots Y_{i-1}) = H(Y_i |X_i)
+\]
+so
+\[
+ H(Y^n |X^n) = \sum_{i=1}^nH(Y_i|X_i).
+\]
+
+So what we get is that
+
+\[
+ I(X^n \wedge Y^n) = \sum_{i=1}^n I(X_i \wedge Y_i).
+\]
+
+This is true because our channel is particular.
+
+\[
+ \sum_{i=1}^n I(X_i \wedge Y_i) \leq n \max_{P_{Y|X} = W}I(X \wedge Y).
+\]
+
+which is $n$ times capacity. So:
+
+\[
+ \dfrac{1}{n}I(M_n \wedge \varphi_n(Y^n)) \leq C(W).
+\]
+
+For the second part, we have to prove that 
+\[
+ \dfrac{1}{n}H(M_n|\varphi_n(Y^n)) \rightarrow 0.
+\]
+
+We do so using Fano's inequality. We introduce the random variable $Z_n$ as
+
+\begin{equation*}
+Z_n = \begin{cases}
+1 \text{ if }\varphi_n(Y^n) \not=M_n,\\
+0  \text{ otherwise.}
+\end{cases} 
+\end{equation*}
+
+We can say that
+\[
+ H(M_n|\varphi_n(Y^n)) \leq H(M_nZ_n | \varphi_n(Y^n))
+\]
+since we ``added'' something to a RV.
+
+\begin{align*}
+ H(M_nZ_n | \varphi_n(Y^n)) & = H(Z_n|\varphi_n(Y^n)) + H(M_n|\varphi_n(Y^n), Z_n)\\
+ & \leq H(Z_n) + H(M_n|\varphi_n(Y^n), Z_n) \\
+ & \leq 1+ H(M_n|\varphi_n(Y^n), Z_n).
+\end{align*}
+
+so, for now we have that
+
+\[
+ \dfrac{1}{n}H(M_n|\varphi_n(Y^n)) \leq \dfrac{1}{n} + \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n)
+\]
+we have to show that $$ \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n)$$ is small. We can break this up:
+
+\begin{equation}\label{eq:eqbreak}
+\begin{align*}
+ \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n) &= Pr[Z_n = 1]H(M_n|\varphi_n(Y^n), Z_n = 1) + \\
+ &+ Pr[Z_n = 0]H(M_n|\varphi_n(Y^n), Z_n = 0).  
+\end{align*}
+ \end{equation}
+Now we have to bring in the error probability.
+
+\begin{align*}
+  & = Pr[Z_n = 1] = Pr[M_n \not=\varphi_n(Y^n)]\\
+  & \leq C_n (?)(W^n, \cwset, \varphi_n) \rightarrow 0.
+\end{align*}
+
+so $\varepsilon_n \rightarrow 0$. ``average is not more than maximum''.
+
+\begin{align*}
+ H(M_n | \varphi_n(Y^n), Z_n = 1) &= \\
+ & =\sum_{y \in \yset^n} Pr[Y^n = y]H(M_n|\varphi_n(Y^n) = \varphi_n(y), Z_n = 1).
+\end{align*}
+
+
+$M_n \in \xset^n$. So that entropy is less than $\log|\xset^n|.$ So the first term of Equation \ref{eq:eqbreak} can be bounded by
+
+\[
+ \varepsilon_n \dfrac{1}{n}H(M_n|\varphi_n(Y^n), Z_n = 1) \leq \varepsilon_n \dfrac{1}{n} \log|\xset^n| = \varepsilon_n \log|\xset| \rightarrow 0.
+\]
+
+The second term of Equation \ref{eq:eqbreak} is equal to 0.
+
+\[
+ \dfrac{1}{n}Pr[Z_n = 0] H(M_n|\varphi_n(Y^n), Z_n = 0)
+\]
+
+to see why, note that there is no error, so $M_n = \varphi_n(Y^n).$
+
+$\hfill\Box$
+
+\[
+ \sqrt[n]{\omega(G^n)} \geq \omega(G)
+\]
+\[
+ C(G) = \overline{\lim_{n\rightarrow \infty}}\sqrt[n]{\omega(G^n)}
+\]
+That is, Shannon capacity of G.
+
+\begin{lem}[Fevete]
+Take a sequence of reals $a_n \in \Reals$, if the sequence id super additive, $\ie\ a_{m+n} \geq a_m + a_n\ \forall m, n \in \mathbb{N}$ and
+\[
+ \dfrac{a_n}{n} \leq M\ \forall n \in \mathbb{N}
+\]
+
+then
+\[
+ \exists \lim_{n \rightarrow \infty}  \dfrac{a_n}{n} 
+\]
+
+and
+
+\[
+\lim_{n \rightarrow \infty}  \dfrac{a_n}{n} = \sup_n \dfrac{a_n}{n}. 
+\]
+ 
+\end{lem}
+
+To apply this to $\omega(G^n)$ we have to take the logarithm, since $\omega(G^n)$ is super multiplicative (and thus $\log(\omega(G^n))$ is super additive). We have that $\omega(G^n) \leq |V(G)|^n$, and thus
+\[
+ \dfrac{\log(\omega(G^n))}{n} \leq \log|V(G)|
+\]
+
+since 
+
+\[
+ \dfrac{a_n}{n} \leq M,\ \exists \cap{M} = \sup_n \dfrac{a_n}{n}\ \text{with}\ \cap{M} \leq M,
+\]
+
+so
+\[
+ \forall \epsilon\ \exists n_0\ \dfrac{a_{n_0}}{n_0} > \cap{M} - \epsilon.  
+\]
+
+Take arbitrary $n > n_0$ with $n = q_nn_0 +r_n$, with $0 \leq _n < n_0$.
+
+\begin{align*}
+ \dfrac{a_n}{n} = \dfrac{a_{q_nn_0 +r_n}}{q_nn_0 +r_n} & \geq \dfrac{q_na_{n_0} +a_{r_n}}{(q_n+1)n_0}\\
+ & = \dfrac{q_n}{q_{n+1}} \dfrac{a_{n_0}}{n_0} + \dfrac{a_{r_n}}{(q_n + 1)n_0}.
+\end{align*}
+
+so the limit can be bounded from below
+
+\[
+ \underline{\lim_{n\rightarrow \infty}} \dfrac{a_n}{n} \geq \underline{\lim_{n\rightarrow \infty}}\left(\dfrac{q_n}{q_{n+1}} \dfrac{a_{n_0}}{n_0} + \dfrac{a_{r_n}}{(q_n + 1)n_0}\right) \geq \cap{M} - \epsilon
+\]
+
+(since $a_{r_n} \geq \min\{a_0, \ldots,a_{n_0 -1}\}$ the last fraction goes to 0).
+
+$\hfill\Box$
+
+\begin{prop}
+ $$\omega(G) \leq C(G) \leq \chrom{G},$$ where $\chrom{G}$ is the chromatic number of $G$.
+\end{prop}
+
+A colouring of $G$ is a function $f: V(G) \rightarrow C$ such that if $\{a, b\} \in E(G)$ then $f(a) \not= f(b)$. $\chrom{G}$ is the minimum cardinality of $C$ such that a function $f: V(G) \rightarrow C$ like that exists.
+
+\noindent\textbf{Proof}. 
+\[
+ [\omega(G)]^n \leq \omega(G^n) \leq \chrom{G^n}
+\]
+
+the first part comes from super-multiplicativity of $\omega(G)$, the second from the fact that the chromatic number of a graph is greater than the largest clique. Since $\chrom{G}$ is sub-multiplicative, we have $$\chrom{G^n} \leq [\chrom{G}]^n.$$
+
+To show that $\chrom{G}$ is sub-multiplicative, consider an optimal colouring of $G$. $$f:V(G) \rightarrow C\ \text{with}\ |C| = \chrom{G}$$ take $\str{x} \in V(G^n)$, we colour it [NON SE CAPISCE], for $x_i$ in $x_1\ldots x_n$. The function $f^n(\str{x})$, the extension by concatenation, id a correct colouring. If $\{\str{x}, \str{y}\} \in E(G^n)$, it must be that $\exists i : \{x_i, y_i\} \in E(G)$, but then, since $f(x_i) \not=f(y_i)$, $f^n(\str{x}) \not= f^n(\str(y))$. Also, the number of colours used by $f^n$ id no more than $|C^n| = [\chrom{G}]^n$, so
+\[
+ \omega(G) \leq \sqrt[n]{\omega(G^n)} \leq \chrom{G}
+\]
+
+$\hfill\Box$
+
+[Note: There is a simple upper bound that is better than this. You use the ``fractional'' chromatic number. You express colouring as PU (?) and drop integer constant.]
+
+\begin{cor}
+ $$\omega(G) = \chrom{G} \Rightarrow C(G) = \omega(G).$$
+\end{cor}
+
+The corollary doesn't give us much. You can make any graph like this. Schutzenberger + Berge showed some classes of graphs for which this holds. One example is graphs for which vertices are intervals, and ntersecting intervals share and edge. Furthermore, $\forall G' \subseteq G$ induced $\omega(G') = \chrom(G')$, for interval graphs.
+
+\begin{definition}
+ $G$ id perfect if $$\omega(G') = \chrom{G'}\ \forall G' \subseteq G,$$ where $G'$ is an induced subgraph.
+\end{definition}
+
+What makes this definition beautiful are two conjectures, by Berge. By now they are both theorems.
+\begin{itemize}
+ \item \textbf{Weak}: $G$ is perfect $\Leftrightarrow \overline{G}$ is perfect.
+ \item \textbf{Strong}: minimally imperfect graphs are either odd cycles or their complements.
+\end{itemize}
+
+\begin{definition}
+ A graph $G$ is minimally imperfect if
+ \begin{enumerate}
+  \item $G$ is not perfect, \ie $\omega(G) < \chrom{G}$,
+  \item $\forall G' \subseteq G$ induced subgraph, $G'$ is perfect, \ie $\omega(G') = \chrom{G'}$.
+ \end{enumerate}
+
+\end{definition}
+
+
+
+
