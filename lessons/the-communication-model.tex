@@ -421,10 +421,74 @@ We say that
 
 is the zero error capacity of $G$. This limit exists for every graph.
 
-[MISSING 4 PAGES]
+\begin{prop}
+	For every graph $G\ \exists W\ s.t.\ G = G(W)$.
+\end{prop}
 
+Consider a matrix $W$ where the rows are the vertexes of the graphs and columns are indexed by the non-edges, \ie the pairs of $\binom{V(G)}{2}$ that are not in $E(G)$.
 
+\begin{equation}
+	W(\{a,b\}|x) = \begin{cases}
+	0\ if\ x\not\in \{a, b\}\\
+	1\ if\ x\in \{a, b\}
+	\end{cases}
+\end{equation}
 
+If the rows of $x$ and $y$ are not orthogonal, $\{x, y\}$ is not an edge. There are two problems:
+\begin{itemize}
+	\item rows could not sum to 1;
+	\item rows could sum up t 0.
+\end{itemize}
+
+The first problem is avoided by dividing the rows. The second is a avoided by doing
+\[
+W = (W\ I)
+\]
+
+then $W$ can be normalized. Now $G = G(W)$.
+
+$\hfill\Box$
+
+$ \sqrt[n]{\omega(G^n)}$ is how much larger is $\omega(G^n)$ with respect to $\omega(G)$. For graphs of $5$ vertices there is only one graph for which
+\[
+ \sqrt[n]{\omega(G^n)} \not=\omega(G),
+\]
+it is the following.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=100px]{pictures/graph5v.eps}
+\end{figure}
+
+Lovàsz gave a function for $ \sqrt[n]{\omega(G^n)}$ in '79. In fact it works for graphs that are self complementary and vertex transitive.
+
+\begin{equation}
+	C(G) = \overline{\lim_{n\rightarrow \infty}}  \sqrt[n]{\omega(G^n)}
+\end{equation}
+
+Shannon proved that
+\[
+\sqrt{5} \leq C(C_5) \leq \dfrac{5}{2}
+\]
+
+Lovàsz proved that in fact $C(C_5) = \sqrt{5}$. For the upper bound we have that $C_5 = G(W)$ with
+\[
+ W = \left(\begin{array}{c c c c c}
+ \frac{1}{2} &\frac{1}{2} & 0&0&0\\
+ 0&0&\frac{1}{2}&\frac{1}{2}&0\\
+ \frac{1}{2}&0&0&0&\frac{1}{2}\\
+ 0&\frac{1}{2}&\frac{1}{2}&0&0\\
+ 0&0&0&\frac{1}{2}&\frac{1}{2}\\
+ \end{array}\right)
+\]
+
+then said that 0 error capacity is less than or equal to the capacity. Shannon noticed, for the lower bound, that $C(G) > \omega(G)$, but $\omega(G) = 2$. If you look at $G^2$, \ie $C_5^2$, then $\omega(C_5^2) = 5$.
+\[
+\omega(G^n) \geq [\omega(G)]^n
+\]
+with the product set you get $4$. But Shannon noticed that those $5$ strings are distinguishable:
+\[
+\{00,11,24,31,43\}.
+\]
 \[
  \sqrt[n]{\omega(G^n)} \geq \omega(G)
 \]
