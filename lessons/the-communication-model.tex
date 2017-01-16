@@ -179,7 +179,7 @@ Shannon stated something stronger, namely that the capacity is $1 - h(p)$. Shann
 	If $R$ is such that $\exists \{\cwset, \cwset\}_{n=1}^\infty$ with
 	$$\overline{\lim_{n \rightarrow \infty}} \dfrac{1}{n} \log|\cwset| \geq R$$
 	and
-	$$\lim_{n\rightarrow \infty} \cwset(W^n, \cwset, \varphi) = 0$$
+	$$\lim_{n\rightarrow \infty} e_n(W^n, \cwset, \varphi) = 0$$
 	then
 	$$R \leq \max_{X \in \xset:P_{Y|X} = W} I(W \wedge Y).$$
 \end{thm}
@@ -314,16 +314,16 @@ so, for now we have that
 we have to show that $$ \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n)$$ is small. We can break this up:
 
 \begin{equation}\label{eq:eqbreak}
-\begin{align*}
+\begin{aligned}
  \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n) &= Pr[Z_n = 1]H(M_n|\varphi_n(Y^n), Z_n = 1) + \\
  &+ Pr[Z_n = 0]H(M_n|\varphi_n(Y^n), Z_n = 0).  
-\end{align*}
+\end{aligned}
  \end{equation}
 Now we have to bring in the error probability.
 
 \begin{align*}
-  & = Pr[Z_n = 1] = Pr[M_n \not=\varphi_n(Y^n)]\\
-  & \leq C_n (?)(W^n, \cwset, \varphi_n) \rightarrow 0.
+  & \varepsilon_n = Pr[Z_n = 1] = Pr[M_n \not=\varphi_n(Y^n)]\\
+  & \leq e_n(W^n, \cwset, \varphi_n) \rightarrow 0.
 \end{align*}
 
 so $\varepsilon_n \rightarrow 0$. ``average is not more than maximum''.
@@ -349,6 +349,81 @@ The second term of Equation \ref{eq:eqbreak} is equal to 0.
 to see why, note that there is no error, so $M_n = \varphi_n(Y^n).$
 
 $\hfill\Box$
+
+\section{Zero Error Capacity}
+Zero stands for zero probability, so the probability of error is bound to be equal to 0. We translate this problem in graph theory: we will look
+at product of graphs and powers of graphs. We have a DMC $\{W\},\ W:\xset \rightarrow \yset$. $W^n:\xset^n \rightarrow \yset^n$, the mathematical model of a code is the very same. A code is $(\cwset, \varphi)$ with $\cwset \subseteq \xset^n$ and $\varphi: \yset^n \rightarrow \cwset$. A code has two parameters:
+
+\begin{itemize}
+	\item $\dfrac{1}{n}|\cwset|$ is the size of the code compared to $n$. It is the number of bits transmitted over the channel per use of the channel.
+	\item $e_n(W^n, \cwset, \varphi) = \max_{\str{x} \in \cwset} W^n(\overline{\varphi^{-1}(\str{x})}|\str{x})$ is the probability of error.
+\end{itemize}
+
+$(\cwset, \varphi)$ is a zero error code if $e_n(W^n, \cwset, \varphi)=0$. $R \geq 0$ is an achievable rate for error probability $0$ if $\exists (\cwset, \varphi_n)$, $\cwset \subseteq \xset^n$ with
+\[
+\overline{\lim_{n \rightarrow \infty}} \dfrac{1}{n}\log|\cwset| \geq R\text{ and }
+\]
+
+\[
+e_n(W^n, \cwset, \varphi_n) = 0.
+\]
+
+If $W(y|x) > 0$ for all $x, y$ then this is not possible. If you have 0s in the matrix, we are only interested in the patterns of the 0s. To have 0 error, we should have that
+\[
+W^n(\varphi^{-1}(\str{x})|\str{x}) = 1,\ \forall\str{x} \in \cwset
+\]
+
+The decoding function must be fixed if we want $0$ error. If $W^n(\str{y}|\str{x}) \geq 0$, we must have that $\varphi^{-1}(\str{y}) = \str{x}$. Given $\str{x}$, the set $\{\str{y}| W^(\str{y}|\str{x})>0 \}$ is uniquely defined. This is the support of conditional distribution:
+\begin{equation}
+\supp(\str{x}) = \{\str{y}| W^n(\str{y}|\str{x})>0 \}
+\end{equation}
+
+We should have that 
+\[
+\supp(\str{x}) \subseteq \varphi^{-1}(\str{x}),\ \forall\str{x} \in \cwset
+\]
+
+So this,\ie how to get the 0 error probability, only depends on the set $\cwset$. Support sets have to be disjoint. $\cwset$ is a $0$ error code if
+\[
+\forall \{\str{x}',\str{x}'' \} \in \binom{\cwset}{2}\ \supp(\str{x}') \cap \supp(\str{x}'') = \emptyset
+\]
+
+\begin{obs}
+	Let $\str{x} \in \xset^n$. Then $$\str{y} \in \supp(\str{x}) \Leftrightarrow W^n(\str{y}|\str{x}) >0,$$ but $W^n$ is a product of probabilities; thus, since
+	$$W^n(\str{y}|\str{x}) = \prod_{i=1}^nW(y_i|x_i)$$
+	it must be that
+	$$W(y_i, x_i) > 0,\ \forall i.$$ So the support set is $$\supp(\str{x}) = \times_{i=1}^n\supp(x_i)$$
+\end{obs}
+
+This is a combinatorial condition. The support is the set of positive elements of the row of $x$. You need at least two orthogonal rows in the matrix.
+
+\begin{obs}
+	$$\supp(\str{x}') \cap \supp(\str{x}'') = \emptyset \Leftrightarrow \supp(x_i') \cap \supp(x_i'') = \emptyset,$$ for some $i$. 
+\end{obs}
+\noindent\textbf{Proof}. Suppose 
+\begin{align*}
+	&\supp(\str{x}') \cap \supp(\str{x}'') \not= \emptyset\\
+	&\Leftrightarrow \exists\str{z} \in \supp(\str{x}') \cap \supp(\str{x}'')\\
+	& \Leftrightarrow z_i \in \supp(x') \cap \supp(x''),\ \forall i
+\end{align*}
+$\hfill\Box$
+
+Consider the graph $G = G(W)$ such that $V(G) = \xset$ and $\{x',x'' \} \in E(G)$ if $\supp(x') \cap \supp(x'') = \emptyset$. We are looking for a clique in this graph, which is the size of the best code one can have $\omega(G)$ (?) What about when we use the channel more than once? We look at $G^n = G(W^n)$, where $V(G^n) = \xset^n$ and $\{\str{x}',\str{x}''\} \in E(G^n)$ if $\exists i\ \supp(x_i') \cap \supp(x_i'') = \emptyset$. This sequence of graphs can be built using the first graph, not using always the matrix.
+
+\noindent From $G$ to $G^n$.
+
+\noindent Take $G$. If $\{a, b\} \in E(G)$ they are indistinguishable. Now take $G^n$. $\{\str{a}, \str{b}\} \in E(G^n)$ are indistinguishable if $\exists i \{a_i, b_i\} \in E(G)$ with $a = a_1\ldots a_n$ and $b=b_1\ldots b_n$. Every clique of maximal length is a 0 error code.
+
+We say that 
+\[
+\overline{\lim_{n \rightarrow \infty}}\dfrac{1}{n}\log \omega(G^n)
+\]
+
+is the zero error capacity of $G$. This limit exists for every graph.
+
+[MISSING 4 PAGES]
+
+
 
 \[
  \sqrt[n]{\omega(G^n)} \geq \omega(G)
@@ -385,12 +460,12 @@ To apply this to $\omega(G^n)$ we have to take the logarithm, since $\omega(G^n)
 since 
 
 \[
- \dfrac{a_n}{n} \leq M,\ \exists \cap{M} = \sup_n \dfrac{a_n}{n}\ \text{with}\ \cap{M} \leq M,
+ \dfrac{a_n}{n} \leq M,\ \exists \hat{M} = \sup_n \dfrac{a_n}{n}\ \text{with}\ \hat{M} \leq M,
 \]
 
 so
 \[
- \forall \epsilon\ \exists n_0\ \dfrac{a_{n_0}}{n_0} > \cap{M} - \epsilon.  
+ \forall \epsilon\ \exists n_0\ \dfrac{a_{n_0}}{n_0} > \hat{M} - \epsilon.  
 \]
 
 Take arbitrary $n > n_0$ with $n = q_nn_0 +r_n$, with $0 \leq _n < n_0$.
@@ -403,7 +478,7 @@ Take arbitrary $n > n_0$ with $n = q_nn_0 +r_n$, with $0 \leq _n < n_0$.
 so the limit can be bounded from below
 
 \[
- \underline{\lim_{n\rightarrow \infty}} \dfrac{a_n}{n} \geq \underline{\lim_{n\rightarrow \infty}}\left(\dfrac{q_n}{q_{n+1}} \dfrac{a_{n_0}}{n_0} + \dfrac{a_{r_n}}{(q_n + 1)n_0}\right) \geq \cap{M} - \epsilon
+ \underline{\lim_{n\rightarrow \infty}} \dfrac{a_n}{n} \geq \underline{\lim_{n\rightarrow \infty}}\left(\dfrac{q_n}{q_{n+1}} \dfrac{a_{n_0}}{n_0} + \dfrac{a_{r_n}}{(q_n + 1)n_0}\right) \geq \hat{M} - \epsilon
 \]
 
 (since $a_{r_n} \geq \min\{a_0, \ldots,a_{n_0 -1}\}$ the last fraction goes to 0).
@@ -436,7 +511,7 @@ $\hfill\Box$
  $$\omega(G) = \chrom{G} \Rightarrow C(G) = \omega(G).$$
 \end{cor}
 
-The corollary doesn't give us much. You can make any graph like this. Schutzenberger + Berge showed some classes of graphs for which this holds. One example is graphs for which vertices are intervals, and ntersecting intervals share and edge. Furthermore, $\forall G' \subseteq G$ induced $\omega(G') = \chrom(G')$, for interval graphs.
+The corollary doesn't give us much. You can make any graph like this. Schutzenberger + Berge showed some classes of graphs for which this holds. One example is graphs for which vertices are intervals, and intersecting intervals share and edge. Furthermore, $\forall G' \subseteq G$ induced $\omega(G') = \chrom(G')$, for interval graphs.
 
 \begin{definition}
  $G$ id perfect if $$\omega(G') = \chrom{G'}\ \forall G' \subseteq G,$$ where $G'$ is an induced subgraph.

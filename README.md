@@ -3,6 +3,6 @@ These are notes taken during the Korner's Information Theory course at La Sapien
 
 ###Warning: these notes are not complete and suitable for study yet! Feel free to submit a push request if you find any error.
 
-Lectures have been transcribed. A review is required as soon as possible.
+Lectures have been almost all transcribed. 4 pages missing from lecture 15/12. A review is required as soon as possible.
 
 Main contributors are: Michele Laurenti (thank you Michele for your notes!) and Cristian Di Pietrantonio
