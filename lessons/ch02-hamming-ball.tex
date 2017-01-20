@@ -7,7 +7,7 @@ This Chapter introduces an important concept: the Hamming Ball.
 
 A \emph{space} is a set that has structure.
 The set $\{0,1\}^{n}$ of binary strings of length $n$ can be made into a metric space.
-To make it a metric space we have define a metric (or distance) on it.
+To make it a metric space we have to define a metric (or distance) on it.
 
 A metric over set $\X$ is a function $d: \X \times \X \rightarrow \Reals$ that has the following properties:
 \begin{enumerate}
@@ -105,7 +105,7 @@ In other words the Hamming space can be partitioned into two Hamming balls.
 If $n$ is odd, the Hamming space can be partitioned in the following way: $$\{0, 1\}^n = \hball{0}{\floor{\frac{n}{2}}} \cup \hball{1}{\floor{\frac{n}{2}}}$$
 The Hamming space cannot be partitioned into three balls.
 In how many balls can $\{0, 1\}^n$ be partitioned?
-It cannot partitioned be partitioned into $s$ balls with $3 \leq s \leq n + 1$ (this result has not been demonstrated).
+It cannot be partitioned into $s$ balls with $3 \leq s \leq n + 1$ (this result has not been demonstrated).
 
 \section{The volume of a Hamming ball}
 We have seen that the volume of a generic Hamming ball is described by Equation \ref{eq:volume}. We can use the Pascal triangle to get a feeling about the order of magnitude of the Hamming ball. Consider the $n$th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$. Instead, the volume of the ball with radius $n/2$ (in the triangle's point of split) is $\ifrac{2^n}{2} = 2^n2^{-1} = 2^{n-1}$. It follows, if $r \geq \ifrac{n}{2}$, that $2^{n-1} \leq |\hball{0}{r}| \leq 2^n$. Can we bound the volume for $r < \ifrac{n}{2}$?
@@ -123,7 +123,7 @@ The plot of $h$ looks like this:
 	\caption{The entropy function.}
 \end{figure}
 
-This function is not defined for the values $0$ and $1$. However, we have limits defined on these points and they are both $0$. So we artificially set $h(0) = 0$ and $h(1) = 0$. It is better to think about it as probability distribution $(t, 1 - t)$ and entropy is a number attached to it. Entropy measures symmetry and with $t = \ifrac{1}{2}$ we have maximum chaos (the future outcomes are equally likely).
+This function is not defined for the values $0$ and $1$. However, we have limits defined on these points and they are both $0$. So we artificially set $h(0) = 0$ and $h(1) = 0$. It is better to think about a probability distribution $(t, 1 - t)$ and entropy is a number attached to it. Entropy measures symmetry and with $t = \ifrac{1}{2}$ we have maximum chaos (the future outcomes are equally likely).
 
 \subsection{Lower and upper bounds}
 
@@ -171,9 +171,11 @@ So we have
 
 \noindent\textbf{Proof.} $$P(1) = \dfrac{r}{n},\ P(0) = 1 - P(1),\ P^n(\{0, 1\}^n) = 1.$$
 Consider the set of all strings of length $n$ and partition it in the following way.
-$$\Tau_q^n = \{\str{x}\ |\ \hweight{x} = q\},$$
+$$\Tau_q = \{\str{x}\ |\ \hweight{x} = q\},$$
 obtaining $n +1$ classes. 
-We know that $|\Tau_q^n| = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight; we want to prove $$ |T_r| \geq \dfrac{1}{n+1}2^{nh\left(\sfrac{r}{n}\right)}.$$ There is not symmetry in the weight of the partitions so there is a weight $r$ so that
+We know that $|\Tau_q| = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight.
+%; we want to prove $$ |\Tau^n_r| \geq \dfrac{1}{n+1}2^{nh\left(\sfrac{r}{n}\right)}.$$ 
+There is not symmetry in the weight of the partitions so there is a weight $r$ so that
 $$ \dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} \leq 1,\ \forall q$$
 In the formula above there are binomials we want to bound.
 
@@ -194,7 +196,7 @@ In the formula above there are binomials we want to bound.
 % Lesson5
 Define $p = \ifrac{r}{n}$  so that we have a distribution $P(p, 1-p)$ that picks a set and concentrate the weight (probability) on it. We observe that the probability of each string in a class depends only on the number of $1$'s in it. So we can write
 
-\[\dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} = \dfrac{p^q(1-p)^{n-q}|\Tau_q|}{p^r(1-p)^{n-r}|\Tau_q|} = p^{q-r}(1-p)^{r-q} \dfrac{\frac{n!}{q!(n-q)!}}{\frac{n!}{r!(n-r)!}} = \]
+\[\dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} = \dfrac{p^q(1-p)^{n-q}|\Tau_q|}{p^r(1-p)^{n-r}|\Tau_r|} = p^{q-r}(1-p)^{r-q} \dfrac{\frac{n!}{q!(n-q)!}}{\frac{n!}{r!(n-r)!}} = \]
 \[ = p^{q-r}(1-p)^{r-q}\dfrac{r!}{q!}\dfrac{(n-r)!}{(n-q)!} \leq p^{q-r}(1-p)^{r-q}r^{r-q}(n-r)^{q-r} = \]
 
 considering that $r = np$ it follows that
@@ -209,7 +211,9 @@ So we can write
 
 \[=(n+1)P^n(T_r) = (n + 1)|T_r|2^{-nh\sfrac{r}{n}}\]
 
-From the previous result we know $|T_r| \geq \dfrac{1}{n+1}2^{nh(\sfrac{r}{n})}$ and $T_r \subseteq \hball{0}{r}$ so it follows that $|T_r| \leq |\hball{0}{r}|$. \hfill $\Box$
+From the previous result we know $|T_r| \geq \dfrac{1}{n+1}2^{nh(\sfrac{r}{n})}$ and $T_r \subseteq \hball{0}{r}$ so it follows that $|T_r| \leq |\hball{0}{r}|$.
+
+$\hfill \Box$
 
 So this proof is important because the cardinality of the Hamming ball comes up in many contexts, such as error correction (a string that has been haltered at most $r$ times is in a certain radius from the original string).
 
@@ -235,6 +239,8 @@ so from a string $\str{x}$ one can obtain a probability distribution over $\xset
 to be the \emph{type} of $\str{x}$. There are just that many distributions for a number $n$; now fix a distribution $P|\xset$. $\exists \str{x} \in \xset^n$ such that  $P_{\str{x}} = P$? Yes, if and only if
 $$P(a) = \dfrac{N(a | \str{x})}{n},\ \forall a \in \xset.$$ Consider a product measure over $\xset$; strings in the same partition have also the same ``length'' or measure. Now, given $\xset$ and $n$, how many distributions $P|\xset$ are types in $\xset^n$? A rough upper bound is $(n + 1)^{|\xset|}$. The last value is redundant, since the values sum up to $1$. So we could do better with $(n + 1)^{|\xset| - 1}.$ We can partition $\xset^n$ into sets of strings of the same type, $\Tau_p$, with $P|\xset$. $$\Tau_p = \Tau_p^n = \{\str{x}\ |\ P_{\str{x}} = P\}.$$
 
+We introduce the \emph{generalized entropy} $H(P)$, defined as $$H(P) = -\sum_{a \in \xset} P(a)\log_2P(a).$$
+
 \begin{thm} \label{thms:taupcard}
 	If $\Tau_p \not= \emptyset$ then $$\dfrac{1}{(n+1)^{|\xset| -1}}2^{nH(p)}\leq |\Tau_p| \leq 2^{nH(p)}$$
 \end{thm}
@@ -249,32 +255,35 @@ We can define it additively on subsets of $\xset^n$.
 1 = P^n(\xset^n) \geq P^n(\Tau_p^n)
 \]
 
-We also introduce the \emph{generalized entropy} $H(P)$, defined as $$H(P) = -\sum_{a \in \xset} P(a)\log_2P(a).$$
 Now,
 
 \[
-\forall \str{x} \in \Tau_p^n P^n(\str{x}) = \prod_{a \in \xset}P(a)^n = nP(a)
+\forall \str{x} \in \Tau_p^n\ P^n(\str{x}) = \prod_{a \in \xset}P(a)^{nP(a)} =
 \]
 notice that this is independent from $\xset$. So we have
 
 \[ 
-= \prod_{a \in \xset} 2^{nP(a)\log_2P(a)} = 2^{n\left[\sum_{a \in \xset} P(a)\log_2P(a)\right]} = 2^{-nH(p)}
+= \prod_{a \in \xset} 2^{nP(a)\log_2P(a)} = 2^{n\left[\sum_{a \in \xset} P(a)\log_2P(a)\right]} = 2^{-nH(p)}.
 \]
 
 So,
 
-\[1 = P^n(\xset^n) \geq P^n(\Tau^n_p) = |\Tau_p^n|2^{-nH(p)} \] $\hfill\Box$
+\[1 = P^n(\xset^n) \geq P^n(\Tau^n_p) = |\Tau_p^n|2^{-nH(p)}. \]
 
-The lower bound proof is a straightforward generalization of what has been don in the binary case. Entropy is greatest when the distribution is uniform. Now, to prove the lower bound, consider
+$\hfill\Box$
+
+The lower bound proof is a straightforward generalization of what has been done in the binary case. Entropy is greatest when the distribution is uniform. Now, to prove the lower bound, consider
 \[
 1 = \sum_{P\ |\ \Tau_p^n \not= \emptyset}P^n(\Tau_p^n) \leq (n+1)^{|\xset|-1} \max_{Q|\xset}P^n(\Tau_q^n).
 \]
 
 \begin{obs}
-If $\Tau_p \not= \emptyset$ then $$\dfrac{P^n(\Tau^n_q)}{P^n(\Tau^n_p)} \leq 1$$
+If $\Tau^n_p \not= \emptyset$ then $$\dfrac{P^n(\Tau^n_q)}{P^n(\Tau^n_p)} \leq 1$$
+
+If a distribution is a type, it maximizes its (product) value on the strings of that type. 
 \end{obs}
 
-If a distribution is a type, it maximizes its (product) value on the strings of that type. We can suppose without loss of generality (w.l.o.g) that $\Tau^n_q \not= \emptyset$.
+\noindent\textbf{Proof}. We can suppose without loss of generality (w.l.o.g) that $\Tau^n_q \not= \emptyset$.
 \[
 P^n(\Tau_q^n) = \prod_{a \in \xset} P(a)^{nQ(a)}|\Tau_q^n| \Rightarrow \dfrac{P^n(\Tau_q^n)}{P^n(\Tau_p^n)} = \dfrac{|\Tau_q|^n\prod_{a \in \xset}[P(a)]^{nQ(a)}}{|\Tau_p|^n\prod_{a \in \xset}[P(a)]^{nP(a)}} =
 \]
