@@ -7,3 +7,6 @@
 *.fls
 *.log
 *.backup
+*.bbl
+*.blg
+

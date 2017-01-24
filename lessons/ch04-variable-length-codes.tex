@@ -16,12 +16,10 @@ Let $\str{x}, \str{y} \in \{0, 1\}^*$. We say that $\str{x}$ is prefix of $\str{
 \noindent\textbf{Proof}. Let $\str{x}, \str{v} \in \{0, 1\}^*$. Define $Y$ to be the set of all extension strings of $\str{x}$ of length $L$
 $$Y_L(\str{x}) = \{\str{y}\ |\ \str{y} \in \{0, 1\}^L \wedge \str{x} \pref \str{y} \}.$$
 Notice that $L < |\str{x}| \Rightarrow Y_L = \emptyset.$ Now, either $Y_L(\str{x}) \cap Y_L(\str{v}) \not= \emptyset$, or $Y_L(\str{x}) \cap Y_L(\str{v}) = \emptyset$, and maybe $Y_L(\str{x}) \subset Y_L(\str{v})$ or the other way. 
-$$\str{x} \pref \str{v} \Rightarrow Y_L(\str{x}) \subseteq Y_L(\str{v}).$$
+$$\str{x} \pref \str{v} \Rightarrow Y_L(\str{x}) \supseteq Y_L(\str{v}).$$
 $$\str{x} \not\pref \str{v} \wedge \str{v} \not\pref \str{x} \Rightarrow Y_L(\str{x}) \cap Y_L(\str{v}) = \emptyset.$$
 
-We say that $\prol{\str{x}}$ and $\prol{\str{v}}$ can never be in \emph{general position}.
-
- Let $A$ and  $B$ be two sets. They are in general position if $$A\cap B,\ A \setminus B,\ B \setminus A,\ \overline{A\cup B}$$ are all non-empty. For a prefix code, given $m'\not= m''$, then $$\prol{f(m')} \cap \prol{f(m'')} = \emptyset.$$ So consider $$\{0, 1\}^L \supseteq \bigcup_{m \in\msgset}\prol{f(m)},$$ and since $|\{0, 1\}^L| = 2^L$ and $$|\{0, 1\}^L| \geq \left|\bigcup_{m\in\msgset}\prol{f(m)}\right| = \sum_{m\in\msgset} |\prol{f(m)}| = \sum_{m \in \msgset} 2^{L - |f(m)|}.$$ Of course, $L \geq \max_{m \in \msgset} |f(m)|$. Now, we have
+We say that $\prol{\str{x}}$ and $\prol{\str{v}}$ can never be in \emph{general position}. Let $A$ and  $B$ be two sets. They are in general position if $$A\cap B,\ A \setminus B,\ B \setminus A,\ \overline{A\cup B}$$ are all non-empty. For a prefix code, given $m'\not= m''$, then $$\prol{f(m')} \cap \prol{f(m'')} = \emptyset.$$ So consider $$\{0, 1\}^L \supseteq \bigcup_{m \in\msgset}\prol{f(m)},$$ and since $|\{0, 1\}^L| = 2^L$ and $$|\{0, 1\}^L| \geq \left|\bigcup_{m\in\msgset}\prol{f(m)}\right| = \sum_{m\in\msgset} |\prol{f(m)}| = \sum_{m \in \msgset} 2^{L - |f(m)|}.$$ Of course, $L \geq \max_{m \in \msgset} |f(m)|$. Now, we have
 $$2^L \geq \sum_{m\in\msgset}2^{L - |f(m)|} \Rightarrow 1 \geq \sum_{m\in\msgset} 2^{-|f(m)|}.$$
 $\hfill\Box$
 
@@ -57,8 +55,8 @@ with equality iff $P(m) = \ifrac{1}{|\msgset|}$
 $\hfill\Box$
 
 \begin{thm}[Kraft]
-	Suppose $l:\msgset \rightarrow \mathbb{N}$, a prescribed codeword length, satisfies Kraft's inequality (\ref{prop:kraft}). Then 
-	$\exists f:\msgset \rightarrow \{0, 1\}^*$ prefix code such that $|f(m)| = P(m),\ \forall m$.
+	Suppose $l:\msgset \rightarrow \mathbb{N}$, a prescribed codeword length, satisfies Kraft's inequality (Proposition \ref{prop:kraft}). Then 
+	$\exists f:\msgset \rightarrow \{0, 1\}^*$ prefix code such that $|f(m)| = l(m),\ \forall m$.
 \end{thm}
 
 \noindent\textbf{Proof}. We prove this with a greedy algorithm. We'll find an ordering of $\msgset$, which helps us with being greedy. We order $\msgset$ so that $l(m_1) \leq l(m_2) \leq \ldots \leq l(m_{|\msgset|})$.
@@ -101,9 +99,7 @@ $\hfill\Box$
 l(m) = \dfrac{1}{P(m)}
 \]
 
-is not always an integer and could not satisfy Kraft's inequality.
-
-we could choose
+is not always an integer and could not satisfy Kraft's inequality. We could choose
 
 \[
 l(m) = \left\lceil\log\left(\dfrac{1}{P(m)}\right)\right\rceil
