@@ -3,7 +3,7 @@
 
 This Chapter introduces an important concept: the Hamming Ball.
 
-\section{Hamming space}
+\section{Hamming Space}
 
 A \emph{space} is a set that has structure.
 The set $\{0,1\}^{n}$ of binary strings of length $n$ can be made into a metric space.
@@ -20,12 +20,12 @@ For $\{0,1\}^{n}$ we define the \emph{Hamming metric}.
 Consider two strings, $\str{x}, \str{y}  \in \{0, 1\}^n$.
 Then their Hamming distance is defined as
 \begin{equation}
-	\hdist{\str{x}, \str{y}} = \abs{\{i : x_i \not= y_i\}}.
+	\hdist{\str{x}, \str{y}} = \abs{\{i : x_i \neq y_i\}}.
 \end{equation}
 
 The first two properties are trivial to see.
 For the third property, consider three strings $\str{x}$, $\str{y}$, $\str{z} \in \{0,1\}^n$.
-Let $D = \{i : x_i \not= y_i\}$ be the set of coordinates where they differ.
+Let $D = \{i : x_i \neq y_i\}$ be the set of coordinates where they differ.
 If $i \in D$, we have $x_{i} \neq y_{i}$.
 What can happen to $z_{i}$?
 Either $z_{i} \neq x_{i}$ or $z_{i} \neq y_{i}$.
@@ -97,26 +97,36 @@ One can see that $\hdist{\str{y},\str{1}} = n - \hweight{\str{y}}$, since $\hdis
 More in general we can bound the distance as $\hdist{\str{y},\str{1}} < n - r$, or $\hdist{\str{y},\str{1}} \le n - (r+1)$, which means that $\str{y}$ is in a Hamming Ball of radius $n - (r+1)$ with centre $\str{1}$.
 
 From it we derive the following result:
-\begin{equation}
-	\overline{\hball{\str{0}}{n}} = \{0,1\}^{n} \setminus \hball{\str{0}}{n} = \hball{\str{1}}{n - (r+1)}.
-\end{equation}
+\begin{equation*}
+	\overline{\hball{\str{0}}{r}} = \{0,1\}^{n} \setminus \hball{\str{0}}{r} = \hball{\str{1}}{n - (r+1)}.
+\end{equation*}
 In other words the Hamming space can be partitioned into two Hamming balls.
 
-If $n$ is odd, the Hamming space can be partitioned in the following way: $$\{0, 1\}^n = \hball{0}{\floor{\frac{n}{2}}} \cup \hball{1}{\floor{\frac{n}{2}}}$$
+If $n$ is odd, the Hamming space can be partitioned in the following way:
+\begin{equation*}
+	\{0, 1\}^n = \hball{\str{0}}{\floor{\frac{n}{2}}} \cup \hball{\str{1}}{\floor{\frac{n}{2}}}
+\end{equation*}
 The Hamming space cannot be partitioned into three balls.
 In how many balls can $\{0, 1\}^n$ be partitioned?
 It cannot be partitioned into $s$ balls with $3 \leq s \leq n + 1$ (this result has not been demonstrated).
 
-\section{The volume of a Hamming ball}
-We have seen that the volume of a generic Hamming ball is described by Equation \ref{eq:volume}. We can use the Pascal triangle to get a feeling about the order of magnitude of the Hamming ball. Consider the $n$th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row. The volume of the greatest ball is $|\hball{0}{n}| = 2^n$. Instead, the volume of the ball with radius $n/2$ (in the triangle's point of split) is $\ifrac{2^n}{2} = 2^n2^{-1} = 2^{n-1}$. It follows, if $r \geq \ifrac{n}{2}$, that $2^{n-1} \leq |\hball{0}{r}| \leq 2^n$. Can we bound the volume for $r < \ifrac{n}{2}$?
+\section{The Volume of the Hamming Ball}
+
+We have seen that the volume of a generic Hamming ball is described by Equation \ref{eq:volume}.
+We can use the Pascal triangle to get a feeling about the order of magnitude of the Hamming ball.
+Consider the $n$th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row.
+The volume of the greatest ball is $\abs{\hball{\str{0}}{n}} = 2^n$.
+Instead, the volume of the ball with radius $n/2$ (in the triangle's point of split) is $\frac{2^n}{2} = 2^n2^{-1} = 2^{n-1}$.
+It follows, if $r \ge \frac{n}{2}$, that $2^{n-1} \le \abs{\hball{\str{0}}{r}} \le 2^n$.
+Can we bound the volume for $r < \frac{n}{2}$?
 
 \subsection{Entropy}
 First we introduce the notion of \emph{entropy}.
 
-\begin{definition}
+\begin{definition}[Entropy]
 Entropy is a function $h: [0, 1] \rightarrow [0, 1]$ defined as follows:
 \begin{equation}
-	h(t) = t\log_2(\dfrac{1}{t}) + (1 - t)\log_2\left(\dfrac{1}{1-t}\right)
+	h(t) = t\log_2\left(\frac{1}{t}\right) + (1 - t)\log_2\left(\frac{1}{1-t}\right).
 \end{equation} 
 \end{definition}
 
@@ -126,201 +136,391 @@ Entropy is a function $h: [0, 1] \rightarrow [0, 1]$ defined as follows:
 	\caption{The entropy function.}
 \end{figure}
 
-This function is not defined for the values $0$ and $1$. However, we have limits defined on these points and they are both $0$. So we artificially set $h(0) = 0$ and $h(1) = 0$. It is better to think about a probability distribution $(t, 1 - t)$ and entropy is a number attached to it. Entropy measures symmetry and with $t = \ifrac{1}{2}$ we have maximum chaos (the future outcomes are equally likely).
+This function is not defined for the values $0$ and $1$.
+However, we have limits defined on these points and they are both $0$.
+So we artificially set $h(0) = 0$ and $h(1) = 0$.
+It is better to think about a probability distribution $(t, 1 - t)$ and entropy is a number attached to it.
+Entropy measures symmetry and with $t = \frac{1}{2}$ we have maximum chaos (the future outcomes are equally likely).
 
-\subsection{Lower and upper bounds}
+\subsection{Lower and Upper Bounds}
 
-\begin{thm}
-	The upper bound on the volume of a Hamming ball, if $ r \leq \ifrac{n}{2}$, is
-	$$|\hball{0}{r}| \leq 2^{nh\left(\sfrac{r}{n}\right)}$$
+\begin{thm}[Upper bound of the volume of the Hamming Ball]
+	The volue of the Hamming ball of radius $r$, for $r \leq \frac{n}{2}$, is
+	\begin{equation*}
+		\abs{\hball{\str{0}}{r}} \leq 2^{nh\left(\frac{r}{n}\right)}.
+	\end{equation*}
 \end{thm}
 
-In order to prove this theorem an analogy is introduced. Suppose there is a box with a number of chickens in it. We want to count those animals without withdrawing all of them out of the box. What can be done is to take the lightest one and measure its weight $w$; then also the weight $W$ of the box is measured. The number of the total chickens in the box can't be greater than $\ifrac{w}{W}$.\\
+In order to prove this theorem an analogy is introduced.
+Suppose there is a box with a number of chickens in it.
+We want to count those animals without withdrawing all of them out of the box. What can be done is to take the lightest one and measure its weight $w$; then also the weight $W$ of the box is measured.
+The number of the total chickens in the box can't be greater than $\frac{w}{W}$.
 
-\noindent\textbf{Proof.} In this proof we will use a similar technique. Consider $\{0, 1\}^n$. We ``sparkle'' a substance on the strings in the set; this substance looks like probability, but it doesn't matter. Define the weight of $1$ and $0$ as 
-$$P(1) = \dfrac{r}{n},\ P(0) = 1 - P(1).$$
+\begin{proof}
+	In this proof we will use a similar technique.
+	Consider $\{0, 1\}^n$.
+	We ``sparkle'' a substance on the strings in the set; this substance looks like probability, but it doesn't matter.
+	Define the weight of $1$ and $0$ as 
+	\begin{equation*}
+		P(1) = \frac{r}{n}, \quad P(0) = 1 - P(1).
+	\end{equation*}
+	Notice that is not an uniform distribution.
+	Define the weight of a string as
+	\begin{equation*}
+		P^n\left(\str{x}\right) = \prod_{i = 1}^n P(x_i).
+	\end{equation*}
 
-Notice that is not an uniform distribution. Define the weight of a string as
-$$P^n(\str{x}) = \prod_{i = 1}^n P(x_i).$$
+	If $A \subseteq \{0, 1\}^n$, then the weight of the set $A$ is
+	\begin{equation*}
+		P^n(A) = \sum_{\str{x} \in A} P^n(\str{x}).
+	\end{equation*}
 
-If $A \subseteq \{0, 1\}^n$ then the weight of the set $A$ is $$P^n(A) = \sum_{\str{x} \in A} P^n(\str{x}).$$
+	$P^n(\{0, 1\}^n)$ is the total weight of the substance sparkled on the strings and it is the probability distribution of binomial.
+	For this reason one can claim that
+	\begin{equation*}
+		1
+		=
+		P^n (\{0, 1\}^n)
+		\ge
+		P^n \left(\hball{\str{0}}{r}\right)
+		=
+		\sum_{\str{x} \in \hball{\str{0}}{r}} P^n(\str{x}),
+	\end{equation*}
+	at this point we take out the lightest string and write
+	\begin{equation*}
+		\sum_{\str{x} \in \hball{\str{0}}{r}} P^n(\str{x})
+		\ge
+		\abs{\hball{\str{0}}{r}} \cdot \min_{\str{x} \in \hball{\str{0}}{r}} P^n(\str{x}).
+	\end{equation*}
 
-$P^n(\{0, 1\}^n)$ is the total weight of the substance sparkled on the strings and it is the probability distribution of binomial. For this reason one can claim that
-$$1 = P^n(\{0, 1\}^n) \geq P^n(\hball{0}{r}) = \sum_{\str{x} \in \hball{0}{r}} P^n(\str{x})$$
+	Which are the lightest strings?
+	Since we assumed that $r \leq \frac{n}{2}$ then
+	\begin{equation*}
+		r \le \frac{n}{2}
+		\implies
+		P(1) = \frac{r}{n} \le \frac{1}{2}
+		\implies
+		P(1) \le P(0).
+	\end{equation*}
+	It follows that the the lightest strings are the ones on the border of the ball, with $r$ $1$s. We now compute their weight.
+	\begin{align*}
+		\min_{\str{x} \in \hball{\str{0}}{r}} P^n(\str{x})
+		& =
+		\left[P(1)\right]^r \cdot \left[P(0)\right]^{n-r}
+		\\
+		& =
+		\left(\frac{r}{n}\right)^r \left(1 - \frac{r}{n}\right)^{n-r}
+		\\
+		& =
+		\left(\frac{r}{n}\right)^{n\frac{r}{n}} \left(1 - \frac{r}{n}\right)^{n\left(1 - \frac{r}{n}\right)}
+		\\
+		& =
+		\left[\left(\frac{r}{n}\right)^{\frac{r}{n}} \left(1 - \frac{r}{n}\right)^{\left(1 - \frac{r}{n}\right)}\right]^n
+		\\
+		& =
+		2^{n\log_2\left[\left(\frac{r}{n}\right)^{\frac{r}{n}}  \left(1 - \frac{r}{n}\right)^{\left(1 - \frac{r}{n}\right)}\right]}
+		\\
+		& =
+		2^{n\left[\frac{r}{n}\log_2\frac{r}{n} + \left(1 - \frac{r}{n}\right)\log_2\left(1 - \frac{r}{n}\right)\right]}
+		\\
+		& =
+		2^{-nh\left(\frac{r}{n}\right)}.
+	\end{align*}
 
-at this point we ``take out the lightest chicken'' and write
-$$\sum_{\str{x} \in \hball{0}{r}} P^n(\str{x}) \geq |\hball{0}{r}| \cdot \min_{\str{x} \in \hball{0}{r}}P^n(\str{x})$$
+	So we have 
+	\begin{equation*}
+		1
+		\geq
+		\abs{\hball{\str{0}}{r}} \cdot \frac{1}{2^{nh\left(\frac{r}{n}\right)}}
+		\implies
+		\abs{\hball{\str{0}}{r}} \le 2^{n \, h\left(\frac{r}{n}\right)}.
+	\end{equation*}
+\end{proof}
 
-Which are the lightest chickens? Because we assume $r \leq \ifrac{n}{2}$ then
-$$r \leq \dfrac{n}{2} \Rightarrow P(1) = \dfrac{r}{n} \leq \dfrac{1}{2} \Rightarrow P(1) \leq P(0).$$
-It follows that the the lightest strings are the ones on the border of the ball, with $r$ $1$'s. We now compute their weight.
-
-\[\min_{\str{x} \in \hball{0}{r}}P^n(\str{x}) = [P(1)]^r\cdot[P(0)]^{n-r} = \] 
-\[ = \left(\dfrac{r}{n}\right)^r \left(1 - \dfrac{r}{n}\right)^{n-r} = \]  \[ = \left(\dfrac{r}{n}\right)^{n\sfrac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{n\left(1 - \sfrac{r}{n}\right)} =\]
-\[ = [\left(\dfrac{r}{n}\right)^{\sfrac{r}{n}} \left(1 - \dfrac{r}{n}\right)^{\left(1 - \sfrac{r}{n}\right)}]^n =\] 
-\[ =2^{n\log_2[\left(\sfrac{r}{n}\right)^{\sfrac{r}{n}}  \left(1 - \sfrac{r}{n}\right)^{\left(1 - \sfrac{r}{n}\right)}]} = \]
-\[ =2^{n[\sfrac{r}{n}\log_2\sfrac{r}{n} + \left(1 - \sfrac{r}{n}\right)\log_2\left(1 - \sfrac{r}{n}\right)]} = 2^{-nh\left(\sfrac{r}{n}\right)}\]
-
-So we have 
-
-\[1 \geq |\hball{0}{r}| \dfrac{1}{2^{nh(\sfrac{r}{n})}} \Rightarrow |\hball{0}{r}| \leq 2^{nh\left(\sfrac{r}{n}\right)}\] 
-\hfill$\Box$
-
-
-\begin{thm}
-	The lower bound on the volume of a Hamming ball, if $ r \leq \ifrac{n}{2}$, is
-	$$|\hball{0}{r}| \geq \dfrac{1}{n+1}2^{nh(\sfrac{r}{n})}$$
+\begin{thm}[Lower bound on the volume of the Hamming Ball]
+	The volume of the Hamming ball of radius $r$, for $ r \leq \frac{n}{2}$, is
+	\begin{equation*}
+		\abs{\hball{\str{0}}{r}}
+		\ge
+		\frac{1}{n+1} \cdot 2^{n \, h\left(\frac{r}{n}\right)}.
+	\end{equation*}
 \end{thm}
 
-\noindent\textbf{Proof.} $$P(1) = \dfrac{r}{n},\ P(0) = 1 - P(1),\ P^n(\{0, 1\}^n) = 1.$$
-Consider the set of all strings of length $n$ and partition it in the following way.
-$$\Tau_q = \{\str{x}\ :\ \hweight{x} = q\},$$
-obtaining $n +1$ classes. 
-We know that $|\Tau_q| = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight.
-%; we want to prove $$ |\Tau^n_r| \geq \dfrac{1}{n+1}2^{nh\left(\sfrac{r}{n}\right)}.$$ 
-There is not symmetry in the weight of the partitions. In fact we can prove that
-$$ \dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} \leq 1,\ \forall q$$
-In the formula above there are binomials we want to bound. In order to do that, we need the following observation.
+\begin{proof}
+	\begin{equation*}
+		P(1) = \frac{r}{n},\quad P(0) = 1 - P(1),\quad P^n(\{0, 1\}^n) = 1.
+	\end{equation*}
+	Consider the set of all strings of length $n$ and partition it in the following way.
+	\begin{equation*}
+		T_q = \{\str{x}\ :\ \hweight{x} = q\},
+	\end{equation*}
+	obtaining $n +1$ classes. 
+	We know that $\abs{T_q} = \binom{n}{q}$; we are not interested in how many strings are in that set, but what is the total weight.
+	There is not symmetry in the weight of the partitions.
+	In fact we can prove that
+	\begin{equation*}
+		\frac{P^n(T_q)}{P^n(T_r)} \le 1,\ \forall q.
+	\end{equation*}
+	In the formula above there are binomials we want to bound.
+	In order to do that, we need the following observation.
 
-\begin{obs}
-	$$\dfrac{k!}{l!} \leq k^{k-l}.$$
-\end{obs}
+	\begin{obs}
+		\begin{equation*}
+			\frac{k!}{l!} \le k^{k-l}.
+		\end{equation*}
+	\end{obs}
 
-\noindent\textbf{Proof}. We are going to prove this observation in two steps.
-\begin{itemize}
-	\item $k \geq l$. 
-	$$\dfrac{k!}{l!} = \dfrac{k(k-1) \cdots l(l -1) \cdots 1}{l(l -1) \cdots 1} \leq k^{k-l}.$$
-	
-	\item $k < l$.
-	$$\dfrac{k!}{l!} = \dfrac{k(k-1) \cdots 1}{l(l -1) \cdots k(k-1) \cdots 1} \leq \left(\dfrac{1}{k+1}\right)^{l-k} < \left(\dfrac{1}{k}\right)^{l-k} = k^{k-l}.$$
-\end{itemize}
-\hfill$\Box$
+	\begin{proof}[Verification]
+		If $k \ge l$:
+			\begin{equation*}
+				\frac{k!}{l!} = \frac{k(k-1) \cdots l(l -1) \cdots 1}{l(l -1) \cdots 1} \le k^{k-l}.
+			\end{equation*}
 
-% Lesson5
-Define $p = \ifrac{r}{n}$  so that we have a distribution $P(p, 1-p)$ that picks a set and concentrate the weight (probability) on it. We observe that the probability of each string in a class depends only on the number of $1$'s in it. So we can write
+		If $k < l$:
+			\begin{equation*}
+				\frac{k!}{l!} = \frac{k(k-1) \cdots 1}{l(l -1) \cdots k(k-1) \cdots 1} \le \left(\frac{1}{k+1}\right)^{l-k} < \left(\frac{1}{k}\right)^{l-k} = k^{k-l}.
+			\end{equation*}
+	\end{proof}
 
-\[\dfrac{P^n(\Tau_q)}{P^n(\Tau_r)} = \dfrac{p^q(1-p)^{n-q}|\Tau_q|}{p^r(1-p)^{n-r}|\Tau_r|} = p^{q-r}(1-p)^{r-q} \dfrac{\frac{n!}{q!(n-q)!}}{\frac{n!}{r!(n-r)!}} = \]
-\[ = p^{q-r}(1-p)^{r-q}\dfrac{r!}{q!}\dfrac{(n-r)!}{(n-q)!} \leq p^{q-r}(1-p)^{r-q}r^{r-q}(n-r)^{q-r} = \]
+	Define $p = \frac{r}{n}$  so that we have a distribution $P(p, 1-p)$ that picks a set and concentrate the weight (probability) on it.
+	We observe that the probability of each string in a class depends only on the number of $1$'s in it.
+	So we can write
+	\begin{align*}
+		\frac{P^n(T_q)}{P^n(T_r)}
+		& =
+		\frac{p^q(1-p)^{n-q}\abs{T_q}}{p^r(1-p)^{n-r}\abs{T_r}}
+		\\
+		& =
+		p^{q-r}(1-p)^{r-q} \frac{\frac{n!}{q!(n-q)!}}{\frac{n!}{r!(n-r)!}}
+		\\
+		& =
+		p^{q-r}(1-p)^{r-q}\frac{r!}{q!}\frac{(n-r)!}{(n-q)!}
+		\\
+		& \le
+		p^{q-r}(1-p)^{r-q}r^{r-q}(n-r)^{q-r}
+		\\
+		& =
+		\tag{since $r = np$}
+		p^{q-r}(1-p)^{r-q} (np)^{r-q}[n(1-p)]^{q-r}
+		\\
+		& =
+		p^{q-r}(1-p)^{r-q}n^{r-q+q-r}p^{r-q}(1-p)^{q-r}
+		\\
+		& =
+		p^{q-r + r-q}(1-p)^{r-q+q-r}
+		=
+		1.
+	\end{align*}
 
-considering that $r = np$ it follows that
+	So we can write
+	\begin{align*}
+		1
+		=
+		P^n(\{0,1\}^n)
+		& =
+		P^n\left(\bigcup_{q=0}^nT_q\right)
+		\\
+		& =
+		\sum_{q=0}^n P^n(T_q)
+		\\
+		& \le
+		(n+1) \max_q P^n(T_q)
+		\\
+		& =
+		(n+1) P^n(T_r)
+		\\
+		& =
+		(n + 1) \abs{T_r} \cdot 2^{-n \, h \left(\frac{r}{n}\right)}
+	\end{align*}
 
-\[p^{q-r}(1-p)^{r-q} (np)^{r-q}[n(1-p)]^{q-r}= \] \[ = p^{q-r}(1-p)^{r-q}n^{r-q+q-r}p^{r-q}(1-p)^{q-r} = \]
+	Thus, we know that $\abs{T_r} \ge \frac{1}{n+1} 2^{n \, h(\frac{r}{n})}$, and since $T_r \subseteq \hball{\str{0}}{r}$ we have proved that $\abs{T_r} \le \abs{\hball{\str{0}}{r}}$.
+\end{proof}
 
-\[ = p^{q-r + r-q}(1-p)^{r-q+q-r} = 1.\]
-
-So we can write
-
-\[1 = P^n(\{0,1\}^n) = P^n\left(\bigcup_{q=0}^nT_q\right) = \sum_{q=0}^nP^n(T_q)\leq(n+1) \max_qP^n(T_q) = \]
-
-\[=(n+1)P^n(T_r) = (n + 1)|T_r|2^{-nh\sfrac{r}{n}}\]
-
-From the previous result we know $|T_r| \geq \dfrac{1}{n+1}2^{nh(\sfrac{r}{n})}$ and $T_r \subseteq \hball{0}{r}$ so it follows that $|T_r| \leq |\hball{0}{r}|$.
-
-$\hfill \Box$
-
-So this proof is important because the cardinality of the Hamming ball comes up in many contexts, such as error correction (a string that has been haltered at most $r$ times is in a certain radius from the original string).
+So this proof is important because the cardinality of the Hamming ball comes up in many contexts, such as error correction (a string that has been altered at most $r$ times is in a certain radius from the original string).
 
 \section{Generalization to any finite alphabet}
 
-Let $\xset$ be the (usual) finite set that is an alphabet. The interest lies in sequences of elements of $\xset$, called \emph{strings} or \emph{words}. So $\xset^n, n \in \mathbb{N}$, is a set of words. $\xset^n$ can be partitioned by putting together those sequences that can be transformed one into the other by permutation, i. e. sequences that have the same number of occurrences of elements in the alphabet.
+Let $\X$ be the (usual) finite set that is an alphabet.
+We are insterested in sequences of elements of $\X$, called \emph{strings} or \emph{words}.
+So $\X^n, n \in \mathbb{N}$, is a set of words.
+$\X^n$ can be partitioned by putting together those sequences that can be transformed one into the other by permutation, \ie sequences that have the same number of occurrences of elements in the alphabet.
 
 \begin{definition}
-Let $a \in \xset$ and $\str{x} \in \xset^n$. We define the frequency of an alphabet symbol $a$ in a string $\str{x}$ in the following way:  
-\begin{equation}
-N(a | \str{x}) = |\{i\ :\ x_i = a\}|,
-\end{equation}
-
-where $\str{x} = x_1x_2\ldots x_n$.
+	Let $a \in \X$ and $\str{x} \in \X^n$.
+	We define the frequency of an alphabet symbol $a$ in a string $\str{x}$ in the following way:  
+	\begin{equation*}
+	N(a | \str{x}) = \abs{\{i\ :\ x_i = a\}}.
+	\end{equation*}
+	where $\str{x} = x_1 x_2 \ldots x_n$.
 \end{definition}
- One can think about ``normalized'' relative frequencies of symbols $$\dfrac{1}{n} N(a|\str{x}).$$
- 
+
+One can think about ``normalized'' relative frequencies of symbols
+\begin{equation*}
+	\frac{1}{n} N(a|\str{x}).
+\end{equation*}
+
 Moreover the following holds:
+\begin{equation*}
+	\sum_{a \in \X} N(a|\str{x}) = n
+	\implies \sum_{a\in \X} \frac{1}{n} N(a|\str{x}) = 1,
+\end{equation*}
+so from a string $\str{x}$ one can obtain a probability distribution over $\X$.
+We define
+\begin{equation*}
+	P_{\str{x}} = \left\{ \frac{N(a|\str{x})}{n} : a \in \X \right\}
+\end{equation*}
+to be the \emph{type} of $\str{x}$.
+There are just that many distributions for a number $n$; now fix a distribution $P|\X$.
+$\exists \str{x} \in \X^n$ such that  $P_{\str{x}} = P$?
+Yes, if and only if
+\begin{equation*}
+	P(a) = \dfrac{N(a | \str{x})}{n},\ \forall a \in \X.
+\end{equation*}
+Consider a product measure over $\X$; strings in the same partition have also the same ``length'' or measure.
+Now, given $\X$ and $n$, how many distributions $P|\X$ are types in $\X^n$?
+A rough upper bound is $(n + 1)^{\abs{\X}}$.
+The last value is redundant, since the values sum up to $1$.
+So we could do better with $(n + 1)^{\abs{\X} - 1}$.
+We can partition $\X^n$ into sets of strings of the same type, $T_p$, with $P|\X$.
+\begin{equation*}
+	T_p = T_p^n = \{\str{x}\ :\ P_{\str{x}} = P\}.
+\end{equation*}
 
-$$\sum_{a \in \xset} N(a|\str{x}) = n \Rightarrow \sum_{a\in \xset} \dfrac{1}{n}N(a|\str{x}) = 1$$
-
-so from a string $\str{x}$ one can obtain a probability distribution over $\xset$. We define
-\begin{equation}
-	P_{\str{x}} = \left\{ \dfrac{N(a|\str{x})}{n}\ :\ a \in \xset \right\}
-\end{equation}
-to be the \emph{type} of $\str{x}$. There are just that many distributions for a number $n$; now fix a distribution $P|\xset$. $\exists \str{x} \in \xset^n$ such that  $P_{\str{x}} = P$? Yes, if and only if
-$$P(a) = \dfrac{N(a | \str{x})}{n},\ \forall a \in \xset.$$ Consider a product measure over $\xset$; strings in the same partition have also the same ``length'' or measure. Now, given $\xset$ and $n$, how many distributions $P|\xset$ are types in $\xset^n$? A rough upper bound is $(n + 1)^{|\xset|}$. The last value is redundant, since the values sum up to $1$. So we could do better with $(n + 1)^{|\xset| - 1}.$ We can partition $\xset^n$ into sets of strings of the same type, $\Tau_p$, with $P|\xset$. $$\Tau_p = \Tau_p^n = \{\str{x}\ :\ P_{\str{x}} = P\}.$$
-
-We introduce the \emph{generalized entropy} $H(P)$, defined as $$H(P) = -\sum_{a \in \xset} P(a)\log_2P(a).$$
+\begin{definition}[Generalised Entropy]
+	We introduce the \emph{generalized entropy} $H(P)$, defined as
+	\begin{equation*}
+		H(P) = -\sum_{a \in \X} P(a) \log_2 P(a).
+	\end{equation*}
+\end{definition}
 
 \begin{thm} \label{thms:taupcard}
-	If $\Tau_p \not= \emptyset$ then $$\dfrac{1}{(n+1)^{|\xset| -1}}2^{nH(P)}\leq |\Tau_p| \leq 2^{nH(P)}$$
+	If $T_p \neq \emptyset$ then $$\dfrac{1}{(n+1)^{|\X| -1}}2^{nH(P)}\leq |T_p| \leq 2^{nH(P)}$$
 \end{thm}
 
-\noindent\textbf{Proof.} In order to prove the above theorem, we first define the product distribution $P|\xset \rightarrow P^n|\xset^n$ as 
-\begin{equation}
-	P^n(\str{x}) = \prod_{i = 1}^nP(x_i).
-\end{equation}
+\begin{proof}
+	In order to prove the above theorem, we first define the product distribution $P|\X \rightarrow P^n|\X^n$ as 
+	\begin{equation*}
+		P^n(\str{x}) = \prod_{i = 1}^nP(x_i).
+	\end{equation*}
 
-We can define it additively on subsets of $\xset^n$.
-\[
-1 = P^n(\xset^n) \geq P^n(\Tau_p^n)
-\]
+	We can define it additively on subsets of $\X^n$.
+	\begin{equation*}
+		1 = P^n(\X^n) \ge P^n(T_p^n)
+	\end{equation*}
 
-Now,
+	Now,
+	\begin{align*}
+		\forall \str{x} \in T_p^n . P^n(\str{x})
+		& =
+		\prod_{a \in \X} P(a)^{n P(a)}
+		\\
+		& =
+		\prod_{a \in \X} 2^{n \, P(a)\log_2 P(a)} \tag{since it's independent of $\X$}
+		\\
+		& =
+		2^{n \left[\sum_{a \in \X} P(a) \log_2 P(a) \right]}
+		\\
+		& =
+		2^{-n \, H(p)}.
+	\end{align*}
 
-\[
-\forall \str{x} \in \Tau_p^n\ P^n(\str{x}) = \prod_{a \in \xset}P(a)^{nP(a)} =
-\]
-notice that this is independent from $\xset$. So we have
+	So,
+	\begin{equation*}
+		1 = P^n(\X^n) \ge P^n(T^n_p) = \abs{T_p^n} \cdot 2^{-n \, H(p)}.
+	\end{equation*}
+\end{proof}
 
-\[ 
-= \prod_{a \in \xset} 2^{nP(a)\log_2P(a)} = 2^{n\left[\sum_{a \in \xset} P(a)\log_2P(a)\right]} = 2^{-nH(p)}.
-\]
-
-So,
-
-\[1 = P^n(\xset^n) \geq P^n(\Tau^n_p) = |\Tau_p^n|2^{-nH(p)}. \]
-
-$\hfill\Box$
-
-The lower bound proof is a straightforward generalization of what has been done in the binary case. Entropy is greatest when the distribution is uniform. Now, to prove the lower bound, consider
-\[
-1 = \sum_{P\ :\ \Tau_p^n \not= \emptyset}P^n(\Tau_p^n) \leq (n+1)^{|\xset|-1} \max_{Q|\xset}P^n(\Tau_q^n).
-\]
+The lower bound proof is a straightforward generalization of what has been done in the binary case.
+Entropy is greatest when the distribution is uniform.
+Now, to prove the lower bound, consider
+\begin{equation*}
+	1
+	=
+	\sum_{P\ :\ T_p^n \neq \emptyset} P^n(T_p^n)
+	\le
+	(n+1)^{\abs{\X}-1} \max_{Q|\X} P^n(T_q^n).
+\end{equation*}
 
 \begin{obs}
-If $\Tau^n_p \not= \emptyset$ then $$\dfrac{P^n(\Tau^n_q)}{P^n(\Tau^n_p)} \leq 1$$
-
-If a distribution is a type, it maximizes its (product) value on the strings of that type. 
+	If $T^n_p \neq \emptyset$ then 
+	\begin{equation*}
+		\frac{P^n(T^n_q)}{P^n(T^n_p)} \le 1.
+	\end{equation*}
+	If a distribution is a type, it maximizes its (product) value on the strings of that type. 
 \end{obs}
 
-\noindent\textbf{Proof}. We can suppose without loss of generality (w.l.o.g) that $\Tau^n_q \not= \emptyset$.
-\[
-P^n(\Tau_q^n) = \prod_{a \in \xset} P(a)^{nQ(a)}|\Tau_q^n| \Rightarrow \dfrac{P^n(\Tau_q^n)}{P^n(\Tau_p^n)} = \dfrac{|\Tau_q^n|\prod_{a \in \xset}[P(a)]^{nQ(a)}}{|\Tau_p^n|\prod_{a \in \xset}[P(a)]^{nP(a)}} =
-\]
+\begin{proof}
+	We can suppose, without loss of generality, that $T^n_q \neq \emptyset$.
+	\begin{align*}
+		P^n(T_q^n)
+		& =
+		\prod_{a \in \X} P(a)^{n \, Q(a)} \abs{T_q^n}
+		\\
+		& \implies
+		\\
+		\frac{
+			P^n(T_q^n)
+		}{
+			P^n(T_p^n)
+		}
+		& =
+		\frac{
+			\abs{T_q^n} \prod_{a \in \X} [P(a)]^{n Q(a)}
+		}{
+			\abs{T_p^n} \prod_{a \in \X} [P(a)]^{n P(a)}
+		}
+		\\
+		& =
+		\frac{
+			\frac{n!}{\prod_{a\in\X} [nQ(a)]!} \prod_{a \in \X} [P(a)]^{n Q(a)}
+		}{
+			\frac{n!}{\prod_{a\in\X} [nP(a)]!} \prod_{a \in \X} [P(a)]^{n P(a)}
+		}
+		\\
+		& =
+		\prod_{a \in \X}
+		\frac{[n \, P(a)]!}{[n \, Q(a)]!}
+		\prod_{a \in \X}
+		[P(a)]^{n \, (Q(a)-P(a))}
+		\\
+		& \le
+		\prod_{a \in \X}
+		[nP(a)]^{n \, (P(a)-Q(a))}
+		\prod_{a \in \X}
+		[P(a)]^{n \, (Q(a)-P(a))}
+		\\
+		& =
+		n^{n \left[ \sum_{a \in \X} P(a) - Q(a) \right]}
+		\frac{
+			\prod_{a \in \X} [P(a)]^{n (P(a)-Q(a))}
+		}{
+			\prod_{a \in \X} [P(a)]^{n (P(a)-Q(a))}
+		}
+		\\
+		& =
+		n^{n \left[ \sum_{a \in \X} P(a) - \sum_{a \in \X} Q(a) \right]}
+		\\
+		& =
+		n^{n[1-1]}
+		=
+		1.
+	\end{align*}
 
-\[
- = \dfrac{\dfrac{n!}{\prod_{a\in\xset}[nQ(a)]!}\prod_{a\in\xset}[P(a)]^{nQ(a)}}
- {\dfrac{n!}{\prod_{a\in\xset}[nP(a)]!}\prod_{a\in\xset}[P(a)]^{nP(a)}} = \prod_{a \in\xset} \dfrac{[nP(a)]!}{[nQ(a)]!}\prod_{a\in\xset}[P(a)]^{n(Q(a)-P(a))}\leq 
-\]
-
-\[
-\leq \prod_{a \in \xset} [nP(a)]^{n(P(a)-Q(a))}\prod_{a\in\xset}[P(a)]^{n(Q(a)-P(a))} =
-\]
-\[
- = n^{n\left[\sum_{a \in \xset}P(a) - Q(a)\right ]} \dfrac{\prod_{a \in \xset}[P(a)]^{n(P(a)-Q(a))}}{\prod_{a \in \xset}[P(a)]^{n(P(a)-Q(a))}} =
-\]
-
-\[ 
-= n^{n\left [\sum_{a \in\xset}P(a) -\sum_{a \in\xset}Q(a) \right]} = n^{n[1-1]} = 1.
-\]
-
-So we can write
-
-\[
- \max_{Q|\xset}P^n(\Tau_q^n) = |\Tau_p^n|\prod_{a \in \xset}P(a)^{nP(a)} = |\Tau_p^n|2^{-nH(P)}
-\]
-
-and conclude that
-
-\[
- 1 \leq (n+1)^{|\xset|-1} |\Tau_p^n|2^{-nH(P)} \Rightarrow  \dfrac{1}{(n+1)^{|\xset|-1}} 2^{nH(P)} \leq |\Tau_p^n|. 
-\]
-
-$\hfill\Box$
+	So we can write
+	\begin{equation*}
+		\max_{Q|\X} P^n(T_q^n)
+		=
+		\abs{T_p^n} \prod_{a \in \X} P(a)^{n \, P(a)}
+		=
+		\abs{T_p^n} \cdot 2^{-n \, H(P)}
+	\end{equation*}
+	and conclude that
+	\begin{equation*}
+		1
+		\le
+		(n+1)^{\abs{\X}-1} \abs{T_p^n} \cdot 2^{-n \, H(P)}
+		\implies
+		\frac{1}{(n+1)^{\abs{\X}-1}} \cdot 2^{n \, H(P)} \le \abs{T_p^n}.
+	\end{equation*}
+\end{proof}
 
