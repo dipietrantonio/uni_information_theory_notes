@@ -87,7 +87,7 @@ recall that $\hat{\str{x}}^{(t)}$ was chosen in such a way that $\hat{\str{x}}^{
 
 $\hfill\Box$
 
-If our code does not satisfy Kraft's inequality to equality, \emph{i.e.} $$\sum_{m\in\msgset}2^{|f(m)|} < 1,$$ then $\exists \lambda \geq L, \lambda \in \mathbb{N}$ t.c. $$\sum_{m\in\msgset}2^{-|f(m)|} + 2^{-\lambda} \leq 1$$ with $l(m_1) \leq \cdots \leq l(m_{|\msgset|}) \leq \lambda$ so we could add some more words to our code. A maximal prefix code is a prefix code to which you can't add more codewords (and still get a prefix-code).
+If our code does not satisfy Kraft's inequality to equality, \emph{i.e.} $$\sum_{m\in\msgset}2^{-|f(m)|} < 1,$$ then $\exists \lambda \geq L, \lambda \in \mathbb{N}$ t.c. $$\sum_{m\in\msgset}2^{-|f(m)|} + 2^{-\lambda} \leq 1$$ with $l(m_1) \leq \cdots \leq l(m_{|\msgset|}) \leq \lambda$ so we could add some more words to our code. A maximal prefix code is a prefix code to which you can't add more codewords (and still get a prefix-code).
 
 \begin{prop}
  $\forall P|\msgset\ \exists f:\msgset \rightarrow \{0, 1\}^*$ prefix code such that
@@ -99,39 +99,36 @@ If our code does not satisfy Kraft's inequality to equality, \emph{i.e.} $$\sum_
 \noindent\textbf{Proof}. We'll give a prescription satisfying Kraft's inequality and this inequality too. 
 
 \[
- H(P) = \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right)
-\]
-\[
-l(m) = \dfrac{1}{P(m)}
+ H(P) = \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right).
 \]
 
-is not always an integer and could not satisfy Kraft's inequality. We could choose
+Let
+\begin{equation}\label{eq:pres-cod-len}
+l(m) = \dfrac{1}{P(m)}. 
+\end{equation}
 
-\[
-l(m) = \left\lceil\log\left(\dfrac{1}{P(m)}\right)\right\rceil
-\]
+Equation \ref{eq:pres-cod-len} is not always an integer and could not satisfy Kraft's inequality. We could choose
 
-since $\left\lceil t \right\rceil < t + 1$ we can easily see that 
-\[
-\sum_{m \in M} P(m)\left\lceil\log\left(\dfrac{1}{P(m)}\right)\right\rceil < \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right) + \sum_{m \in \msgset} P(m) = 
-\]
+\begin{equation}
+l(m) = \left\lceil\log\left(\dfrac{1}{P(m)}\right)\right\rceil.
+\end{equation}
 
-\[
- = H(P) + 1.
-\]
+
+Since $\left\lceil t \right\rceil < t + 1$ we can easily see that 
+
+\begin{align*}
+\sum_{m \in M} P(m)\left\lceil\log\left(\dfrac{1}{P(m)}\right)\right\rceil & < \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right) + \sum_{m \in \msgset} P(m)\\ & =  H(P) + 1. 
+\end{align*}
+
 
 We now check that $l$ satisfies Kraft's inequality.
 
-\[
-\sum_{m \in \msgset} 2^{-l(m)} = \sum_{m \in \msgset} 2^{-\left\lceil\log\left(\sfrac{1}{P(m)}\right)\right\rceil} \leq
-\]
-(here we are using $\left\lceil t \right\rceil \geq t$)
+\begin{align*}
+\sum_{m \in \msgset} 2^{-l(m)} & = \sum_{m \in \msgset} 2^{-\left\lceil\log\left(\sfrac{1}{P(m)}\right)\right\rceil}\\ 
+& \leq\tag{here we are using $\left\lceil t \right\rceil \geq t$}
+ \sum_{m \in \msgset} 2^{-\log\left(\dfrac{1}{P(m)}\right)} \\ 
+& = \sum_{m \in \msgset} 2^{\log(P(m))} \\
+& = \sum_{m \in \msgset} P(M) = 1.
+\end{align*}
 
-\[
- \sum_{m \in \msgset} 2^{-\log\left(\dfrac{1}{P(m)}\right)} = \sum_{m \in \msgset} 2^{\log(P(m))} =
-\]
-
-\[
- \sum_{m \in \msgset} P(M) = 1.
-\]
 $\hfill\Box$
