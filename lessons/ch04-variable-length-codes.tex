@@ -91,16 +91,16 @@ If our code does not satisfy Kraft's inequality to equality, \emph{i.e.} $$\sum_
 
 \begin{prop}
  $\forall P|\msgset\ \exists f:\msgset \rightarrow \{0, 1\}^*$ prefix code such that
- \[
-  \sum_{m\in \msgset} P(m)|f(m)| < H(P) + 1
- \]
+ \begin{equation}
+    \sum_{m\in \msgset} P(m)|f(m)| < H(P) + 1
+ \end{equation}
 \end{prop}
 
 \noindent\textbf{Proof}. We'll give a prescription satisfying Kraft's inequality and this inequality too. 
+\begin{equation}
+ H(P) = \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right). 
+\end{equation}
 
-\[
- H(P) = \sum_{m \in \msgset} P(m)\log\left(\dfrac{1}{P(m)}\right).
-\]
 
 Let
 \begin{equation}\label{eq:pres-cod-len}
@@ -128,7 +128,7 @@ We now check that $l$ satisfies Kraft's inequality.
 & \leq\tag{here we are using $\left\lceil t \right\rceil \geq t$}
  \sum_{m \in \msgset} 2^{-\log\left(\dfrac{1}{P(m)}\right)} \\ 
 & = \sum_{m \in \msgset} 2^{\log(P(m))} \\
-& = \sum_{m \in \msgset} P(M) = 1.
+& = \sum_{m \in \msgset} P(m) = 1.
 \end{align*}
 
 $\hfill\Box$

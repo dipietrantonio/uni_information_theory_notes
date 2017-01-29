@@ -2,28 +2,36 @@
 
 Let's reason on the probability of a message. You can consider an infinite sequence of random variables $X_i$ which take values in $\msgset$. We implicitly assumed that $X_i$ are independent random variables. If we group random variables before encoding we can asymptotically reach entropy.
 
-Given a random variable $X$, the entropy of $X$ is defined as $$H(X) = H(P_X),$$ where $P_X$ is the distribution of $X$. How is entropy defined for two random variables? If $X=Y$ then $H(X, Y) = H(X).$ In general, two random variables can be considered as components of a vector random variable: $$H(X, Y) = H((X, Y)).$$
+\section{Joint Entropy, Conditional Etropy and Mutual Information}
+
+Given a random variable $X$, the entropy of $X$ is defined as $$H(X) = H(P_X),$$ where $P_X$ is the distribution of $X$. How is entropy defined for two random variables? If $X=Y$ then $H(X, Y) = H(X).$
+
+\begin{definition}[Joint Entropy]
+In general, the entropy of a pair is the entropy of the random variable derived by the pair, \emph{i.e.}
+\begin{equation}
+H(X, Y) = H((X, Y)), 
+\end{equation}
+since $(X, Y)$ has a probability distribution $P_{XY}$ and we can think of the pair as just a random variable. $H(X, Y)$ is defined a the \emph{joint entropy} of $X$ and $Y$. 
+\end{definition}
+
+
 
 \begin{prop}
  $$H(P) \leq log(|\xset|),$$ with $P|\xset$ and with equality iff $P(x) = \ifrac{1}{|\xset|}, \forall x \in \xset.$
 \end{prop}
-\noindent\textbf{Proof}. Call $U$ the uniform distribution. $D(P||U)\geq 0$ with equality iff $P = U$.
-\[
- D(P||U) = \sum_{x \in \xset} P(x)\log\left(\dfrac{P(x)}{\sfrac{1}{|\xset|}}\right) =
-\]
+\noindent\textbf{Proof}. Call $U$ the uniform distribution. $D(P||U)\geq 0$, with equality iff $P = U$.
 
-\[
- = \sum_{x \in \xset} P(x)\log(x) + \sum_{x\in\xset} P(x)\log(|\xset|) =
-\]
-\[
- = -H(P) + \log(|\xset|).
-\]
+\begin{align*}
+ D(P||U) & = \sum_{x \in \xset} P(x)\log\left(\dfrac{P(x)}{\sfrac{1}{|\xset|}}\right)\\
+ & = \sum_{x \in \xset} P(x)\log(x) + \sum_{x\in\xset} P(x)\log(|\xset|)\\
+ & = -H(P) + \log(|\xset|).
+\end{align*}
 
 this quantity is nonnegative with equality to zero iff $P=U.$\\
 
 $\hfill\Box$
 
-We write $X \in \xset$ since $X$ is like an unknown element of $\xset$. Random variables don't always have an expected value. We can think of $H(X)$ as the information content of $X$. The entropy of a pair is the entropt of the random variable derived by the pair, \emph{i.e.} $H(X, Y) = H((X, Y))$, since $(X, Y)$ has a probability distribution $P_{XY}$ and we can think of the pair as just a random variable. $H(X, Y)$ is defined a the \emph{joint entropy} of $X$ and $Y$. If we consider entropy as the amount of information in a random variable, then it should be that $H(X, Y) \geq X$. We can think of entropy as  measure over a set.
+We write $X \in \xset$ since $X$ is like an unknown element of $\xset$. Random variables don't always have an expected value. We can think of $H(X)$ as the information content of $X$. If we consider entropy as the amount of information in a random variable, then it should be that $H(X, Y) \geq X$. We can think of entropy as  measure over a set.
 
 \[
  H(X) \sim \mu(A),\ A \subseteq U
@@ -36,19 +44,18 @@ H(X, Y) \sim \mu(A \cup B),\ \mu(A \cup B) \geq \mu(A)
   $$H(X, Y) \geq H(X).$$
 \end{prop}
 
-\noindent\textbf{Proof}. 
+\noindent\textbf{Proof}. Consider the following quantities.
+
 \[ 
-H(X, Y) = \sum_{x\in \xset} \sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{X=x, Y=y\}}\right)\]
-
-\[
- H(X) = \sum_{x\in \xset}Pr\{X=x\}\log\left(\dfrac{1}{Pr\{X=x\}}\right) = 
+H(X, Y) = \sum_{x\in \xset} \sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{X=x, Y=y\}}\right)
 \]
+and
+\begin{align*}
+ H(X) &= \sum_{x\in \xset}Pr\{X=x\}\log\left(\dfrac{1}{Pr\{X=x\}}\right)\\
+ &=\sum_{x\in\xset}\sum_{y\in\yset}Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{X=x\}}\right) 
+\end{align*}
 
-\[
- \sum_{x\in\xset}\sum_{y\in\yset}Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{X=x\}}\right)
-\]
-
-We take the difference between the two quantities:
+We take the difference between the two:
 
 \[
  H(X, Y) - H(X) =  \sum_{x\in\xset}\sum_{y\in\yset}Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x\}}{Pr\{X=x, Y=y\}}\right).
@@ -63,76 +70,87 @@ We can think of $Pr\{X=x, Y=y\} = Pr\{X=x\}Pr\{Y=y | X=x\}$, then
  \sum_{x\in \xset}Pr\{X=x\}\sum_{y \in \yset} Pr\{Y=y | X=x\}\log\left(\dfrac{1}{Pr\{Y=y|X=x\}}\right).
 \]
 
-We would like to say that this quantity is nonnegative. Since $H(\cdots)$ is nonnegative, this difference is actually greater than (or equal to) zero.
+We would like to say that this quantity is nonnegative. Since $H(\cdot)$ is nonnegative, this difference is actually greater than (or equal to) zero.
 
-$H(X, Y) - H(X)$ is the convex combination of the entropies of the conditional distribution if $Y$ given the various values of $X$. It's like the expected value of the entropy of the conditional distribution $Pr\{Y=y | X=x\}$. We call it \emph{conditional entropy} of $Y$ given $X$, 
+\begin{definition}[Conditional Entropy]
+We call
+\begin{equation}
+ H(Y|X) = H(X, Y) - H(X)
+\end{equation}
+the \emph{conditional entropy} of $Y$ given $X$.
 
-$$H(Y|X) = H(X, Y) - H(X).$$
+\end{definition}
+
+
+$H(X, Y) - H(X)$ is the convex combination of the entropies of the conditional distribution of $Y$ given the various values of $X$. It's like the expected value of the entropy of the conditional distribution $Pr\{Y=y | X=x\}$.
 
 It can be seen as the residual information when $X$ is known.
 
 \begin{prop}
- $$H(Y) \geq H(Y|X).$$
+\begin{equation}
+H(Y) \geq H(Y|X). 
+\end{equation}
 \end{prop}
 
 \noindent\textbf{Proof}. 
-\[
- H(Y) - H(Y|X) = \sum_{x \in \xset} \sum_{y \in \yset}Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{Y=y\}}\right) - \] 
- \[- \sum_{x \in \xset}\sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x\}}{Pr\{X=x, Y=y\}}\right) =
-\]
+\begin{align*}
+ H(Y) - H(Y|X) & = \sum_{x \in \xset} \sum_{y \in \yset}Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{Y=y\}}\right)\\ 
+ & - \sum_{x \in \xset}\sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x\}}{Pr\{X=x, Y=y\}}\right)\\
+  & =  \sum_{x\in \xset} \sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x, Y=y\}}{Pr\{X=x\}Pr\{Y=y\}}\right). 
+\end{align*}
 
-\[
- =  \sum_{x\in \xset} \sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x, Y=y\}}{Pr\{X=x\}Pr\{Y=y\}}\right).
-\]
 
-This is symmetrical in $X$ and $Y$. Notice that $H(Y) - H(Y|X)$ is [?]. This also looks as a log sum inequality. In Particular, it is similar to information divergence of the distribution $P_{XY}$ from the distribution $P_X \times P_Y$. So,
 
-\[
- H(Y) - H(Y|X) = D(P_{XY}||P_X \times P_Y) \geq 0
-\]
+This is symmetrical in $X$ and $Y$. Notice that $H(Y) - H(Y|X)$ is not. This also looks as a log sum inequality. In Particular, it is similar to information divergence of the distribution $P_{XY}$ from the distribution $P_X \times P_Y$. So,
+
+\begin{equation}
+ H(Y) - H(Y|X) = D(P_{XY}||P_X \times P_Y) \geq 0 
+\end{equation}
+
 
 and we have equality when $P_{XY} = P_X \times P_Y$. It is a measure of indipendence of $X$ and $Y. \hfill\Box$
-
+\begin{definition}[Mutual Information]
 We define the amount of information that $X$ and $Y$ share as follows:
-$$I(X \wedge Y) = H(Y) - H(Y|X),$$
-and it is called \emph{mutual information}. It is symmetric and nonnegative. Notice that
+\begin{equation}
+I(X \wedge Y) = H(Y) - H(Y|X), 
+\end{equation}
+and it is called mutual information. It is symmetric and nonnegative. 
+\end{definition}
 
-\[
- I(X \wedge Y) = H(Y) - H(Y|X) = H(Y) + H(X) - H(X, Y)
-\]
-
+Notice that
+\begin{align*}
+ I(X \wedge Y) &= H(Y) - H(Y|X) \\&= H(Y) + H(X) - H(X, Y) 
+\end{align*}
 thus
-\[
- H(X, Y) \leq H(X) + H(Y)
-\]
+\begin{equation}
+ H(X, Y) \leq H(X) + H(Y) 
+\end{equation}
 
 with equality iff $X$ and $Y$ are independent. Finally, we state (without proof) that
-\[
- H(Y|Z) \geq H(Y |Z, X).
-\]
+\begin{equation}
+ H(Y|Z) \geq H(Y |Z, X). 
+\end{equation}
 
+\begin{prop}[Chain Rule]
 The \emph{chain rule} states that
-\[
- H(X_1, \ldots, X_n) = H(X_1) + \sum_{i = 2}^n H(X_i | X_1, \ldots, X_{i-1})
-\]
+\begin{equation}
+ H(X_1, \ldots, X_n) = H(X_1) + \sum_{i = 2}^n H(X_i | X_1, \ldots, X_{i-1}).
+\end{equation}
+\end{prop}
 
+We have said that $I(X \wedge Y) \sim \mu(A \cap B)$, and since $H(Y | X, Z) \leq H(Y|Z)$ we can state that
 
-\[
- H(Y | X, Z) \leq H(Y|Z)
-\]
 \[
  I(X\wedge Y | Z) \sim \mu(A \cap B \setminus C)
 \]
 
 that is the conditional mutual information. We now wonder about which quantity between $I(X \wedge Y | Z)$ and $I(X \wedge Y)$ is greater.
 
-\[
- I(X \wedge Y) -  I(X\wedge Y | Z)  \sim \mu(A \cap B) - \mu((A \cap B) \setminus C) = 
-\]
-
-\[
- = \mu((A \cap B) \setminus ((A \cap B) \setminus C)) = \mu(A \cap B \cap C)
-\]
+\begin{align*}
+ I(X \wedge Y) -  I(X\wedge Y | Z)  & \sim \mu(A \cap B) - \mu((A \cap B) \setminus C)\\
+ & = \mu((A \cap B) \setminus ((A \cap B) \setminus C)) \\ 
+ & = \mu(A \cap B \cap C). 
+\end{align*}
 
 this is what the analogy suggests, but we need a proof to believe that this is true.
 
@@ -140,15 +158,25 @@ this is what the analogy suggests, but we need a proof to believe that this is t
  I(X \wedge Y) - I(X \wedge Y | Z) \geq 0
 \end{equation}
 
-If $X \equiv Y \equiv Z$ then $$I(X \wedge X) = H(X) - H(X|X) = H(X)$$ so Equation \ref{eq:mutcondinf} is possible. We can also have it the other way around:
+If $X \equiv Y \equiv Z$ then
+\begin{equation}
+I(X \wedge X) = H(X) - H(X|X) = H(X) 
+\end{equation}
 
-$$I(X \wedge Y | Z) \geq I(X \wedge Y).$$ It follows that equality does not hold. Suppose $X, Y, Z \in \{0, 1\}$, and also they are uniformly distributed. Moreover, $X$ and $Y$ are independent so $I(X \wedge Y) = 0$. We then define $Z = X \oplus Y$, but then $X = Y \oplus Z$ and $Y = X \oplus Z$. $X, Y, Z$ are pairwise independent, but they are not three-way independent, since every couple of them determines the third.
+so Equation \ref{eq:mutcondinf} is possible. We can also have it the other way around:
+\begin{equation}
+I(X \wedge Y | Z) \geq I(X \wedge Y). 
+\end{equation}
+
+It follows that equality does not hold. Suppose $X, Y, Z \in \{0, 1\}$, and also they are uniformly distributed. Moreover, $X$ and $Y$ are independent so $I(X \wedge Y) = 0$. We then define $Z = X \oplus Y$, but then $X = Y \oplus Z$ and $Y = X \oplus Z$. $X, Y, Z$ are pairwise independent, but they are not three-way independent, since every couple of them determines the third.
 
 \[
  I(X\wedge Y|Z) = H(X|Z) - H(X|Y, Z) = H(X) - 0 = 1.
 \]
 
 Any number $m \geq 2$ of sets are disjoint iff they are pairwise disjoint, but random variable independence does not satisfy this property. The analogy fails on assuming that random variables independence is similar to set disjointness. $n$-way independence is binary, but $n$-way independence is unrelated to $m$-way independence if $n \not= m$.
+
+\section{Information Source and Speed of Information}
 
 An \emph{information source} is an infinite sequence $X_1, X_2, \ldots, X_n$ of random variables with $X_i \in \xset$, \emph{i.e.} they take values from the same set. How can we measure the information content in an information source? We denote the information source as $X^\infty$, commonly $X^n = X_1, \ldots, X_n$. 
 
