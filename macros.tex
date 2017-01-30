@@ -6,28 +6,43 @@
 \newtheorem{lem}{Lemma}
 \newtheorem{cor}{Corollary}
 
-%math symbols
-\newcommand{\xset}{\mathcal{X}}                       %Alphabet
-\newcommand{\chrom}[1]{X(#1)}
+% math symbols
+
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+
+\newcommand{\Tau}{\mathrm{T}} % Capital Tau
+
 \newcommand{\ie}{\textit{i.e.}, }
-\newcommand{\zero}{\str{0}}
-%\newcommand{\X}{\mathfrak{X}}                      %Kindle doesnt like this
-\newcommand{\X}{\xset}
+
+\newcommand{\xset}{\X}
+\newcommand{\msgset}{\M} % the set of all messages
+\newcommand{\yset}{\Y}
+\newcommand{\cwset}{\mathcal{C}_n} % codewords set
+
+\newcommand{\chrom}[1]{X(#1)}
+
+\newcommand{\str}[1]{\underline{#1}} % string/vector
+\newcommand{\zero}{\str{0}} % zero vector
+
 \newcommand{\Reals}{\mathbb{R}}
+\newcommand{\Naturals}{\mathbb{N}}
+
 \newcommand{\abs}[1]{\left|{#1}\right|}
 \newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+
+\newcommand{\im}{\text{Im}} % image of linear application
+
 \newcommand{\sfrac}{\frac}
-\newcommand{\Tau}{\mathrm{T}}                         %Capital Tau
-\newcommand{\ifrac}[2]{\frac{#1}{#2}}                     %Inline fraction
-\newcommand{\str}[1]{\underline{#1}}                  %String 
-\newcommand{\msgset}{\mathcal{M}}                     %the set of all messages
-\newcommand{\hball}[2]{B_H\left(#1, #2\right)}  %the Hamming ball
-\newcommand{\hdist}[1]{d_H \left({#1}\right)}       %Hamming distance
-\newcommand{\hweight}[1]{w_H\left(#1\right)}               %Hamming weight
-\newcommand{\yset}{\mathcal{Y}}                       %Alphabet
-\newcommand{\im}{\text{Im}}                           %image of linear application
-\renewcommand{\pref}{\hookleftarrow}                    %is prefix relation
-\newcommand{\prol}[1]{Y_L(#1)}                        %all the strings that have x as prefix
-\newcommand{\cwset}{\mathcal{C}_n} %codewords set
-\newcommand{\supp}{\text{Supp}_w} %support
+\newcommand{\ifrac}[2]{\frac{#1}{#2}} % Inline fraction
+
+\newcommand{\hball}[2]{B_H\left(#1, #2\right)} % the Hamming ball
+\newcommand{\hdist}[1]{d_H \left({#1}\right)} % Hamming distance
+\newcommand{\hweight}[1]{w_H\left(#1\right)} % Hamming weight
+
+\renewcommand{\pref}{\leftarrowtail} % is prefix relation
+\newcommand{\prol}[1]{Y_L(#1)} % all the strings that have x as prefix
+
+\newcommand{\supp}{\text{Supp}_w} % support
