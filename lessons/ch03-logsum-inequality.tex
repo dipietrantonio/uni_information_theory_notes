@@ -1,62 +1,119 @@
 \chapter{The log sum inequality}
-We now prove a consequence of the concavity of the logarithm, which will be used to prove some results about entropy.
 
+We now prove a consequence of the concavity of the logarithm, which will be used to prove some results about entropy.
 \begin{obs}\label{obs:cap-convex}
-	The logarithm function is cap-convex ($\cap$-Convex). Remember that $\ln(t) \leq t - 1$ (with equality iff $t=1$) and $\log_2(t) = \dfrac{\ln(t)}{\ln(2)}$.
-	
+	The logarithm function is cap-convex ($\cap$-Convex).
+	Remember that $\ln(t) \le t - 1$ (with equality if and only if $t=1$) and $\log_2(t) = \frac{\ln(t)}{\ln(2)}$.
 \end{obs}
 
 \begin{prop}[Log sum inequality]\label{prop:logsum}
-	Let $a_i \geq 0, i = 1, 2, \ldots, t$ with $a = \sum_{i = 1}^t a_i$ and $b_i \geq 0, i = 1, 2, \ldots, t$, with $b = \sum_{i = 1}^t b_i$, then 
-	\begin{equation}
-	 \sum_{i= 1}^ta_i\log\left(\dfrac{a_i}{b_i}\right)\geq a\log\left(\dfrac{a}{b}\right).
-	\end{equation}
+	Let $a_i \ge 0$, for $i \in \{1, 2, \dots, t\}$, $a = \sum_{i = 1}^t a_i$, and let $b_i \ge 0$, $b = \sum_{i = 1}^t b_i$, then 
+	\begin{equation*}
+		\sum_{i = 1}^t a_i \ln \left( \frac{a_i}{b_i} \right)
+		\ge
+		a \ln \left( \frac{a}{b} \right).
+	\end{equation*}
 \end{prop}
 
-We are ignoring for now the cases where $a_i$ or $b_i = 0$. The relation is with equality if and only if  the two sets are proportionate, \emph{i.e.} $\exists c\ a_i = cb_i,\ \forall i$. When $a = b = 1$ we have two distributions $P|[t]$ and $Q|[t]$. So:
-\begin{equation}
-\sum_{i = 1}^tP(i)\log\left(\dfrac{P(i)}{Q(i)}\right)\geq 0
-\end{equation}
- and we have equality iff $P = Q$. We denote this with $D(P||Q)$, called the informational divergence of $P$ from $Q$. This is not a metric (it lacks of simmetry and triangle inequality), but it can be seen as a ``dissimilarity'' measure. It's called also Kullback-Leibler divergence or \emph{relative entropy}\footnote{From the book Elements of Information Theory, Wiley.}. 
+We are ignoring for now the cases where $a_i$ or $b_i = 0$.
+The relation is with equality if and only if the two sets are proportionate, \ie $\exists c : a_i = c \cdot b_i$, $\forall i$.
+When $a = b = 1$ we have two distributions $P|[t]$ and $Q|[t]$.
+So:
+\begin{equation*}
+	\sum_{i = 1}^t P(i) \ln \left( \frac{P(i)}{Q(i)} \right) \ge 0
+\end{equation*}
+and we have equality if and only if $P = Q$.
+We denote this with $D(P||Q)$, called the informational divergence of $P$ from $Q$.
+This is not a metric (it lacks of simmetry and triangle inequality), but it can be seen as a ``dissimilarity'' measure.
+It's called also Kullback-Leibler divergence or \emph{relative entropy}\footnote{From the book Elements of Information Theory, Wiley.}. 
  
- Proposition \ref{prop:logsum} is based on the Observation \ref{obs:cap-convex}. The Proposition will be proved for the natural logarithm.
+ \Cref{prop:logsum} is based on \cref{obs:cap-convex}.
+ The Proposition will be proved for the natural logarithm.
  
- \noindent\textbf{Proof}. We would like to prove that $$\sum_{i= 1}^ta_i\log\left(\dfrac{a_i}{b_i}\right)\geq a\log\left(\dfrac{a}{b}\right).$$First, there is the need to set some convetions. When $b_i = 0$ and $a_i = 0$, we have $$0\ln(\dfrac{0}{0}) = 0$$ by convention.
+\begin{proof}
+We would like to prove that
+\begin{equation*}
+	\sum_{i= 1}^t a_i \ln \left( \frac{a_i}{b_i} \right)
+	\ge
+	a \ln \left( \frac{a}{b} \right).
+\end{equation*}
+First, there is the need to set some convetions.
+When $b_i = 0$ and $a_i = 0$, we say, by convention, that
+\begin{equation*}
+	0 \ln \left( \frac{0}{0} \right) = 0.
+\end{equation*}
  
- The reason why? $[t] \subset [w]$, you can think of $\{a_i\}$ as a subset of some other set where the other values are all $0$'s. Otherwise, if $a_i > 0$ and $b_i = 0$, we convene that $$a_i\log\left(\dfrac{a_i}{b_i}\right) = +\infty.$$ We accept this convention since $b_i \geq 0$, so we can think of $\ifrac{a_i}{0}$ as the limit of $\ifrac{a_i}{f_n}$, for some $f_n\geq 0$ such that $f_n \rightarrow 0$. The third case is
- 
-\[
-  \sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=\hat{t} + 1}^t 0\log\left(\dfrac{0}{b_i}\right)
- \]
- with $\hat{t} < t$. Here we convene that $$0\log\left(\dfrac{0}{b_i}\right) = 0.$$ Notice that 
- 
-\[
-\sum_{i= 1}^{\hat{t}}a_i\log\left(\dfrac{a_i}{b_i}\right)+ \sum_{i=\hat{t} + 1}^t 0\log\left(\dfrac{0}{b_i}\right) \geq a\log\left(\dfrac{a}{\hat{b}}\right) + 0 \geq a\log\left(\dfrac{a}{b}\right),
-\]
+The reason why?
+$[t] \subset [w]$, you can think of $\{a_i\}$ as a subset of some other set where the other values are all $0$s.
+Otherwise, if $a_i > 0$ and $b_i = 0$, we convene that
+\begin{equation*}
+	a_i \ln \left( \frac{a_i}{b_i} \right) = +\infty.
+\end{equation*}
+We accept this convention since $b_i \geq 0$, so we can think of $\frac{a_i}{0}$ as the limit of $\frac{a_i}{f_n}$, for some $f_n \ge 0$ such that $f_n \to 0$.
+The third case is
+\begin{equation*}
+  \sum_{i = 1}^{\hat{t}} a_i \ln \left( \frac{a_i}{b_i} \right)
+  +
+  \sum_{i = \hat{t} + 1}^{t} 0 \ln \left( \frac{0}{b_i} \right)
+\end{equation*}
+with $\hat{t} < t$.
+Here we convene that
+\begin{equation*}
+	0 \ln \left( \frac{0}{b_i} \right) = 0.
+\end{equation*}
+Notice that 
+\begin{equation*}
+	\sum_{i = 1}^{\hat{t}} a_i \ln \left( \frac{a_i}{b_i} \right)
+	+
+	\sum_{i = \hat{t} + 1}^{t} 0 \ln \left( \frac{0}{b_i} \right)
+	\ge a \ln \left( \frac{a}{\hat{b}} \right) + 0
+	\ge a \ln \left( \frac{a}{b} \right),
+\end{equation*}
+with $\hat{b} < b$.
 
-with $\hat{b} < b$. Now the proof. First, suppose $a=b$. Keep in mind that $$\ln(x)\leq x - 1\Rightarrow \ln\left(\dfrac{1}{x}\right)\leq \dfrac{1}{x} - 1.$$
+Now the proof.
+First, suppose $a=b$.
+Keep in mind that
+\begin{equation*}
+	\ln(x) \le x - 1
+	\implies
+	\ln \left( \frac{1}{x} \right) \le \frac{1}{x} - 1.
+\end{equation*}
+So,
+\begin{align*}
+	\sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{b_i} \right)
+	& \ge
+	\sum_{i = 1}^{t} a_i \left( 1 - \frac{b_i}{a_i} \right)
+	\tag{w. eq. iff $a=b$}
+	\\
+	& =
+	\sum_{i = 1}^{t} a_i - \sum_{i = 1}^{t} a_i \frac{b_i}{a_i}
+	=
+	a - b = 0.
+\end{align*}
+The case then they are different can be easily reduced to this one.
 
-So
-
-\[
-\sum_{i=1}^ta_i\ln\left(\dfrac{a_i}{b_i}\right) \geq \sum_{i=1}^ta_i\left(1-\dfrac{b_i}{a_i}\right) =  
-\]
-
-with equality iff $a=b$ (the case then they are different can be easily reduced to this one.)
-
-\[
-= \sum_{i = 1}^ta_i - \sum_{i=1}^ta_i\dfrac{b_i}{a_i} = a -b = 0.
-\]
-
-Assume $b = ca$, for $c \not=1$ we introduce $$b_i = c\hat{b}_i \Rightarrow \hat{b}_i = \dfrac{b_i}{c}.$$
-
-\[
-\sum_{i = 1}^t a_i\ln\left(\dfrac{a_i}{c\hat{b}_i} \right) = \]
-\[ = \sum_{i=1}^{t}a_i\ln\left(\dfrac{1}{c} \right) + \sum_{i=1}^ta_i\ln\left(\dfrac{a_i}{\hat{b}_i} \right) \geq  \sum_{i=1}^{t}a_i\ln\left(\dfrac{1}{c} \right) + a\ln\left(\dfrac{a}{a} \right) = \]
-
-with equality iff $a_i = \hat{b}_i,\ \forall i$
-\[
- = a\ln\left(\dfrac{1}{c}\right) + a\ln\left(\dfrac{a}{a}\right) = a\ln\left(\dfrac{a}{ca} \right) = a\ln\left(\dfrac{a}{b} \right).
- \]
- 
-$\hfill\Box$
+Assume $b = c \cdot a$, for $c \neq 1$.
+We introduce
+\begin{equation*}
+	b_i = c \cdot \hat{b}_i \implies \hat{b}_i = \frac{b_i}{c}.
+\end{equation*}
+Then,
+\begin{align*}
+	\sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{c \cdot \hat{b}_i} \right)
+	& =
+	\sum_{i = 1}^{t} a_i \ln \left( \frac{1}{c} \right) + \sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{\hat{b}_i} \right)
+	\\
+	& \ge
+	\sum_{i = 1}^{t} a_i \ln \left( \frac{1}{c} \right) + a \ln \left( \frac{a}{a} \right)
+	\tag{w. eq. iff $a_i = \hat{b}_i,\ \forall i$}
+	\\
+	& =
+	a \ln \left( \frac{1}{c} \right) + a \ln \left( \frac{a}{a} \right)
+	\\
+	& =
+	a \ln \left( \frac{a}{c \cdot a} \right)
+	=
+	a \ln \left( \frac{a}{b} \right).
+\end{align*}
+\end{proof}
