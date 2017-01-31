@@ -85,10 +85,10 @@ We denote with $\abs{f(m)}$ the length of the codeword assigned to $m$ by $f$, \
 	\end{equation*}
 \end{proof}
 
-\begin{prop}
+\begin{prop}[Prefix codes and entropy] \label{prop:prefix-entropy-upper}
 	If $f$ is a prefix code then, for any distribution $P|\M$,
 	\begin{equation*}
-		\sum_{m \in \M} \abs{f(m)} \cdot P(m) \ge H(P).
+		\sum_{m \in \M} \abs{f(m)} \cdot P(m) \ge \Entropy{P}.
 	\end{equation*}
 \end{prop}
 
@@ -220,7 +220,7 @@ then $\exists \lambda \ge L, \lambda \in \Naturals$  such that
 with $l(m_1) \le \dots \le l(m_{\abs{\M}}) \le \lambda$, so we could add some more words to our code.
 A maximal prefix code is a prefix code to which you cannot add more codewords (and still have a prefix-code).
 
-\begin{prop}
+\begin{prop}[Prefix codes and entropy $+1$] \label{prop:prefix-entropy-lower}
 	For all $P|\M$ probability distributions over $\M$, $\exists f : \M \to \{0, 1\}^*$ prefix code such that
 	\begin{equation*}
 		\sum_{m \in \M} P(m) \cdot \abs{f(m)} < H(P) + 1.

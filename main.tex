@@ -1,4 +1,5 @@
 \documentclass[a4paper,oneside]{memoir}
+\usepackage{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -7,20 +8,43 @@
 \usepackage{amsthm}
 \usepackage{xcolor}
 \usepackage{cleveref}
+\usepackage{ifthen}
+\usepackage{thmtools}
+\usepackage{acronym}
 
 \title{Notes on Information Theory}
 \author{Cristian Di Pietrantonio \and Michele Laurenti}
 
-%PLEASE: see the macros defined and use them!
-\input{macros}
+\input{macros.tex}
+\input{setup.tex}
 
 \begin{document}
 	\frontmatter
+
 	\maketitle
+
 	\tableofcontents*
-	%\input{preface}
+
+	\renewcommand{\listtheoremname}{List of Definitions}
+	\listoftheorems[ignoreall,show={definition}]
+
+	\renewcommand{\listtheoremname}{List of Theorems}
+	\listoftheorems[ignoreall,show={thm}]
+
+	\renewcommand{\listtheoremname}{List of Observations}
+	\listoftheorems[ignoreall,show={obs}]
+
+	\renewcommand{\listtheoremname}{List of Propositions}
+	\listoftheorems[ignoreall,show={prop}]
+
+	\renewcommand{\listtheoremname}{List of Lemmas}
+	\listoftheorems[ignoreall,show={lem}]
+
+	\renewcommand{\listtheoremname}{List of Corollaries}
+	\listoftheorems[ignoreall,show={cor}]
 	
 	\mainmatter
+
 	\input{lessons/ch01-intro}
 	\input{lessons/ch02-hamming-ball}
 	\input{lessons/ch03-logsum-inequality}
@@ -28,4 +52,10 @@
 	\input{lessons/ch05-entropy-random-variables}
 	\input{lessons/ch06-ecc}
 	\input{lessons/the-communication-model}
+
+	\backmatter
+
+	\chapter{Acronyms}
+
+	\input{acronyms.tex}
 \end{document}

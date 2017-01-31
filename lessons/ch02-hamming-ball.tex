@@ -126,7 +126,10 @@ First we introduce the notion of \emph{entropy}.
 \begin{definition}[Entropy]
 Entropy is a function $h: [0, 1] \rightarrow [0, 1]$ defined as follows:
 \begin{equation}
-	h(t) = t\log_2\left(\frac{1}{t}\right) + (1 - t)\log_2\left(\frac{1}{1-t}\right).
+	\entropy{t} =
+	t \cdot \log_2 \left( \frac{1}{t} \right)
+	+
+	(1 - t) \cdot \log_2 \left( \frac{1}{1-t} \right).
 \end{equation} 
 \end{definition}
 
@@ -138,7 +141,7 @@ Entropy is a function $h: [0, 1] \rightarrow [0, 1]$ defined as follows:
 
 This function is not defined for the values $0$ and $1$.
 However, we have limits defined on these points and they are both $0$.
-So we artificially set $h(0) = 0$ and $h(1) = 0$.
+So we artificially set $\entropy{0} = 0$ and $\entropy{1} = 0$.
 It is better to think about a probability distribution $(t, 1 - t)$ and entropy is a number attached to it.
 Entropy measures symmetry and with $t = \frac{1}{2}$ we have maximum chaos (the future outcomes are equally likely).
 
@@ -338,14 +341,14 @@ The number of the total chickens in the box can't be greater than $\frac{w}{W}$.
 
 So this proof is important because the cardinality of the Hamming ball comes up in many contexts, such as error correction (a string that has been altered at most $r$ times is in a certain radius from the original string).
 
-\section{Generalization to any finite alphabet}
+\section{Generalization to Any Finite Alphabet}
 
-Let $\X$ be the (usual) finite set that is an alphabet.
+Let $\X$ be the (usual) finite set, which we call the alphabet.
 We are insterested in sequences of elements of $\X$, called \emph{strings} or \emph{words}.
 So $\X^n, n \in \mathbb{N}$, is a set of words.
 $\X^n$ can be partitioned by putting together those sequences that can be transformed one into the other by permutation, \ie sequences that have the same number of occurrences of elements in the alphabet.
 
-\begin{definition}
+\begin{definition}[Frequency of an alphabet symbol]
 	Let $a \in \X$ and $\str{x} \in \X^n$.
 	We define the frequency of an alphabet symbol $a$ in a string $\str{x}$ in the following way:  
 	\begin{equation*}
@@ -387,18 +390,24 @@ We can partition $\X^n$ into sets of strings of the same type, $T_p$, with $P|\X
 \end{equation*}
 
 \begin{definition}[Generalised Entropy]
-	We introduce the \emph{generalized entropy} $H(P)$, defined as
+	We introduce the \emph{generalized entropy} $\Entropy{P}$, defined as
 	\begin{equation*}
-		H(P) = -\sum_{a \in \X} P(a) \log_2 P(a).
+		\Entropy{P} = -\sum_{a \in \X} P(a) \log_2 P(a).
 	\end{equation*}
 \end{definition}
 
 \begin{thm} \label{thms:taupcard}
-	If $T_p \neq \emptyset$ then $$\dfrac{1}{(n+1)^{|\X| -1}}2^{nH(P)}\leq |T_p| \leq 2^{nH(P)}$$
+	If $T_p \ne \emptyset$, then
+	\begin{equation*}
+		\frac{1}{(n+1)^{\abs{\X} -1}} \cdot 2^{n \, \Entropy{P}}
+		\leq
+		\abs{T_p}
+		\le 2^{n \, \Entropy{P}}.
+	\end{equation*}
 \end{thm}
 
 \begin{proof}
-	In order to prove the above theorem, we first define the product distribution $P|\X \rightarrow P^n|\X^n$ as 
+	In order to prove the above theorem, we first define the product distribution $P|\X \to P^n|\X^n$ as 
 	\begin{equation*}
 		P^n(\str{x}) = \prod_{i = 1}^nP(x_i).
 	\end{equation*}
@@ -421,12 +430,12 @@ We can partition $\X^n$ into sets of strings of the same type, $T_p$, with $P|\X
 		2^{n \left[\sum_{a \in \X} P(a) \log_2 P(a) \right]}
 		\\
 		& =
-		2^{-n \, H(p)}.
+		2^{-n \, \Entropy{p}}.
 	\end{align*}
 
 	So,
 	\begin{equation*}
-		1 = P^n(\X^n) \ge P^n(T^n_p) = \abs{T_p^n} \cdot 2^{-n \, H(p)}.
+		1 = P^n(\X^n) \ge P^n(T^n_p) = \abs{T_p^n} \cdot 2^{-n \, \Entropy{p}}.
 	\end{equation*}
 \end{proof}
 
@@ -512,15 +521,15 @@ Now, to prove the lower bound, consider
 		=
 		\abs{T_p^n} \prod_{a \in \X} P(a)^{n \, P(a)}
 		=
-		\abs{T_p^n} \cdot 2^{-n \, H(P)}
+		\abs{T_p^n} \cdot 2^{-n \, \Entropy{P}}
 	\end{equation*}
 	and conclude that
 	\begin{equation*}
 		1
 		\le
-		(n+1)^{\abs{\X}-1} \abs{T_p^n} \cdot 2^{-n \, H(P)}
+		(n+1)^{\abs{\X}-1} \abs{T_p^n} \cdot 2^{-n \, \Entropy{P}}
 		\implies
-		\frac{1}{(n+1)^{\abs{\X}-1}} \cdot 2^{n \, H(P)} \le \abs{T_p^n}.
+		\frac{1}{(n+1)^{\abs{\X}-1}} \cdot 2^{n \, \Entropy{P}} \le \abs{T_p^n}.
 	\end{equation*}
 \end{proof}
 

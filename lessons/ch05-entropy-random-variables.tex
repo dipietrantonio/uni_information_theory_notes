@@ -1,356 +1,468 @@
-\chapter{Entropy of random variables}
+\chapter{Entropy of \aclp{RV}}
 
-Let's reason on the probability of a message. You can consider an infinite sequence of random variables $X_i$ which take values in $\msgset$. We implicitly assumed that $X_i$ are independent random variables. If we group random variables before encoding we can asymptotically reach entropy.
+Let's reason on the probability of a message.
+You can consider an infinite sequence of \acp{RV} $X_i$ which take values in $\M$.
+We implicitly assume that $X_i$ are independent \acp{RV}.
+If we group \acp{RV} before encoding we can asymptotically reach entropy.
 
 \section{Joint Entropy, Conditional Etropy and Mutual Information}
 
-Given a random variable $X$, the entropy of $X$ is defined as $$H(X) = H(P_X),$$ where $P_X$ is the distribution of $X$. How is entropy defined for two random variables? If $X=Y$ then $H(X, Y) = H(X).$
+Given a \ac{RV} $X$, the entropy of $X$ is defined as
+\begin{equation*}
+	\Entropy{X} = \Entropy{P_X},
+\end{equation*}
+where $P_X$ is the distribution of $X$.
+How is entropy defined for two \acp{RV}?
+If $X = Y$ then $\Entropy{X,Y} = \Entropy{X}.$
 
 \begin{definition}[Joint Entropy]
-In general, the entropy of a pair is the entropy of the random variable derived by the pair, \emph{i.e.}
-\begin{equation}
-H(X, Y) = H((X, Y)), 
-\end{equation}
-since $(X, Y)$ has a probability distribution $P_{XY}$ and we can think of the pair as just a random variable. $H(X, Y)$ is defined a the \emph{joint entropy} of $X$ and $Y$. 
+	In general, the entropy of a pair is the entropy of the \ac{RV} derived by the pair, \ie
+	\begin{equation*}
+		\Entropy{X,Y} = \Entropy{(X,Y)}, 
+	\end{equation*}
+	since $(X, Y)$ has a probability distribution $P_{XY}$ and we can think of the pair as just a \ac{RV}.
+	$\Entropy{X,Y}$ is defined a the \emph{joint entropy} of $X$ and $Y$. 
 \end{definition}
 
-
-
 \begin{prop}
- $$H(P) \leq log(|\xset|),$$ with $P|\xset$ and with equality iff $P(x) = \ifrac{1}{|\xset|}, \forall x \in \xset.$
+	\begin{equation*}
+		\Entropy{P} \le \log_2 \left( \abs{\X} \right),
+	\end{equation*}
+	with $P|\X$ and with equality if and only if $P$ is the equidistribution, \ie $P(x) = \frac{1}{\abs{\X}}$ for all $x \in \X.$
 \end{prop}
-\begin{proof} Call $U$ the uniform distribution. $D(P||U)\geq 0$, with equality iff $P = U$.
 
-\begin{align*}
- D(P||U) & = \sum_{x \in \xset} P(x)\log\left(\dfrac{P(x)}{\sfrac{1}{|\xset|}}\right)\\
- & = \sum_{x \in \xset} P(x)\log(x) + \sum_{x\in\xset} P(x)\log(|\xset|)\\
- & = -H(P) + \log(|\xset|).
-\end{align*}
-
-This quantity is nonnegative with equality to zero iff $P=U.$
-
+\begin{proof}
+	Call $\U$ the uniform distribution.
+	$D(P||\U)\ge 0$, with equality if and only if $P = \U$.
+	\begin{align*}
+		D(P||\U)
+		& =
+		\sum_{x \in \X} P(x) \log_2 \left( \frac{P(x)}{\frac{1}{\abs{\X}}} \right)
+		\\
+		& =
+		\sum_{x \in \X} P(x) \log_2 \left( P(x) \right)
+		+
+		\sum_{x \in \X} P(x) \log_2 \left( \abs{\X} \right)
+		\\
+		& =
+		-\Entropy{P} + \log_2 \left( \abs{\X} \right).
+	\end{align*}
+	This quantity is nonnegative with equality to zero if and only if $P = \U$.
 \end{proof}
 
-We write $X \in \xset$ since $X$ is like an unknown element of $\xset$. Random variables don't always have an expected value. We can think of $H(X)$ as the information content of $X$. If we consider entropy as the amount of information in a random variable, then it should be that $H(X, Y) \geq X$. We can think of entropy as  measure over a set.
-
-\[
- H(X) \sim \mu(A),\ A \subseteq U
-\]
-\[
-H(X, Y) \sim \mu(A \cup B),\ \mu(A \cup B) \geq \mu(A)
-\]
+We write $X \in \X$ since $X$ is like an unknown element of $\X$.
+Random variables don't always have an expected value.
+We can think of $\Entropy{X}$ as the information content of $X$.
+If we consider entropy as the amount of information in a \ac{RV}, then it should be that $\Entropy{X,Y} \ge X$.
+We can think of entropy as  measure over a set.
+\begin{align*}
+	\Entropy{X} \sim \mu(A), & \, A \subseteq U
+	\\
+	\Entropy{X,Y} \sim \mu(A \cup B), & \, \mu(A \cup B) \geq \mu(A)
+\end{align*}
 
 \begin{prop}
-  \begin{equation}
-H(X, Y) \geq H(X).   
-  \end{equation}
+	\begin{equation*}
+		\Entropy{X,Y} \ge \Entropy{X}.   
+	\end{equation*}
 \end{prop}
+
 \begin{proof}
-Consider the following quantities.
+	Consider the following quantities:
+	\begin{equation*}
+		\Entropy{X,Y}
+		=
+		\sum_{x \in \X} \sum_{y \in \Y} \Pr{X = x, Y = y}
+		\log_2 \left( \frac{1}{\Pr{X = x, Y = y}} \right),
+	\end{equation*}
+	and
+	\begin{align*}
+		\Entropy{X}
+		& =
+		\sum_{x \in \X} \Pr{X = x} \log_2 \left( \frac{1}{\Pr{X=x}} \right)
+		\\
+		& =
+		\sum_{x \in \X} \sum_{y \in \Y} \Pr{X = x, Y = y}
+		\log_2 \left( \frac{1}{\Pr{X = x}} \right).
+	\end{align*} 
 
-\begin{equation}
-H(X, Y) = \sum_{x\in \xset} \sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{X=x, Y=y\}}\right) 
-\end{equation}
+	We take the difference between the two:
+	\begin{equation*}
+		\Entropy{X,Y} - \Entropy{X}
+		=
+		\sum_{x \in \X} \sum_{y \in \Y}
+		\Pr{X = x, Y = y}
+		\log_2 \left( \frac{\Pr{X = x}}{\Pr{X = x, Y = y}} \right).
+	\end{equation*}
 
-and
-
-\begin{equation}
-\begin{align*}
- H(X) &= \sum_{x\in \xset}Pr\{X=x\}\log\left(\dfrac{1}{Pr\{X=x\}}\right)\\
- &=\sum_{x\in\xset}\sum_{y\in\yset}Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{X=x\}}\right) 
-\end{align*} 
-\end{equation}
-
-We take the difference between the two:
-
-\[
- H(X, Y) - H(X) =  \sum_{x\in\xset}\sum_{y\in\yset}Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x\}}{Pr\{X=x, Y=y\}}\right).
-\]
-
-We can think of $Pr\{X=x, Y=y\} = Pr\{X=x\}Pr\{Y=y | X=x\}$, then
-
-\[
-  \sum_{x\in \xset} \sum_{y \in \yset} Pr\{X=x\}Pr\{Y=y | X=x\}\log\left(\dfrac{1}{Pr\{Y=y|X=x\}}\right) =
-\]
-\[
- \sum_{x\in \xset}Pr\{X=x\}\sum_{y \in \yset} Pr\{Y=y | X=x\}\log\left(\dfrac{1}{Pr\{Y=y|X=x\}}\right).
-\]
-
-We would like to say that this quantity is nonnegative. Since $H(\cdot)$ is nonnegative, this difference is actually greater than (or equal to) zero.
+	The definition of conditional probability gives us that $\Pr{X = x, Y = y} = \Pr{X = x} \cdot \Pr{Y = y | X = x}$, and as such
+	\begin{align*}
+		\sum_{x \in \X} \sum_{y \in \Y} \Pr{X = x} \cdot \Pr{Y = y | X = x}
+		\log_2 \left( \frac{1}{\Pr{Y = y | X = x}} \right)
+		\\
+		=
+		\sum_{x \in \X} \Pr{X = x} \sum_{y \in \Y} \Pr{Y = y | X = x}
+		\log_2 \left( \frac{1}{\Pr{Y = y | X = x}} \right).
+	\end{align*}
+	We would like to say that this quantity is nonnegative.
+	Since $\Entropy{\cdot}$ is nonnegative, this difference is actually greater than (or equal to) zero.
 \end{proof}
 
 \begin{definition}[Conditional Entropy]
-We call
-\begin{equation}
- H(Y|X) = H(X, Y) - H(X)
-\end{equation}
-the \emph{conditional entropy} of $Y$ given $X$.
-
+	We call
+	\begin{equation*}
+		\Entropy{Y | X} = \Entropy{X,Y} - \Entropy{X}
+	\end{equation*}
+	the \emph{conditional entropy} of $Y$ given $X$.
 \end{definition}
 
-
-$H(X, Y) - H(X)$ is the convex combination of the entropies of the conditional distribution of $Y$ given the various values of $X$. It's like the expected value of the entropy of the conditional distribution $Pr\{Y=y | X=x\}$.
-
+$\Entropy{X,Y} - \Entropy{X}$ is the convex combination of the entropies of the conditional distribution of $Y$ given the various values of $X$.
+It's like the expected value of the entropy of the conditional distribution $\Pr{Y = y | X = x}$.
 It can be seen as the residual information when $X$ is known.
 
 \begin{prop}
-\begin{equation}
-H(Y) \geq H(Y|X). 
-\end{equation}
+	\begin{equation*}
+	\Entropy{Y} \ge \Entropy{Y | X}. 
+	\end{equation*}
 \end{prop}
 
 \begin{proof}
-\begin{align*}
- H(Y) - H(Y|X) & = \sum_{x \in \xset} \sum_{y \in \yset}Pr\{X=x, Y=y\}\log\left(\dfrac{1}{Pr\{Y=y\}}\right)\\ 
- & - \sum_{x \in \xset}\sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x\}}{Pr\{X=x, Y=y\}}\right)\\
-  & =  \sum_{x\in \xset} \sum_{y \in \yset} Pr\{X=x, Y=y\}\log\left(\dfrac{Pr\{X=x, Y=y\}}{Pr\{X=x\}Pr\{Y=y\}}\right)
-\end{align*}
-
-
-
-This is symmetrical in $X$ and $Y$. Notice that $H(Y) - H(Y|X)$ is not. This also looks as a log sum inequality. In Particular, it is similar to information divergence of the distribution $P_{XY}$ from the distribution $P_X \times P_Y$. So,
-
-\begin{equation}
- H(Y) - H(Y|X) = D(P_{XY}||P_X \times P_Y) \geq 0 
-\end{equation}
-
-
-and we have equality when $P_{XY} = P_X \times P_Y$. It is a measure of indipendence of $X$ and $Y$.
+	\begin{align*}
+		\Entropy{Y} - \Entropy{Y | X}
+		= &
+		\sum_{x \in \X} \sum_{y \in \Y} \Pr{X = x, Y = y}
+		\log_2 \left( \frac{1}{\Pr{Y=y}} \right)
+		\\ 
+		&~- \sum_{x \in \X} \sum_{y \in \Y} \Pr{X = x, Y = y}
+		\log_2 \left( \frac{\Pr{X = x}}{\Pr{X = x, Y = y}} \right)
+		\\
+		= &
+		\sum_{x \in \X} \sum_{y \in \Y} \Pr{X = x, Y = y}
+		\log_2 \left( \frac{\Pr{X = x, Y = y}}{\Pr{X = x} \cdot \Pr{Y = y}} \right).
+	\end{align*}
+	This is symmetrical in $X$ and $Y$.
+	Notice that $\Entropy{Y} - \Entropy{Y | X}$ is not.
+	This also looks as a log sum inequality.
+	In Particular, it is similar to information divergence of the distribution $P_{XY}$ from the distribution $P_X \times P_Y$. So,
+	\begin{equation*}
+		\Entropy{Y} - \Entropy{Y | X}
+		=
+		D \left( P_{XY} || P_X \times P_Y \right)
+		\ge 0,
+	\end{equation*}
+	and we have equality when $P_{XY} = P_X \times P_Y$.
+	It is a measure of indipendence of $X$ and $Y$.
 \end{proof}
+
 \begin{definition}[Mutual Information]
-We define the amount of information that $X$ and $Y$ share as follows:
-\begin{equation}
-I(X \wedge Y) = H(Y) - H(Y|X), 
-\end{equation}
-and it is called mutual information. It is symmetric and nonnegative. 
+	We define the amount of information that $X$ and $Y$ share as follows:
+	\begin{equation*}
+		\MutualInformation{X \land Y} = \Entropy{Y} - \Entropy{Y | X}, 
+	\end{equation*}
+	and it is called mutual information.
+	It is symmetric and nonnegative. 
 \end{definition}
 
 Notice that
 \begin{align*}
- I(X \wedge Y) &= H(Y) - H(Y|X) \\&= H(Y) + H(X) - H(X, Y) 
+	\MutualInformation{X \land Y}
+	& =
+	\Entropy{Y} - \Entropy{Y | X}
+	\\
+	& =
+	\Entropy{Y} + \Entropy{X} - \Entropy{X,Y} 
 \end{align*}
 thus
-\begin{equation}
- H(X, Y) \leq H(X) + H(Y) 
-\end{equation}
+\begin{equation*}
+	\Entropy{X,Y} \le \Entropy{X} + \Entropy{Y} 
+\end{equation*}
+with equality if and only if $X$ and $Y$ are independent.
+Finally, we state (without proof) that
+\begin{equation*}
+	\Entropy{Y | Z} \ge \Entropy{Y | Z, X}.
+\end{equation*}
 
-with equality iff $X$ and $Y$ are independent. Finally, we state (without proof) that
-\begin{equation}
- H(Y|Z) \geq H(Y |Z, X). 
-\end{equation}
-
-\begin{prop}[Chain Rule]
-The \emph{chain rule} states that
-\begin{equation}
- H(X_1, \ldots, X_n) = H(X_1) + \sum_{i = 2}^n H(X_i | X_1, \ldots, X_{i-1}).
-\end{equation}
+\begin{prop}[Chain Rule] \label{prop:chain-rule}
+	The \emph{chain rule} states that
+	\begin{equation*}
+		\Entropy{X_1, \dots, X_n}
+		=
+		\Entropy{X_1}
+		+
+		\sum_{i = 2}^n \Entropy{X_i | X_1, \dots, X_{i-1}}.
+	\end{equation*}
 \end{prop}
 
-We have said that $I(X \wedge Y) \sim \mu(A \cap B)$, and since $H(Y | X, Z) \leq H(Y|Z)$ we can state that
-
-\[
- I(X\wedge Y | Z) \sim \mu(A \cap B \setminus C)
-\]
-
-that is the conditional mutual information. We now wonder about which quantity between $I(X \wedge Y | Z)$ and $I(X \wedge Y)$ is greater.
-
+We have said that $\MutualInformation{X \land Y} \sim \mu(A \cap B)$, and since $\Entropy{Y | X, Z} \le \Entropy{Y|Z}$ we can state that
+\begin{equation*}
+	\MutualInformation{X \land Y | Z}
+	\sim
+	\mu(A \cap B \setminus C)
+\end{equation*}
+that is the conditional mutual information.
+We now wonder about which quantity between $\MutualInformation{X \land Y | Z}$ and $\MutualInformation{X \land Y}$ is greater.
 \begin{align*}
- I(X \wedge Y) -  I(X\wedge Y | Z)  & \sim \mu(A \cap B) - \mu((A \cap B) \setminus C)\\
- & = \mu((A \cap B) \setminus ((A \cap B) \setminus C)) \\ 
- & = \mu(A \cap B \cap C). 
+	\MutualInformation{X \land Y} -  \MutualInformation{X \land Y | Z}
+	& \sim
+	\mu(A \cap B) - \mu((A \cap B) \setminus C)
+	\\
+	& =
+	\mu((A \cap B) \setminus ((A \cap B) \setminus C))
+	\\ 
+	& =
+	\mu(A \cap B \cap C). 
 \end{align*}
-
-this is what the analogy suggests, but we need a proof to believe that this is true. Assume that
-
+This is what the analogy suggests, but we need a proof to believe that this is true.
+Assume that
 \begin{equation}\label{eq:mutcondinf}
- I(X \wedge Y) - I(X \wedge Y | Z) \geq 0.
+	\MutualInformation{X \land Y} - \MutualInformation{X \land Y | Z} \ge 0.
 \end{equation}
-
 If $X \equiv Y \equiv Z$ then
-\begin{equation}
-I(X \wedge X) = H(X) - H(X|X) = H(X) 
-\end{equation}
+\begin{equation*}
+	\MutualInformation{X \land X} = \Entropy{X} - \Entropy{X | X} = \Entropy{X},
+\end{equation*}
+so \cref{eq:mutcondinf} is possible.
+But we can also have it the other way around:
+\begin{equation*}
+	\MutualInformation{X \land Y | Z} - \MutualInformation{X \land Y} \ge 0. 
+\end{equation*}
+It follows that the inequality of \cref{eq:mutcondinf} does not hold always.
 
-so Disquation \ref{eq:mutcondinf} is possible. We can also have it the other way around:
-\begin{equation}
-I(X \wedge Y | Z) - I(X \wedge Y)\geq 0. 
-\end{equation}
-
-It follows that inequality does not hold. Suppose $X, Y, Z \in \{0, 1\}$, and also they are uniformly distributed. Moreover, $X$ and $Y$ are independent so $I(X \wedge Y) = 0$. We then define $Z = X \oplus Y$, but then $X = Y \oplus Z$ and $Y = X \oplus Z$. $X, Y, Z$ are pairwise independent, but they are not three-way independent, since every couple of them determines the third.
-
-\[
- I(X\wedge Y|Z) = H(X|Z) - H(X|Y, Z) = H(X) - 0 = 1.
-\]
-
-Any number $m \geq 2$ of sets are disjoint iff they are pairwise disjoint, but random variable independence does not satisfy this property. The analogy fails on assuming that random variables independence is similar to set disjointness. $n$-way independence is binary, but $n$-way independence is unrelated to $m$-way independence if $n \not= m$.
+Suppose $X, Y, Z \in \{0, 1\}$, and also they are uniformly distributed.
+Moreover, $X$ and $Y$ are independent so $\MutualInformation{X \land Y} = 0$.
+We then define $Z = X \xor Y$, but then $X = Y \xor Z$ and $Y = X \xor Z$.
+$X, Y, Z$ are pairwise independent, but they are not three-way independent, since every couple of them determines the third.
+\begin{equation*}
+	\MutualInformation{X \land Y | Z}
+	=
+	\Entropy{X | Z} - \Entropy{X | Y, Z}
+	=
+	\Entropy{X} - 0
+	= 1.
+\end{equation*}
+Any number $m \ge 2$ of sets are disjoint if and only if they are pairwise disjoint, but \ac{RV} independence does not satisfy this property.
+The analogy fails on assuming that \acp{RV} independence is similar to set disjointness.
+$n$-way independence is binary, but $n$-way independence is unrelated to $m$-way independence if $n \neq m$.
 
 \section{Information Source and Speed of Information}
 
-An \emph{information source} is an infinite sequence $X_1, X_2, \ldots, X_n$ of random variables with $X_i \in \xset$, \emph{i.e.} they take values from the same set. How can we measure the information content in an information source? We denote the information source as $X^\infty$, commonly $X^n = X_1, \ldots, X_n$. 
+An \emph{information source} is an infinite sequence $X_1, X_2, \dots, X_n, \dots$ of \acp{RV} with $X_i \in \X$, \ie they take values from the same set.
+How can we measure the information content in an information source?
+We denote the information source as $X^\infty$, and with $X^n = X_1, \dots, X_n$ a sequence of $n$ \acp{RV}.
 
-The ``speed'' of information from a sequence of random variables is 
-\begin{equation}
-\dfrac{1}{n}H(X_1, \ldots, X_n).
-\end{equation}
+The ``speed'' of information from a sequence of \acp{RV} is 
+\begin{equation*}
+	\frac{1}{n} \Entropy{X_1, \dots, X_n}.
+\end{equation*}
 
 The information rate of $H^\infty$, if it exists, is
+\begin{equation*}
+	\lim_{n \to \infty} \frac{1}{n} \Entropy{X^n}. 
+\end{equation*}
 
-\begin{equation}
- \lim_{n \rightarrow \infty} \dfrac{1}{n}H(X^n). 
-\end{equation}
 
-
-Consider $\{X_i\}_{i = 1}^\infty$, i.i.d., and denote by $P$ the common distribution of $\{X_i\}_{i = 1}^\infty$, so that $H(X_i) = H(P),\ \forall i.$
+Consider $\{X_i\}_{i = 1}^\infty$, an infinite sequence of independent and identically distributed \acp{RV}, and denote by $P$ the common distribution of $\{X_i\}_{i = 1}^\infty$, so that $\Entropy{X_i} = \Entropy{P}$ for all $i$.
 
 In this case,
-
-\begin{equation}
- H(X_1, \ldots, X_n) = \sum_{i = 1}^n H(X_i) = nH(P)
-\end{equation}
-
+\begin{equation*}
+	\Entropy{X_1, \dots, X_n}
+	=
+	\sum_{i = 1}^n \Entropy{X_i}
+	=
+	n \cdot \Entropy{P},
+\end{equation*}
 so
-\begin{equation}
- \lim_{n \rightarrow \infty} \dfrac{1}{n}H(X^n) = H(P).
-\end{equation}
+\begin{equation*}
+	\lim_{n \to \infty} \frac{1}{n} \Entropy{X^n} = \Entropy{P}.
+\end{equation*}
 
-What is the sufficient condition for this to hold (i.e. for the limit to exists)? We need stationary random variables: impredictable but ``stationary''. 
+What is the sufficient condition for this to hold (\ie for the limit to exists)?
+We need stationary \acp{RV}: impredictable but ``stationary''. 
 \begin{definition}[Stationary Information Source]
-We call an information source $\{X_i\}_{i = 1}^\infty$ \emph{stationary} if 
-\[
- \forall n,k \in \mathbb{N},\ \forall \str{x} \in \xset^n\ Pr\{X^n=\str{x}\} = Pr\{X_{k+1}, \ldots, X_{k+n} = \str{x}\}.
-\] 
+	We call an information source $\{X_i\}_{i = 1}^\infty$ \emph{stationary} if 
+	\begin{equation*}
+		\forall n,k \in \Naturals, \forall \str{x} \in \X^n
+		.
+		\Pr{X^n = \str{x}} = \Pr{X_{k+1}, \dots, X_{k+n} = \str{x}}.
+	\end{equation*} 
 \end{definition}
 
+We will see that if an information source is stationary then it has an information rate.
+In particular, with a stationary source the entropy of a sequence
+\begin{equation*}
+	\Entropy{X_i | X_1, \dots, X_{i-1}}
+\end{equation*}
+decreases.
 
-We will see that if an information source is stationary then it has an information rate. In particular, with a stationary source the entropy of a sequence $$H(X_i | X_1, \ldots, X_{i-1})$$ decreases.
 \begin{definition}[Memoryless Information Source]
-We call an information source \emph{memoryless} if $X_i, \forall i$, are totally independent.  
+	We call an information source \emph{memoryless} if $X_i$, for all $i$, are totally independent.  
 \end{definition}
 We will show that lack of memory is not a sufficient condition for the existence of the information rate.
 
-Consider $\{X_i\}_{i = 1}^\infty$, a sequence of totally independent random variables, does its entropy rate exists?
+Consider $\{X_i\}_{i = 1}^\infty$, a sequence of totally independent \acp{RV}, does its entropy rate exists?
 
-\begin{equation}
- \dfrac{1}{n}H(X_1, \ldots, X_n) = \dfrac{1}{n}\sum_{i=1}^nH(X_i).
-\end{equation}
-When does this quantity diverge? Take $H(X_i) \in \{0, 1\}$, the question is
-\[ 
-\exists? \lim_{n\rightarrow \infty} \sum_{i = 1}^n \dfrac{\varepsilon_i}{n},\ \varepsilon_i \in \{0, 1\}
-\]
+\begin{equation*}
+	\frac{1}{n} \cdot \Entropy{X_1, \dots, X_n}
+	=
+	\frac{1}{n} \sum_{i = 1}^n \Entropy{X_i}.
+\end{equation*}
+When does this quantity diverge?
+Take $\Entropy{X_i} \in \{0, 1\}$, what we want to know is if it exists the following limit, for $\epsilon_i \in \{0,1\}$:
+\begin{equation*}
+	\lim_{n \to \infty} \sum_{i = 1}^n \frac{\epsilon_i}{n}.
+\end{equation*}
 
-\begin{figure}[h!]
-\centering
-	\includegraphics[width=0.3\linewidth]{pictures/ch05-seq.eps}
-\end{figure}
-the first $2n$ bits, a sequence of alternating bits, have average $\ifrac{1}{2}$. Add the second $2n$ and you get $\ifrac{3}{4}$. Repeat this and the sequence oscillates between $\ifrac{3}{4}$ and $\ifrac{1}{2}$.
+Consider the following information source:
+\begin{equation*}
+	\overbrace{0101\dots0101}^{n \text{ bits}}
+	\overbrace{0101\dots0101}^{n \text{ bits}}
+	\overbrace{1111\dots1111}^{2n \text{ bits}}.
+\end{equation*}
+The first $2n$ bits, a sequence of alternating bits, have average $\frac{1}{2}$.
+Add the second $2n$ and you get $\frac{3}{4}$.
+Repeat this and the sequence oscillates between $\frac{3}{4}$ and $\frac{1}{2}$.
 
-\begin{thm}
- If $\{X_i\}_{i = 1}^\infty$ is stationary, then its entropy rate exists.
+\begin{thm}[Information rate of a stationary source]
+	If $\{X_i\}_{i = 1}^\infty$ is stationary, then its entropy rate exists.
 \end{thm}
 
-\begin{proof} It's reasonable to think that $$\dfrac{1}{n}H(X_1, \ldots, X_n)$$ goes to 0. It's sufficient to prove this to show that the rate exists (and it's 0). We just show it's decreasing:
-\begin{equation}
- \dfrac{1}{n}H(X_1, \ldots, X_n)  \leq \dfrac{1}{n-1}H(X_1, \ldots, X_{n-1})  
-\end{equation}
+\begin{proof}
+	It's reasonable to think that
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{X_1, \dots, X_n}
+	\end{equation*}
+	goes to 0.
+	What we are going to prove is that this is in fact true, and thus the information rate of a stationary information source exists (and it is 0).
 
-\ie we prove
+	To prove it, we just have to show that the sequence is decreasing, since $\Entropy{\cdot}$ is always positive, \ie we show that
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{X_1, \dots, X_n}
+		\le
+		\frac{1}{n-1} \cdot \Entropy{X_1, \dots, X_{n-1}},
+	\end{equation*}
+	which we could also write as
+	\begin{equation*}
+		(n-1) \cdot \Entropy{X^n}
+		\le
+		n \cdot \Entropy{X^{n-1}},
+	\end{equation*}
+	that is equal to saying that
+	\begin{equation*}
+		(n-1) \cdot \left[ \Entropy{X^{n-1}} + \Entropy{X_n | X^{n-1}} \right]
+		\le
+		n \cdot \Entropy{X^{n-1}}.
+	\end{equation*}
 
-\begin{equation}
- (n-1)H(X^n)  \leq nH(X^{n-1})  
-\end{equation}
+	Thus,
+	\begin{equation*}
+		(n-1) \cdot \Entropy{X_n | X^{n-1}} \le \Entropy{X^{n-1}}
+	\end{equation*}
 
-that is equal to say
+	We apply the definition of joint entropy (\cref{prop:chain-rule}):
+	\begin{equation*}
+		(n-1) \cdot \Entropy{X_n | X^{n-1}}
+		\le
+		\Entropy{X_1} + \sum_{i=2}^{n-1} \Entropy{X_i | X^{i-1}}
+	\end{equation*}
 
-\begin{equation}
- (n-1)[H(X^{n-1}) + H(X_n | X^{n-1})]  \leq nH(X^{n-1}) . 
-\end{equation}
+	Since the source is stationary, $\Entropy{X^{n-1}} = \Entropy{X_2, \dots, X_n}$, and we can rewrite the \ac{RHS} as follows:
+	\begin{align*}
+		\Entropy{X_1} + \sum_{i=2}^{n-1} \Entropy{X_i | X^{i-1}}
+		& =
+		\Entropy{X^{n-1}}
+		=
+		\Entropy{X_2, \dots, X_{n}}
+		\\
+		& =
+		\Entropy{X_{n}, \dots, X_2}
+		\\
+		& =
+		\Entropy{X_n} + \sum_{i=2}^{n-1} \Entropy{X_n | X_{1 + n - i}, \dots, X_{n-1}}.
+	\end{align*}
 
-Thus,
+	Our thesis thus becomes
+	\begin{equation*}
+		(n-1) \cdot \Entropy{X_n | X^{n-1}}
+		\le
+		\Entropy{X_n} + \sum_{i=2}^{n-1} \Entropy{X_n | X_{1+n-i}, \dots, X_{n-1}}.
+	\end{equation*}
+	This is a weaker statement than the following $n-1$ statements:
+	\begin{align*}
+		\Entropy{X_n | X^{n-1}} \le~& \Entropy{X_n},
+		\\
+		& \vdots
+		\\
+		\Entropy{X_n | X^{n-1}} \le~& \Entropy{X_n | X_{1+n-i}, \dots, X_{n-1}},
+		\\
+		& \vdots
+		\\
+		\Entropy{X_n | X^{n-1}} \le~& \Entropy{X_n | X^{n-1}}.
+	\end{align*}
+	We have coupled the $n-1$ terms in the \ac{LHS} with one of the $n-1$ terms in the \ac{RHS}.
 
-\begin{equation}
-  (n-1)H(X_n | X^{n-1})  \leq H(X^{n-1}).
-\end{equation}
+	Look at the generic term: for all $k$,
+	\begin{equation*}
+		\Entropy{X_n | X_1, \dots, X_{n-1}}
+		\le
+		\Entropy{X_n | X_{n-k}, \dots, X_{n-1}}.
+	\end{equation*}
+	By definition of mutual information, we have that
+	\begin{align*}
+		\Entropy{X_n | X_{n-k}, \dots, X_{n-1}}
+		-
+		\Entropy{X_n | X_1, \dots, X_{n-1}}
+		& =
+		\\
+		\MutualInformation{X_n \land X_1 \land \dots \land X_{n-k-1} | X_{n-k}, \dots, X_{n-1}}
+		& \ge 0. \qedhere
+	\end{align*}
 
-We apply the definition of joint entropy (Chain Rule)
-
-\begin{equation}
- (n-1)H(X_n | X^{n-1})  \leq H(X_1) + \sum_{i=2}^{n-1}H(X_i|X^{i-1}).
-\end{equation}
-
-Since the source is stationary, we rewrite the right hand side in
-
-\[
- H(X_n) + \sum_{i=2}^{n-1} H(X_n|X_{1 + n - i} \ldots X_{n-1})
-\]
-
-the proof then is
-
-\begin{equation}
-(n-1)H(X_n|X^{n-1}) \leq H(X_n) + \sum_{i=2}^{n-1}H(X_n | X_{1+n-i} \ldots X_{n-1}) 
-\end{equation}
-
-this means something like
-
-\[
- H(X_n|X^{n-1}) \leq H(X_n)
-\]
-\[
- \vdots
-\]
-\[
- H(X_n|X^{n-1}) \leq H(X_n | X_{1+n-i} \ldots X_{n-1}) 
-\]
-\[
- \vdots
-\]
-\[
- H(X_n|X^{n-1}) \leq H(X_n|X^{n-1})
-\]
-
-for $n+1$ times for $i \in [2, n-1]$. Look at the generic term
-
-\[
- H(X_n|X_1 \ldots X_{n-1}) \leq H(X_n|X_{n-k}\ldots X_{n-1}),\ \forall k
-\]
-
-this is
-
-\[
- H(X_n | X_{n-k} \ldots X_{n-1}) -H(X_n|X_1\ldots X_{n-1}) =
-\]
-\[
- I(X_n \wedge X_1 \ldots X_{n-k-1} | X_{n-k} \ldots X_{n-1}) \geq 0
-\]
-that remind us
-
-\[
- I(A \cap B | C) \geq 0 \implies H(A|C) \geq H(A | B,C).
-\]
+	This reminds us that
+	\begin{align*}
+		\MutualInformation{A \land B | C} \ge 0
+		\implies
+		\Entropy{A | C} \ge \Entropy{A | B, C}.
+	\end{align*}
 \end{proof}
 
-\section{Universal compression}
-Lempel and Ziv worked on universal compression algorithms. Universal compression is possible with stationary source. How would you compress a stationary source to its entropy?
+\section{Universal Compression}
 
-Consider $\{X_i\}_{i=1}^\infty$, that is stationary. Given $f$, a variable length prefix code, we consider $|f(X_i)|$ as a random variable. We can talk about the expected value $E|f(X_i)|$. We know that
-\[
- H(X_i) \leq E|f(X_i)| \leq H(X_i) + 1
-\]
-now,
-\[
-|f(X_1)\ldots f(X_n)| = \sum_{i=1}^n|f(X_i)|. 
-\]
+Lempel and Ziv worked on universal compression algorithms.
+Universal compression is possible with stationary source.
+How would you compress a stationary source to its entropy?
 
-\[
- \dfrac{1}{n}\sum_{i=1}^n H(X_i) \leq\dfrac{1}{n}\sum_{i=1}^n |f(X_i)|
-\]
+Consider a stationary information source $\{X_i\}_{i=1}^\infty$.
+Given $f$, a variable length prefix code, we consider $\abs{f(X_i)}$ as a \ac{RV}.
+We can talk about the expected value $\expectation{\abs{f(X_i)}}$ of this \ac{RV}.
+Since $\expectation{\abs{f(X_i)}} = \sum_{x \in \X} \Pr{X_i = x} \abs{f(x)}$, by \cref{prop:prefix-entropy-upper} and \cref{prop:prefix-entropy-lower} we know that
+\begin{equation} \label{eq:universal-compression-expectation}
+	\Entropy{X_i} \le \expectation{\abs{f(X_i)}} \le \Entropy{X_i} + 1.
+\end{equation}
+Note that the length of the string obtained by applying $f$ to $n$ \acp{RV} is
+\begin{equation*}
+	\abs{f(X_1), \dots, f(X_n)} = \sum_{i=1}^n \abs{f(X_i)},
+\end{equation*}
+and that, by \cref{eq:universal-compression-expectation} above,
+\begin{equation*}
+	\frac{1}{n} \sum_{i=1}^n \Entropy{X_i}
+	\le
+	\frac{1}{n} \sum_{i=1}^n \abs{f(X_i)}.
+\end{equation*}
 
-if the source is stationary all variables have distribution $P$.
-\[
- H(P) \leq \dfrac{1}{n} \sum_{i = 1}^n |f(X_i)| \leq H(P) + 1
-\]
-but we didn't get far. Instead, join random variables together. Let $f_n$ be an optiman (in the sense of length of output) prefix code for $X_1 \ldots X_n$.
-\[
- \dfrac{1}{k}H(X^k) \leq \dfrac{1}{k}E(|f_n(X^k)|) \leq \dfrac{1}{k}[H(X^k) + 1]
-\]
+If the source is stationary all \acp{RV} have the same probability distribution $P$, and thus
+\begin{equation*}
+	\Entropy{P} \le \frac{1}{n} \sum_{i = 1}^n \abs{f(X_i)} \le \Entropy{P} + 1,
+\end{equation*}
+but this does not tell us much.
 
-if $k \rightarrow \infty$ (and we enlarge the conding window), both sides go to the entropy rate. Thus the entropy is the ``limit''.
+Instead, we join \acp{RV} together.
+Let $f_n$ be an optimal (in the sense of length of output) prefix code for $X_1, \dots, X_n$.
+\begin{equation*}
+	\frac{1}{k} \cdot \Entropy{X^k}
+	\le
+	\frac{1}{k} \cdot \expectation{\abs{f_n \left( X^k \right)}}
+	\le
+	\frac{1}{k} \cdot \left[ \Entropy{X^k} + 1 \right].
+\end{equation*}
+If $k \to \infty$ (and we enlarge the conding window), both sides go to the entropy rate.
+Thus the entropy is the ``limit''.

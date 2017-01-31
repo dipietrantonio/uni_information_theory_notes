@@ -1,0 +1,22 @@
+
+\makeatletter
+\renewcommand\thmt@mklistcmd{%
+  \@xa\protected@edef\csname l@\thmt@envname\endcsname{% CHECK: why p@edef?
+    \@nx\@dottedtocline{1}{1.5em}{\@nx\thmt@listnumwidth}{\thmt@thmname}{mu}%
+  }%
+  \ifthmt@isstarred
+    \@xa\def\csname ll@\thmt@envname\endcsname{%
+      \protect\numberline{\thmt@thmname\protect\let\protect\autodot\protect:}%
+      \ifx\@empty\thmt@shortoptarg\else\protect\thmtformatoptarg{\thmt@shortoptarg}\fi
+    }%
+  \else
+    \@xa\def\csname ll@\thmt@envname\endcsname{%
+      % \thmt@thmname\ \csname the\thmt@envname\endcsname: \hfil%
+      \ifx\@empty\thmt@shortoptarg\else\thmt@shortoptarg\fi
+    }%
+  \fi
+  \@xa\gdef\csname thmt@contentsline@\thmt@envname\endcsname{%
+    \thmt@contentslineShow% default:show
+  }%
+}
+\makeatother
