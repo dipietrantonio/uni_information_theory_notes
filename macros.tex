@@ -8,6 +8,8 @@
 
 % math symbols
 
+\newcommand{\C}{\mathcal{C}}
+\renewcommand{\L}{\mathcal{L}}
 \newcommand{\M}{\mathcal{M}}
 \newcommand{\U}{\mathcal{U}}
 \newcommand{\X}{\mathcal{X}}
@@ -26,6 +28,7 @@
 
 \newcommand{\str}[1]{\underline{#1}} % string/vector
 \newcommand{\zero}{\str{0}} % zero vector
+\newcommand{\one}{\str{1}} % one vector
 
 \newcommand{\Reals}{\mathbb{R}}
 \newcommand{\Naturals}{\mathbb{N}}
@@ -34,7 +37,8 @@
 \newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
 
-\newcommand{\im}{\text{Im}} % image of linear application
+\let\Im\relax
+\DeclareMathOperator{\Im}{Im} % image of linear application
 
 \newcommand{\sfrac}{\frac}
 \newcommand{\ifrac}[2]{\frac{#1}{#2}} % Inline fraction
@@ -60,3 +64,7 @@
 \newcommand{\expectation}[1]{E \left({#1}\right)}
 
 \newcommand{\MutualInformation}[1]{I \left( {#1} \right)}
+
+\newcommand{\logtwo}[1]{\log_2 \left( {#1} \right)}
+
+\newcommand{\DotProduct}[2]{\left< {#1}, {#2} \right>}

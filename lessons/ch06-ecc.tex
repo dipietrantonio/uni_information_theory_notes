@@ -1,339 +1,584 @@
 
-\chapter{Error correcting codes}
-Error correcting codes (ECC) arise in probabilistic contexts. Consider a memory device with $n$ cells. We can model the content as a string $\str{x} \in \{0, 1\}^n$. The device decays; each cell can flip its value independently from the others with a certain probability (uniform). The probability $p$ is usually $< 1/2$. We can expect no more than $np$ flips. Can we guarantee recovery from so many errors? Yes, thanks to algebra. The string $\str{x}$ can be converted into anything inside a ball of radious $np$. We want that two strings $\str{x}$ and $\str{y}$ are distant, so that their balls do not intersect. The pairwise distance of the words should be $\geq 2np + 1$.
+\chapter{\aclp{ECC}}
 
-Let $\mathcal{C} \subseteq \{0, 1\}^n$ be a block code. This should have some properties, for example $|C|$ should be large. Define
-\[
- d(\mathcal{C}) = \min_{\{\str{x}, \str{y}\}\in \binom{\mathcal{C}}{2}}d_H(\str{x}, \str{y}),
-\]
+\acp{ECC} arise in probabilistic contexts.
+Consider a memory device with $n$ cells.
+We can model the content as a string $\str{x} \in \{0, 1\}^n$.
+The device decays; each cell can flip its value independently from the others with a certain probability (uniform).
+The probability $p$ is usually $< 1/2$.
+We can expect no more than $np$ flips.
+Can we guarantee recovery from so many errors?
+Yes, thanks to algebra.
+The string $\str{x}$ can be converted into anything inside a ball of radius $np$.
+We want that two strings $\str{x}$ and $\str{y}$ are distant, so that their balls do not intersect.
+The pairwise distance of the words should be $\ge 2np + 1$.
+
+Let $\C \subseteq \{0, 1\}^n$ be a block code.
+The first property that we want from $\C$ is that $\abs{\C}$ should be large.
+
+Next, we extend the definition of Hamming Distance to sets, \ie we define
+\begin{equation*}
+	\hdist{\C} = \min_{\{\str{x}, \str{y}\} \in \binom{\C}{2}} \hdist{\str{x}, \str{y}},
+\end{equation*}
 where 
-\[
-\binom{\mathcal{C}}{2} = \{\{\str{x}, \str{y}\}\ |\ \str{x}, \str{y} \in \mathcal{C} \wedge \str{x} \not= \str{y}\}. 
-\]
+\begin{equation*}
+	\binom{\C}{2} = \left\{ \{\str{x}, \str{y}\}\ |\ \str{x}, \str{y} \in \C \land \str{x} \neq \str{y} \right\}. 
+\end{equation*}
+So $\hdist{\C}$ tells how close the closest elements of $\C$ are.
+$\hdist{\C}$ should be large too.
 
-So $d$ tells how close the closest elements are. $d(\mathcal{C})$ should be large too. What is the best possible tradeoff?
+What is the best possible trade-off?
+\begin{equation*}
+	M(n, d) = \max_{\C \subseteq \{0,1\}^{n} : \hdist{\C} \ge d} \abs{\C}
+\end{equation*}
+This says that we are concentrating on codes for which $\hdist{\C} \ge d$ for some $d$.
 
-\[
- M(n, d) = \max_{C | d(\mathcal{C}) \geq d}|\mathcal{C}|
-\]
+We can think of the graph for which $V = \{0, 1\}^n$ and $\str{x}, \str{y} \in \binom{V}{2}$ share an edge if and only if $\hdist{\str{x}, \str{y}} \ge d$.
+$M(n,d)$ is the size of the largest clique in this graph.
 
-This says that we are concentrating on codes for which $d(\mathcal{C}) \geq d$. We can think of the graph for which $V = \{0, 1\}^n$ and $X, Y \in \binom{V}{2}$ have an edge iff $d_H(\str{x}, \str{y}) \geq d$. We are looking for the largest clique. We try to make this simpler by looking at the problem from an asymptotic point of view. $M(n, n\delta)$ grows to infinity exponentially in $n$.
+We try to make this simpler by looking at the problem from an asymptotic point of view.
+We consider $M(n, n \delta)$ for $\delta \in [0, 1]$.
+This grows to infinity exponentially in $n$, while
+\begin{equation*}
+	\frac{1}{n} \log_2 \left( M(n, n \delta) \right)
+\end{equation*}
+does not grow exponentially.
+So we look at the superior limit of
+\begin{equation*}
+	R(\delta) = \limsup_{n \to \infty} \frac{1}{n} \log_2 \left( M(n, n \delta) \right).
+\end{equation*}
+$R$ here stands for \emph{rate}.
 
-\[
- \dfrac{1}{n}\log(M(n, n\delta))
-\]
-does not (grow exponentially ?). We look at the superior limit
- 
-\[
- R(\delta) = \overline{\lim_{n \rightarrow \infty}}  \dfrac{1}{n}\log(M(n, n\delta)),
-\]
-
-where $R$ denotes the rate. $M(n, n\delta)$ is the largest set you can put inside $n$ bits of memory. Its log is the number of bits of true information that we can store. Dividing by $n$ we get the amount of information bit by bit. $\delta \in [0, 1]$, we know $R(0) = 1$ and $R(1) = 0$.
+$M(n, n \delta)$ is the size of largest set of strings one can put inside $n$ bits of memory, with minimum distance $n \delta$.
+Its logarithm is the number of bits of true information that we can store.
+Dividing by $n$ we get the amount of information bit by bit.
+We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 
 \begin{thm}[Gilbert-Varshamov bound]
- $$R(\delta) \geq 1 - h(\delta),\ \delta \in [0, \dfrac{1}{2}].$$ If $\delta > \dfrac{1}{2}$ then $R(\delta) = 0$.
+	If $\delta \in \left[ 0, \frac{1}{2} \right]$, then
+	\begin{equation*}
+		R(\delta) \ge 1 - \entropy{\delta}.
+	\end{equation*}
+	If $\delta > \frac{1}{2}$ then $R(\delta) = 0$.
 \end{thm}
-\textbf{Proof}. This means that
-\[
- M(n, n\delta) \geq 2^{n[1-h(\delta)]}
-\]
 
-(this bound was actually improved to $n2^n[1-h(\delta)]$).
+\begin{proof}
+	This means that
+	\begin{equation*}
+		M(n, n \delta) \ge 2^{n \, \left[1 - \entropy{\delta} \right]}.
+	\end{equation*}
+	This bound was later improved to $n 2^{n \, \left[1 - \entropy{\delta} \right]}$.
 
-Fix $n, d \in \mathbb{N}$. Take an arbitrary string $\str{x} \in \{0, 1\}^n$, exclude $\hball{x}{d-1}$. Then, after having found $\str{x}_1, \ldots, \str{x}_{t-1}$, we choose arbitrarily
-\[
- \str{x}_t \in \{0, 1\}^n \setminus \bigcup_{i = 1}^{t-1}\hball{x_i}{d-1}.
-\]
-How long can this go on? Maybe after $m$ steps
-\[
- \{0, 1\}^n \setminus \bigcup_{i = 1}^{m}\hball{x_i}{d-1} = \emptyset
-\]
+	For now, fix $n, d \in \Naturals$.
+	Take an arbitrary string $\str{x} \in \{0, 1\}^n$, and exclude $\hball{\str{x}}{d-1}$ from our future choices.
 
-How large $m$ can be? We stop when 
+	Then, after having found $\str{x}_1, \dots, \str{x}_{t-1}$, we choose arbitrarily
+	\begin{equation*}
+		\str{x}_t \in \{0, 1\}^n \setminus \bigcup_{i = 1}^{t-1} \hball{\str{x}_i}{d-1},
+	\end{equation*}
+	so, after picking each string, we exclude the Hamming Ball of radius $d-1$ around it from our future choices.
 
-\[
- \{0, 1\}^n \subseteq \bigcup_{i = 1}^{m}\hball{x_i}{d-1} \Rightarrow 2^n \leq \left| \bigcup_{i = 1}^{m}\hball{x_i}{d-1}\right| \leq
-\]
+	How long can this go on?
+	Maybe after $m$ steps we have that
+	\begin{equation*}
+		\{0, 1\}^n \setminus \bigcup_{i = 1}^{m} \hball{\str{x}_i}{d-1} = \emptyset.
+	\end{equation*}
 
-\[
- \leq \sum_{i = 1}^m |\hball{x_i}{d-1}| \leq  \sum_{i = 1}^m |\hball{x_i}{d}| \leq m2^{nh(\sfrac{d}{n})},
-\]
-
-where the last inequality derives from the fact that $d \leq \ifrac{n}{2}$. That's all, since now
-\[
- M(n, d) \geq m \geq \dfrac{2^n}{2^{nh(\sfrac{n}{d})}} = 2^{n(1-h(\sfrac{n}{d}))},
-\]
-where $\ifrac{n}{d} = \delta.\hfill\Box$
+	How large $m$ can be?
+	We stop when 
+	\begin{align*}
+		\{0, 1\}^n
+		& \subseteq
+		\bigcup_{i = 1}^{m} \hball{\str{x}_i}{d-1}
+		\\
+		& \implies
+		\\
+		2^n
+		& \le
+		\abs{\bigcup_{i = 1}^{m} \hball{\str{x}_i}{d-1}}
+		\\
+		& \le
+		\sum_{i = 1}^m \abs{\hball{\str{x}_i}{d-1}}
+		\\
+		& \le
+		\sum_{i = 1}^m \abs{\hball{\str{x}_i}{d}}
+		\\
+		& \le
+		m 2^{n \, \entropy{\frac{d}{n}}},
+	\end{align*}
+	where the last inequality holds since $d \le \frac{n}{2}$.
+	We have proven the thesis, since now
+	\begin{equation*}
+		M(n, d) \ge m \ge \frac{2^n}{2^{n \, \entropy{\frac{n}{d}}}}
+		=
+		2^{n \, \left[ 1 - \entropy{\frac{n}{d}} \right]},
+	\end{equation*}
+	where $\frac{n}{d} = \delta.$
+\end{proof}
 
 \begin{thm}[Hamming bound]
- $$R(\delta) \leq 1 - h(\dfrac{\delta}{2}),\ \forall \delta \in [0, 1].$$
+	For $\delta \in [0, 1]$,
+	\begin{equation*}
+		R(\delta) \le 1 - \entropy{\frac{\delta}{2}}.
+	\end{equation*}
 \end{thm}
-\noindent\textbf{Proof}. Fix $n, d \in \mathcal{N}, d_H(\mathcal{C}) \geq d$, arbitrarily. For two Hamming Balls to be disjoint, given the centers $\str{x}$ and $\str{y}$, such that $d_H(\str{x}, \str{y}) = d$, you must take 
-\[ 
-\hball{x}{\sfrac{d-1}{2}}\ \text{and}\ \hball{y}{\sfrac{d-1}{2}}.
-\]
 
-Assume
-\[ 
-\hball{x}{\sfrac{d-1}{2}}\not = \emptyset\ \wedge\ \hball{y}{\sfrac{d-1}{2}} \not = \emptyset
-\]
-But then
-\[
- \exists z \in \hball{x}{\sfrac{d-1}{2}} \cap \hball{y}{\sfrac{d-1}{2}}
-\]
+\begin{proof}
+	Fix $n, d \in \Naturals$, $\hdist{\C} \ge d$, arbitrarily.
+	For two Hamming Balls to be disjoint, given their centres $\str{x}$ and $\str{y}$, such that $\hdist{\str{x}, \str{y}} = d$, you must take 
+	\begin{equation*}
+		\hball{\str{x}}{\frac{d-1}{2}}
+		\text{ and }
+		\hball{\str{y}}{\frac{d-1}{2}}.
+	\end{equation*}
 
-with 
-\[
- \hdist{x}{z} \leq \sfrac{d-1}{2} \wedge  \hdist{y}{z} \leq \sfrac{d-1}{2}.
-\]
+	Assume the two Hamming Balls are not disjoint, \ie
+	\begin{equation*}
+		\hball{\str{x}}{\frac{d-1}{2}}
+		\cap
+		\hball{\str{y}}{\frac{d-1}{2}}
+		\neq \emptyset;
+	\end{equation*}
+	but this means that
+	\begin{equation*}
+		\exists \str{z} \in
+		\hball{\str{x}}{\frac{d-1}{2}}
+		\cap
+		\hball{\str{y}}{\frac{d-1}{2}},
+	\end{equation*}
+	and that, since $\str{z}$ is in both Hamming Balls,
+	\begin{equation*}
+		\hdist{\str{x},\str{z}} \le \frac{d-1}{2}
+		\qquad
+		\hdist{\str{y},\str{z}} \le \frac{d-1}{2}.
+	\end{equation*}
+	But then we have that
+	\begin{equation*}
+		d = \hdist{\str{x},\str{y}}
+		\le
+		\hdist{\str{x},\str{z}} + \hdist{\str{y},\str{z}}
+		\le
+		2 \cdot \frac{d-1}{2}
+		= d-1 < d,
+	\end{equation*}
+	in contradiction with the assumption that $\hdist{\str{x},\str{y}} = d$.
 
-It follows that 
+	If all strings have a distance of at least $d$, we can correct up to $\frac{d-1}{2}$ errors.
 
-\[
- d = \hdist{x}{y} \leq  \hdist{x}{z} +  \hdist{y}{z} \leq 2\sfrac{d-1}{2} = d-1 \leq d
-\]
-(contradiction.)
+	Assume $\C$ is built using disjoint balls, and that $M(n, d) = \abs{\C}$.
+	Then
+	\begin{equation*}
+		\abs{\bigcup_{\str{x} \in \C} \hball{\str{x}}{\frac{d-1}{2}}}
+		=
+		\abs{\C} \cdot \abs{\hball{\zero}{\frac{d-1}{2}}}
+		\ge
+		\frac{\abs{\C}}{n+1} \cdot 2^{n \, \entropy{\frac{d-1}{2}}}.
+	\end{equation*}
+	Now, since the Hamming Balls are disjoint, we have that
+	\begin{equation*}
+		\abs{\bigcup_{\str{x} \in \C} \hball{\str{x}}{\frac{d-1}{2}}} \le 2^n,
+	\end{equation*}
+	which in turn gives us that $M(n,d) = \abs{\C}$ can be upper bounded as
+	\begin{equation*}
+		M(n, d) = \abs{\C} \le (n+1) \cdot 2^{n \, \left[1 - \entropy{\frac{d-1}{2}}\right]}.
+	\end{equation*}
+	
+	We now take the logarithm and normalise by $n$, and obtain
+	\begin{equation*}
+		\frac{1}{n} \log_2 \left( M(n, d) \right)
+		\le
+		\frac{1}{n} \log_2 \left( n+1 \right) + 1 - \entropy{\frac{d-1}{2n}},
+	\end{equation*}
+	and, by taking the limit superior of that quantity, we get
+	\begin{align*}
+		R(\delta)
+		& =
+		\limsup_{n \to \infty} \frac{1}{n} \logtwo{M(n, n \delta)}
+		\\
+		& =
+		\limsup_{n \to \infty}
+		\cancelto{0}{
+			\frac{1}{n} \logtwo{n+1}
+		}
+		+ 1 - \entropy{
+			\frac{\cancel{n} \, \delta}{2 \, \cancel{n}}
+			- \cancelto{0}{\frac{1}{2n}}
+		},
+		\\
+		& \le
+		1 - \entropy{\frac{\delta}{2}}. \qedhere
+	\end{align*}
+\end{proof}
 
-So we can correct up to $\ifrac{d-1}{2}$ errors. Assume $\mathcal{C}$ is built using disjoint balls, and $M(n, d) = |\mathcal{C}|$. Then
-\[
-\left|\bigcup_{\str{x}\in\mathcal{C}}\hball{x}{\dfrac{d-1}{2}}\right| = |\mathcal{C}|\cdot \left|\hball{0}{\dfrac{d-1}{2}}\right| \geq \dfrac{|\mathcal{C}|}{n+1}2^{nh\left(\sfrac{d-1}{2}\right)}
-\]
-since 
-\[
- \left|\bigcup_{\str{x}\in\mathcal{C}}\hball{x}{\dfrac{d-1}{2}}\right| \leq 2^n,
-\]
+\section{\acl{UD} codes}
 
-\[
- M(n, d) = |\mathcal{C}| \leq n+1 2^{n\left(1-h\left(\sfrac{d-1}{2}\right)\right)}
-\]
-
-but then
-\[
- \dfrac{1}{n} \log(M(n, d)) \leq \dfrac{1}{n}\log(n+1) + 1 -h(\dfrac{d-1}{2n}
-\]
-
-then
-\[
- \overline{\lim_{n\rightarrow \infty}}\dfrac{1}{n}\log(M(n, d)) \leq 1 - h\left(\dfrac{\delta}{2}\right)
-\]
-$\hfill\Box$
-
-\section{Uniquely decodable codes}
-$f:\msgset \rightarrow \{0, 1\}^*$ is \emph{uniquely decodable} (UD) id $f^*:M*\rightarrow \{0,1\}^*$ is injective. Let $\str{m} \in M^*$, with $\str{m} = m_1m_2\ldots m_t$.
-\[
- f^*(\str{m}) = f(m_1)f(m_2)\ldots f(m_t).
-\]
-If $f$ is a prefix code, $f$ is uniquely decodable (UD).
+\begin{definition}[\acl{UD} code]
+	Let $f : \M \to \{0,1\}^{\star}$, and define $f^{\star} : \M^{\star} \to \{0,1\}^{\star}$ as
+	\begin{equation*}
+		f^{\star} (\str{m}) = f(m_1) f(m_2) \dots f(m_t),
+	\end{equation*}
+	for $\str{m} \in \M^{\star}$ with $\str{m} = m_1 m_2 \dots m_t$ for some $t$.
+	We say that $f$ is \ac{UD} if $f^{\star}$ is injective.
+\end{definition}
+If $f$ is a prefix code, $f$ is \ac{UD}.
 
 \begin{thm}[Kraft - McMillan]
-If f is \emph{UD} then the Kraft's inequality holds, i.e.
-\[
- \sum_{m \in \msgset} 2^{-|f(m)|} \leq 1
-\]
+	If $f$ is \ac{UD} then Kraft's inequality holds, \ie
+	\begin{equation*}
+		\sum_{m \in \M} 2^{-\abs{f(m)}} \le 1.
+	\end{equation*}
 \end{thm}
-\noindent\textbf{Proof}. Let
 
-\[
- q = \sum_{m \in \msgset} 2^{-|f(m)|}.
-\]
+\begin{proof}
+	Let
+	\begin{equation*}
+		q = \sum_{m \in \M} 2^{-\abs{f(m)}}.
+	\end{equation*}
 
-We would like to prove that $q \leq 1$. We consider instead $q^n$, which will involve the length of concatenations of code words. We will show that $q^n$ ``grows slowly'', i.e. it will not grow exponentially, and thus is less than or equal to 1. 
+	We would like to prove that $q \le 1$.
+	To do so, we consider $q^n$, which will involve the length of concatenations of code words.
+	We will show that $q^n$ ``grows slowly'', \ie it does not grow exponentially, and thus is less than or equal to 1. 
+	\begin{align*}
+		q^n
+		& =
+		\left[ \sum_{m \in \M} 2^{-\abs{f(m)}} \right]^n
+		\\
+		& =
+		\prod_{i = 1}^n \left[ \sum_{m \in \M} 2^{-\abs{f(m)}} \right]
+		\\
+		& =
+		\sum_{\str{m} \in \M^n} \left[ \prod_{i = 1}^n 2^{-\abs{f(m_i)}} \right]
+		\\
+		& =
+		\sum_{\str{m} \in \M^n} 2^{-\abs{f^{\star}(\str{m})}}.
+	\end{align*}
+	$f^{\star}(\str{m})$ is just a binary string.
+	We can break up the summation over the length of these strings, as follows:
+	\begin{equation*}
+		\sum_{\str{m} \in \M^n} 2^{-\abs{f^{\star}(\str{m})}}
+		=
+		\sum_{t = n}^{nL}
+		\sum_{
+			\substack{
+				\str{m} \in \M^n : \\
+				\abs{f^{\star}(\str{m})} = t
+			}
+		} 2^{-\abs{f^{\star}(\str{m})}},
+	\end{equation*}
+	with $L = \max_{m \in \M} \abs{f(m)}$.
+	Now we use the fact that $f^{\star}(\cdot)$ is injective: each binary string of length $t$ appears just once in the sum.
+	We can't have two strings of messages encoded by the same binary string.
+	\begin{equation*}
+		\sum_{t = n}^{nL}
+		\sum_{
+			\substack{
+				\str{m} \in \M^n : \\
+				\abs{f^{\star}(\str{m})} = t
+			}
+		} 2^{-\abs{f^{\star}(\str{m})}}
+		\le
+		\sum_{t = n}^{nL} 2^t \cdot 2^{-t}
+		=
+		nL.
+	\end{equation*}
+	This follows from the fact that we can have at most $2^{t}$ messages encoded by binary strings of length $t$.
 
-\[
- q^n = \left[\sum_{m \in \msgset} 2^{-|f(m)|}\right]^n = \prod_{i=1}^n \left[ \sum_{m_i \in \msgset} 2^{-|f(m_i)|} \right]
-\]
-
-\[
- = \sum_{\str{m} \in \msgset^n}\left[\prod_{i=1}^n 2^{-|f(m_i)|}\right] = \sum_{\str{m} \in \msgset^n} 2^{-|f^*(\str{m})|} =
-\]
-
-$f^*(\str{m})$ is just a binary string. We can break up the summation over the length of these strings.
-
-\[
- = \sum_{t = n}^{nL}\sum_{\str{m} \in \msgset^n:|f^*(\str{m})| = t} 2^{-|f^*(\str{m})|} =
-\]
-
-with $L = \max_{m \in \msgset} |f(m)|$. Now we use the fact that $f*(\cdot)$ is injective. Each binary string of length $t$ apppears just once in the sum. We can't have two strings os messages encoded by the same binary string.
-
-\[
- = \sum_{t = n}^{nL} \sum_{\str{m} \in \msgset^n:|f^*(\str{m})| = t} 2^{-|f^*(\str{m})|} \leq \sum_{t = n}^{nL} 2^t \cdot 2^{-t} = nL.
-\]
-
-Thus $q^n \leq nL$, therefore $$q \leq \sqrt[n]{nL} = \sqrt[n]{n} \sqrt[n]{L} \rightarrow 1$$    
-
-and so $q \leq 1 \hfill\Box$
+	What we have shown is that $q^n \le nL$, and thus
+	\begin{equation*}
+		q \le \sqrt[n]{nL}
+		=
+		\sqrt[n]{n} \sqrt[n]{L}
+		\to 1,
+	\end{equation*}
+	and so $q \le 1$.
+\end{proof}
 
 \begin{thm}[Plotkin bound]
-$$\delta \geq \dfrac{1}{2} \Rightarrow R(S) = 0$$
+	\begin{equation*}
+		\delta \ge \frac{1}{2} \implies R(\delta) = 0.
+	\end{equation*}
 \end{thm}
 
-Recall that
+% Recall that
+% \begin{equation*}
+% 	M(n, d) = \max_{\C \subseteq \{0, 1\}^n : \hdist{\C} \ge d} \abs{\C},
+% \end{equation*}
+% with
+% \begin{equation*}
+% 	\hdist{\C}
+% 	=
+% 	\min_{\{\str{x}, \str{y}\} \in \binom{\C}{2}} \hdist{\str{x}, \str{y}}.
+% \end{equation*}
+% The information rate is defined as
+% \begin{equation*}
+% 	R(\delta) = \limsup_{n \to \infty} \frac{M(n, n \delta)}{n}.
+% \end{equation*}
+We already know that, if $\delta \leq \frac{1}{2}$,
+\begin{equation*}
+	1 - \entropy{\delta} \le R(\delta) \le 1 - \entropy{\frac{\delta}{2}}.
+\end{equation*}
 
-\[M(n, d) = \max_{\mathcal{C} \subseteq\{0, 1\}^n | d_H(\mathcal{C}) \geq d}|\mathcal{C}|,\]
+\begin{proof}
+	Let $\C \subseteq \{0, 1\}^n$, chosen arbitrary.
+	Let $M = \abs{\C}$.
+	\begin{align*}
+		\hdist{\C}
+		& \le
+		\sum_{\left\{ \str{x}, \str{y} \right\} \in \binom{\C}{2}}
+		\frac{\hdist{\str{x},\str{y}}}{\binom{M}{2}}
+		\\
+		& =
+		\frac{2}{M (M-1)}
+		\sum_{\left\{ \str{x}, \str{y} \right\} \in \binom{\C}{2}}
+		\hdist{\str{x},\str{y}}
+		\\
+		& =
+		\frac{2}{M (M-1)}
+		\sum_{\left\{ \str{x}, \str{y} \right\} \in \binom{\C}{2}}
+		\sum_{i = 1}^n \hdist{x_i, y_i}
+		\\
+		& =
+		\frac{2}{M (M-1)}
+		\sum_{i = 1}^n
+		\sum_{\left\{ \str{x}, \str{y} \right\} \in \binom{\C}{2}} \hdist{x_i, y_i},
+	\end{align*}
+	where $\str{x} = x_1 \dots x_n$.
 
-with
+	Now, picture a matrix with $n$ columns and $M = \abs{\C}$ rows.
+	Each row is an element of $\C$, each column is a coordinate of $\str{x} \in \C$.
+	One can think of $\sum_{\left\{ \str{x}, \str{y} \right\} \in \binom{\C}{2}} \hdist{x_i, y_i}$ as the number of 1s times the number of 0s in the $i$-th column of the matrix: we add $1$ to the summation each time two strings $\str{x}$ and $\str{y}$ differ on column $i$.
+	Thus, calling $M_i$ the number of 1s in column $i$, we have
+	\begin{align*}
+		\frac{2}{M (M-1)}
+		\sum_{i = 1}^n
+		\sum_{\left\{ \str{x}, \str{y} \right\} \in \binom{\C}{2}} \hdist{x_i, y_i}
+		& =
+		\frac{2}{M (M-1)}
+		\sum_{i = 1}^{n}
+		M_i \cdot \left( M - M_i \right)
+		\\
+		& \le
+		\frac{2}{M (M-1)} \left( \frac{M}{2} \right)^2
+		\\
+		& =
+		\frac{n M}{2 (M-1)}.
+	\end{align*}
+	So the minimum distance $d$ is
+	\begin{equation} \label{eq:plotkin-bound}
+		d = \hdist{\C} \le \frac{n M}{2 (M-1)}.
+	\end{equation}
 
-\[
- d_H(\mathcal{C}) = \min_{\{\str{x}, \str{y}\}\in\binom{\mathcal{C}}{2}}d_H(\str{x}, \str{y}).
-\]
-\[
- R(\delta) = \overline{\lim_{n \rightarrow \infty}}\dfrac{M(n, n\delta}{n}
-\]
-
-we know that, if $\delta \leq \ifrac{1}{2}$,
-
-$$ R(\delta) \geq 1 - h(\delta)\ \wedge\ R(\delta) \leq 1 - h(\dfrac{\delta}{2})$$
-
-\noindent\textbf{Proof}. Let $\mathcal{C} \subseteq \{0, 1\}^n$, chosen arbitrary.
-
-\[
- d_H(\mathcal{C}) \leq \sum_{\{\str{x}, \str{y}\}\in \binom{\mathcal{C}}{2}} \dfrac{\hdist{x}{1}}{\sfrac{1}{\binom{M}{2}}} =
-\]
-with $M = |\mathcal{C}|$,
-
-\[
- = \dfrac{2}{M(M-1)}\sum_{\{\str{x}, \str{y}\} \in \binom{\mathcal{C}}{2}} d_H(\str{x},\str{1})= \dfrac{2}{M(M-1)}\sum_{\{\str{x}, \str{y}\} \in \binom{\mathcal{C}}{2}} \sum_{i=1}^n d(x_i, y_i) = 
-\]
-
-where $\str{x} = x_1\ldots x_n$. Think of the last expression as a matrix that has $n$ columns and $|\mathcal{C}|$ rows. The contribution at the $i$-th column is the number of $1$'s multiplied by the number of $0$'s.
-
-\[
- =  \dfrac{2}{M(M-1)}\left(\dfrac{M}{2}\right)^2 = \dfrac{nM}{2(M-1)}
-\]
-
-so, the minimum distance is
-\[
- d_H(\mathcal{C}) = d \leq \dfrac{nM}{2(M-1)}
-\]
-\[
-2(M-1)d \leq nM \Rightarrow 2Md -2d \leq nM \Rightarrow M(2d-n) \leq 2d
-\]
-
-consider $\delta = \ifrac{d}{n}$
-\[
- M(2\delta -1 \leq 2\delta
-\]
-now consider $\delta > \ifrac{1}{2}$
-
-\[
- M \leq \dfrac{2\delta}{2\delta-1}
-\]
-
-So, if $M(n, n\delta) = M_n$ when $\delta \geq \ifrac{1}{2}$ we have that $M(n, n\delta)$ is a constant. Thus, $R(\delta) = 0$ for $\delta \geq \ifrac{1}{2} \hfill\Box$ 
+	To complete the proof we just need some manipulation of \cref{eq:plotkin-bound}
+	\begin{align*}
+		2 (M - 1) d & \le n M
+		\\
+		\implies &
+		\\
+		2 M d - 2 d & \le n M
+		\\
+		\implies &
+		\\
+		M (2 d - n) & \le 2 d
+		\\
+		\implies &
+		\\
+		M (2 n \delta - n) & \le 2 n \delta
+		\tag{since $d = n \delta$}
+		\\
+		\implies &
+		\\
+		M (2 \delta - 1) & \le 2 \delta
+		\tag{if $\delta > \frac{1}{2}$ we can divide}
+		\\
+		\implies &
+		\\
+		M & \le \frac{2 \delta}{2 \delta - 1}.
+	\end{align*}
+	So, when $\delta \ge \frac{1}{2}$, we have that $M(n, n \delta)$ is a constant.
+	Thus $R(\delta) = 0$, since it is defined as the limit superior of $\frac{1}{n} M(n, n \delta)$.
+\end{proof}
 
 \section{Parity Check Codes}
 
-\[
- \mathcal{C}_n = \{\str{x}\ |\ \str{x} \in \{0, 1\}^n, 2|\sum_{i=1}^n x_i\}
-\]
+Consider the set
+\begin{equation*}
+	\C_n
+	=
+	\left\{
+		\str{x} : \str{x} \in \{0, 1\}^n, \,
+		2 | \sum_{i=1}^n x_i
+	\right\},
+\end{equation*}
+that is, the set of binary strings which have an even number of 1s.
+$\abs{\C_n} = 2^{n-1}$.
+This set will not help us correct errors, but it will detect a single error (or in fact an odd number of errors).
+Consider $\{0, 1\}^n$ as a $n$-dimensional vector space over $GF(2)$, the Galois field over $\{0,1\}$.
 
-is the set of strings which have an even number of 1's. $|\mathcal{C}| = 2^{n-1}$. This will not correct errors, but it will detect a single error (or in fact an odd number of errors). Consider $\{0, 1\}^n$ as a $n$-dimensional vector space over GF(2).
+Define $\DotProduct{\str{x}}{\str{y}}$ to be the scalar product between $\str{x}$ and $\str{y}$, \ie
+\begin{equation*}
+	\DotProduct{\str{x}}{\str{y}} = \sum_{i = 1}^n x_i \cdot y_i \mod 2.
+\end{equation*}
+$\C_n$ can be defined also as
+\begin{equation*}
+	\C_n = \left\{ \str{x} : \DotProduct{\str{x}}{\one} = 0 \right\}.
+\end{equation*}
 
-Define $(\str{x}, 1)$ to be the scalar product, i.e.
-\[
- (\str{x}, 1) = \left(\sum_{i=1}^n x_i\right) \mod 2.
-\]
+It is a hyperplane made of vectors orthogonal to $\one$.
+This can be made more general, and fix an arbitrary vector $\str{s}$,
+\begin{equation*}
+	\C_n(\str{s}) = \left\{ \str{x} : \DotProduct{\str{x}}{\str{s}} = 0 \right\}.
+\end{equation*}
 
-Let 
-\[
- \mathcal{C}_n = \{\str{x}\ |\ (\str{x}, 1) = 0\}.
-\]
+Consider the set $S \subseteq [n]$ of indices of $\str{s}$ which are 1.
+If we take $\C_n(\str{s})$, we are only looking for errors on $x_i$ for $i \in S$.
+$\C_n(\str{s})$ is a linearly closed space, with addition $\xor \mod 2$.
+Furthermore, these spaces are closed under intersection.
 
-It is a hyperplane made of vectors orthogonal to 1. This can be made more general, and fix an arbitrary vector $\str{s}$,
-\[
- \mathcal{C}_n(\str{s}) = \{\str{x}\ |\ (\str{x}, \str{s}) = 0\}.
-\]
+We can take a bunch of vectors, and the hyperplanes orthogonal to them, and their intersection
+\begin{equation*}
+	\bigcap_{\str{s} \in S} \C_n(\str{s})
+\end{equation*}
+In this way we can construct codes that not only detect errors, but also correct them.
 
-Consider the set $S \subseteq [n]$ of indices of $\str{s}$ which are 1. One only care about errors on $x_i$ for $i \in S$. This is a linearly closed space, with addition $\oplus\ (\mod 2)$. Also, their intersection is closed. We can take a bunch of vectors, and the hyperplanes orthogonal to them, and their intersection
-\[
- \bigcap_{\str{s} \in S} \mathcal{C}_n(\str{s})
-\]
-
-In this way I can construct codes that not only detect errors, but also correct them.
-
-\[
-\mathcal{C}_n = \{\str{x}\ |\ \str{x} \in \{0, 1\}^n, (\sum_{i=1}^n x_i)\mod 2 = 0\}
-\]
-
-This is linearly closed, and can also be defined as $\mathcal{C}_n = \{\str{x}\ |\ (\str{x}, 1) = 0\}$. We will consider scalar product with other vectors, which will give us other linearly closed spaces; their intersection will also be a linearly closed space.
-
-Remind that GF(2) means ``Galois Field over $\{0, 1\}$'', and the only linear combination of vectors is the sum. $\mathcal{L} \in \{0,1\}^n$ is a linear space if
+A set $\L \subseteq \{0,1\}^n$ is a linear space if
 \begin{itemize}
-	\item $\mathcal{L} \not= \emptyset$,
-	\item is closed under linear combination, i.e. $\forall \str{x},\str{y} \in \mathcal{L}\ \str{x} \oplus \str{y} \in \mathcal{L}$.
+	\item $\L \neq \emptyset$;
+	\item is closed under linear combination, \ie $\forall \str{x}, \str{y} \in \L$, $\str{x} \xor \str{y} \in \L$.
 \end{itemize}
 
-Take a linear space and consider the orthogonal complement
-\[
-\mathcal{L}^\perp = \{\str{z}\ |\ \str{z} \in \{0, 1\}^n, (\str{z}, \str{x}) = 0\ \forall \str{x} \in \mathcal{L}\}
-\]
+Take a linear space and consider its orthogonal complement
+\begin{equation*}
+	\L^\perp = \left\{
+		\str{z} : \str{z} \in \{0, 1\}^n, \forall \str{x} \in \L . \DotProduct{\str{z}}{\str{x}} = 0
+	\right\}
+	=
+	\bigcap_{\str{x} \in \L} \C_n(\str{x}).
+\end{equation*}
 
-We have $\mathcal{L}$. Consider $\str{x} \in \mathcal{L}$, and a basis for $\mathcal{L}^\perp$.
-\[
-\mathcal{L}^\perp = \bigcap_{\str{x} \in \mathcal{L}}\mathcal{C}_n(\str{x})
-\]
+Consider a basis of $\L^\perp$.
+Write the vectors from this basis as column vectors of a matrix $A$ with $n$ rows and $m$ columns.
 
-Let us write all the vectors from the basis of $\mathcal{L}^\perp$ as column vectors of a matrix $A$ with $n$ rows and $m$ columns.
+For all $\str{x} \in \L$, we have that $\str{x} \times A = \zero_m$.
+So $\L = \left\{ \str{x} : \str{x} \times A = \zero_m \right\}$.
+A linear code can be specified by the matrix $A$, which is called the parity check matrix of $\L$.
+Given a matrix $A$ we have that
+\begin{align*}
+	\ker A & = \left\{ \str{x} : \str{x} \times A = \zero_m \right\},
+	\\
+	\Im A & = \left\{ \str{z} : \str{z} \in \{0, 1\}^m, \exists \str{x} \in \{0, 1\}^n . \str{x} \times A = \str{z} \right\}.
+\end{align*}
+So the set $\Im A$ is the linear combination of the rows of $A$.
+Consider the $i$-th canonical vector $e_i \in \{0, 1\}^m$, we have that
+\begin{equation*}
+	e_i \times A = A_i^T
+\end{equation*}
+that is, the $i$-th row of $A$.
 
-$\str{x}A = \str{0}$. So $\mathcal{L} = \{\str{x}\ |\ \str{x}A = \str{0}\}$. A linear code is specified by the $A$ matrix, which is called the parity check matrix of $\mathcal{L}$. Given a matrix $A$ we have
-\[
-\ker A = \{\str{x}\ |\ \str{x}A = \str{0} \}
-\]
-\[
-\im A = \{\str{z}\ |\ \exists \str{x} \in \{0, 1\}^n,\ \str{x}A = \str{z},\ \str{z} \in \{0, 1\}^m\}
-\]
-
-So $\im A$ is the linear combination of its rows. Pick the $e_i \in \{0, 1\}^m$ vector, 
-\[
-e_iA = A_i^T
-\]
-that is, the $i$-th row of $A$. Remind that given a code $\mathcal{C}$, if $d_H(\mathcal{C}) = d$ we can correct up to $\ifrac{(d-1)}{2}$. Also, recall the definition of Hamming weight:
-\[
-w_H(\str{x}) = \sum_{i = 1}^n x_i,\ \str{x} \in \{0, 1\}^n.
-\]
+Remind that given a code $\C$, if $\hdist{\C} = d$ then we can correct up to $\frac{d-1}{2}$.
+Also, recall the definition of Hamming weight:
+\begin{equation*}
+	\hweight{\str{x}} = \sum_{i = 1}^n x_i.
+\end{equation*}
 
 \begin{obs}
-	If $\mathcal{L} \in \{0, 1\}^n$ is a linear code then
-	$$d_H(\mathcal{L}) = \min_{\str{x} \in \mathcal{L},\ \str{x} \not= \str{0}}w_H(\str{x})$$
+	If $\L \subseteq \{0, 1\}^n$ is a linear code, then
+	\begin{equation*}
+		\hdist{\L} = \min_{\str{x} \in \L : \str{x} \neq \zero} \hweight{\str{x}}.
+	\end{equation*}
 \end{obs}
 
-\noindent\textbf{Proof}.Consider $\str{x} \not= \str{0}$ such that it minimizes $w_H(\str{x})$ over $\mathcal{L}$. Then $$d_H(\mathcal{L}) \leq \min_{\str{x} \in \mathcal{L},\ \str{x}\not= \str{0}}w_H(\str{x}),$$ since $d_H(\str{0}, \str{x}) = w_H(\str{x})$ for $$d_H(\mathcal{L}) \geq \min_{\str{x} \in \mathcal{L},\ \str{x}\not= \str{0}}w_H(\str{x}).$$ ``Distance is translation invariant''. Consider $\str{z} \in \mathcal{L}$, and $$\str{z} \oplus \mathcal{L} = \{\str{x} \oplus \str{x}\ |\ \str{x}\in \mathcal{L} \} = \mathcal{L},$$ since it's linearly closed.
-\[
-d_H(\str{x}, \str{y}) = d_H(\str{0}, \str{x} \oplus \str{y}) = w_H(\str{x}\oplus\str{y}) \geq \min_{\str{x} \in \mathcal{L},\ \str{x} \not= \str{0}} w_H(\str{x})
-\]
-$\hfill\Box$
+\begin{proof}
+	Consider $\str{x} \in \L$ different from $\zero$ and such $\str{x}$ minimises $\hweight{\str{x}}$.
+	Then
+	\begin{equation*}
+		\hdist{\L} \le \hdist{\zero, \str{x}} = \hweight{\str{x}} = \min_{\str{x} \in \L : \str{x} \neq \zero} \hweight{\str{x}}.
+	\end{equation*}
 
-\[
-M(n, d) = \max_{\mathcal{C} \subseteq \{0, 1\}^n,\ d_H(\mathcal{C}) \geq d}
-\]
-$M(n, 3)$ is the largest cardinality of a code correcting 1 error. By the Hamming bound we could build a code using disjoint balls of radius 1, non-intersecting.
+	Now we prove that
+	\begin{equation*}
+		\hdist{\L} \ge \min_{\str{x} \in \L : \str{x} \neq \zero} \hweight{\str{x}}.
+	\end{equation*}
+	To prove this we rely on the intuitive idea that distance is translation invariant.
+	Note that for any $\str{z} \in \L$ we have that
+	\begin{equation*}
+		\str{z} \xor \L
+		=
+		\left\{ \str{z} \xor \str{x} : \str{x} \in \L \right\}
+		=
+		\L,
+	\end{equation*}
+	since $\L$ is linearly closed.
 
-\[
-2^n \geq \left|\bigcup_{\str{x}\in \mathcal{C}}\hball{x}{1}\right| = \sum_{\str{x} \in \mathcal{C}}|\hball{x}{1} = |\mathcal{C}|n + 1 \Rightarrow |\mathcal{C}| \leq \dfrac{2^n}{n+1}
-\]
+	Consider any $\str{x}$ and $\str{y}$.
+	Since $\str{x} \xor \str{y} \in \L$, we have that
+	\begin{equation*}
+		\hdist{\str{x}, \str{y}}
+		=
+		\hdist{\zero, \str{x} \xor \str{y}}
+		=
+		\hweight{\str{x} \xor \str{y}}
+		\ge
+		\min_{\str{z} \in \L : \str{z} \neq \zero} \hweight{\str{z}}. \qedhere
+	\end{equation*}
+\end{proof}
 
-where there is equality in the fist inequality if the balls cover the entire space. So $$M(n, 3) \leq \dfrac{2^n}{n+1}.$$
+$M(n, 3)$ is the largest cardinality of a code correcting 1 error.
+By the Hamming bound we could build a code using disjoint balls of radius 1, non-intersecting.
+\begin{equation*}
+	2^n
+	\ge
+	\abs{\bigcup_{\str{x} \in \C} \hball{\str{x}}{1}}
+	=
+	\sum_{\str{x} \in \C} \abs{\hball{\str{x}}{1}}
+	=
+	\abs{\C} \cdot (n + 1)
+	\implies
+	\abs{\C} \le \frac{2^n}{n+1},
+\end{equation*}
+with equality if the Hamming Balls cover the entire space.
+So we have that
+\begin{equation*}
+	M(n, 3) \le \frac{2^n}{n+1}.
+\end{equation*}
 
 \begin{thm}[Hamming]
-	$M(n, 3) = \dfrac{2^n}{n+1}$ if $\exists m\ n = 2^m -1$	
+	If $\exists m$ such that $n = 2^m - 1$, then
+	\begin{equation*}
+		M(n, 3) = \frac{2^n}{n+1}.
+	\end{equation*}
 \end{thm}
 
-$M(2^M-1, 3) ) = \dfrac{2^{2m}}{22^m} = 2^{m-1}$
+\begin{proof}
+	Consider all the non-zero vectors in $\{0, 1\}^m$.
+	Let $A$ be a matrix having all these strings as its rows ($2^m-1 = n$ rows, $m$ columns).
+	The code we are looking for is $\C = \ker A$.
 
-\section{BCH Codes}
-Consider all the non-zero vectors in $\{0, 1\}^m$. Let $A$ be a matrix having all these strings as its rows ($2^m-1 = n$ rows, $m$ columns). $\mathcal{C} = \ker A$ is the code we are looking for. We have to prove that $d_H(\mathcal{C})\geq 3$, thus $$\min_{\str{x} \in \mathcal{C},\ \str{x} \not= 0} w_H(\str{x}) = 3,$$ or equivalently that $\forall \str{x} \in \mathcal{C},\ \str{x} \not= \str{0},\ w_H(\str{x}) \geq 3$:
-\begin{itemize}
-	\item $\str{x} \in \mathcal{C}, \str{x} \not=0 \Rightarrow w_H(\str{x}) \not=1$. This is true since if $w_H(\str{x})=1$ then $\str{x} = e_i$, for some $i$ ($\str{x}A$ is a row of $A$).
-	\item $w_H(\str{x}) = 2 \Rightarrow \str{x} \not \in \mathcal{C}$. $\str{x}A$ would be a linear combination of two rows of $A$, but they are different, so say $\str{x} = e_i \oplus e_j$. Then $$\str{x}A =  e_iA \oplus e_jA$$ but since $e_j \not= e_i$, also $ e_iA \not= e_jA$ and  $e_iA \oplus e_jA \not= \str{0}$.
-\end{itemize}
+	We have to prove that $\hdist{\C} \ge 3$, and that consequently
+	\begin{equation*}
+		\min_{\str{x} \in \C : \str{x} \neq \zero} \hweight{\str{x}} = 3,
+	\end{equation*}
+	or equivalently that $\forall \str{x} \in \C : \str{x} \neq \zero$, $\hweight{\str{x}} \geq 3$.
+	\begin{itemize}
+		\item If $\str{x} \in \C$ and $\str{x} \neq \zero$, then $\hweight{\str{x}} \neq 1$.
+			This is true since if $\hweight{\str{x}} = 1$ then $\str{x} = e_i$ for some $i$, and $e_i \times A$ is the $i$-th row of $A$, which is different from $\zero_m$;
+		\item if $\hweight{\str{x}} = 2$ then $\str{x} \not\in \C$.
+			If $\hweight{\str{x}} = 2$ then $\str{x} = e_i \xor e_j$ for two distinct $i, j$.
+			But then $\str{x} \times A$ is a linear combination of two rows of $A$, and since all rows of $A$ are different $e_i \times A \xor e_j \times A \neq \zero_m$.
+	\end{itemize}
 
-\begin{obs}
-	The Hamming Balls of radius 1 around the elements of $\mathcal{C}$ fill up the space of $\{0, 1\}^n$, thus $$\forall \str{z} \in \{0, 1\}^n\ \exists \str{x} \in \mathcal{C}\ s.t.\ \str{z} \in \hball{x}{1}.$$
-\end{obs}
+	What is left to show is that the Hamming Balls of radius 1 around the elements of $\C$ fill up $\{0, 1\}^n$, \ie
+	\begin{equation*}
+		\forall \str{z} \in \{0, 1\}^n .
+		\exists \str{x} \in \C :
+		\str{z} \in \hball{\str{x}}{1}.
+	\end{equation*}
 
-\noindent\textbf{Ver. (?)}.
-\begin{itemize}
-	\item $\str{z} \in \mathcal{C}$, we are ok. 
-	\item $\str{z} \not\in \mathcal{C}$, then $\str{z}A \not= \str{0}$. $|\str{z}A| = m$. $\str{z}A \in \{0, 1\}^m$ but $\str{z}A \not= \str{0}$ so it is a row of $A$. It follows that $\str{z}A = e_iA$ for some $i$. So $(\str{z} \oplus e_i)A = \str{0}$, thus $\str{z}\oplus e_i \in \ker A$, so $\str{z}\oplus e_i = \str{x}$ is at distance 1 from $\str{z}$ and $\str{z} \in \hball{x}{1}$.
-\end{itemize}
-$\hfill\Box$
+	\begin{itemize}
+		\item If $\str{z} \in \C$, we are ok;
+		\item if $\str{z} \not\in \C$, then $\str{z} \times A \neq \zero_m$.
+			We have that $\str{z} \times A \in \{0, 1\}^m$, and since $\str{z} \times A \neq \zero_m$, it must be that it is a row of $A$.
+			It follows that $\str{z} \times A = e_i \times A$ for some $i$.
+			So $(\str{z} \xor e_i) \times A = \zero_m$, thus $\str{z} \xor e_i \str{x} \in \ker A$.
+			So we have found that $\str{z} \in \hball{\str{x}}{1}$. \qedhere
+	\end{itemize}
+\end{proof}
