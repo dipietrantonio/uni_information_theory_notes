@@ -54,7 +54,7 @@ Its logarithm is the number of bits of true information that we can store.
 Dividing by $n$ we get the amount of information bit by bit.
 We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 
-\begin{thm}[Gilbert-Varshamov bound]
+\begin{thm}[Gilbert-Varshamov bound] \label{thm:gilbert-varshamov}
 	If $\delta \in \left[ 0, \frac{1}{2} \right]$, then
 	\begin{equation*}
 		R(\delta) \ge 1 - \entropy{\delta}.
@@ -116,7 +116,7 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 	where $\frac{n}{d} = \delta.$
 \end{proof}
 
-\begin{thm}[Hamming bound]
+\begin{thm}[Hamming bound] \label{thm:hamming-bound}
 	For $\delta \in [0, 1]$,
 	\begin{equation*}
 		R(\delta) \le 1 - \entropy{\frac{\delta}{2}}.
@@ -125,7 +125,9 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 
 \begin{proof}
 	Fix $n, d \in \Naturals$, $\hdist{\C} \ge d$, arbitrarily.
-	For two Hamming Balls to be disjoint, given their centres $\str{x}$ and $\str{y}$, such that $\hdist{\str{x}, \str{y}} = d$, you must take 
+
+	Consider the centres $\str{x}$ and $\str{y}$ of two Hamming balls, with $\hdist{\str{x}, \str{y}} = d$.
+	For the two Hamming balls to be disjoint, we must choose
 	\begin{equation*}
 		\hball{\str{x}}{\frac{d-1}{2}}
 		\text{ and }
@@ -523,7 +525,7 @@ Also, recall the definition of Hamming weight:
 \end{proof}
 
 $M(n, 3)$ is the largest cardinality of a code correcting 1 error.
-By the Hamming bound we could build a code using disjoint balls of radius 1, non-intersecting.
+In the proof of the Hamming bound (\cref{thm:hamming-bound}) we have seen that we can build such a code using disjoint balls of radius 1.
 \begin{equation*}
 	2^n
 	\ge

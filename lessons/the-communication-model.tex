@@ -1,395 +1,558 @@
+
 \chapter{The communication model}
 
-Shannon developed a mathematical model of the communication among parties. In particular, we will not consider the simplest one, in which the communication is one-way between two entities. In this model, one entity is the \emph{source} that sends information to the second entity, called the \emph{receiver}, through a \emph{noisy channel}.
+Shannon developed a mathematical model of the communication among parties.
+In particular, we will consider the simplest one, in which the communication is one-way between two entities.
+In this model, one entity is the \emph{source} that sends information to the second entity, called the \emph{receiver}, through a \emph{noisy channel}.
 
-\begin{figure}[h!]
+\begin{figure}
 	\centering
-	\includegraphics[width=0.6\linewidth]{pictures/comm-channel.eps}
+	\includegraphics[width=0.8\linewidth]{pictures/comm-channel.eps}
 	\caption{Graphic model of a simple communication.}
 \end{figure}
 
-Source and receiver are usually separated in space and communicate (approximately) at the same time. Indeed, the roles of space and time can be swapped (i.e. a communication that evolves over time at the same place, like data storage and retrieval).
+Source and receiver are usually separated in space and communicate (approximately) at the same time.
+Indeed, the roles of space and time can be swapped, and we could think of a communication that evolves over time at the same place, like data storage and retrieval.
 
-The noisy channel is both the veicle and the obstacle. One cannot transmit a signal without it being modified to some extent; moreover the communication must be quick because time is expensive. The alterations to the message are errors and therefore must be corrected. In order to do this we need to remove ``bad'' redundancy and add ``good'' redundancy. So we have a tradeoff between data integrity and fast communication.
+The noisy channel is both the vehicle and the obstacle.
+One cannot transmit a signal without it being modified to some extent; moreover the communication must be quick because time is expensive.
+The alterations to the message are errors and therefore must be corrected.
+In order to do this we need to remove ``bad'' redundancy and add ``good'' redundancy.
+So we have a trade-off between data integrity and fast communication.
 
-\begin{figure}[h!]
+\begin{figure}
 	\centering
-	\includegraphics[width=0.9\linewidth]{pictures/comm-channel1.eps}
+	\includegraphics[width=0.8\linewidth]{pictures/comm-channel1.eps}
 	\caption{The role of encoder and decoder.}
 \end{figure}
 
-The balance is found by the \emph{encoder}. This entity takes the message from the source, modify it in some way, and transmit the result over the channel. A \emph{decoder} is the entity that apply some transformation to the incoming flow of information before handling it to the receiver. The decoder can't perform the inverse of the encoder's function, because the channel applies noise to the information. We will concentrate on the noisy channel, without considering encoder and decoder's interfaces to source and receiver.
+The balance is found by the \emph{encoder}.
+This entity takes the message from the source, modify it in some way, and transmit the result over the channel.
+A \emph{decoder} is the entity that apply some transformation to the incoming flow of information before handling it to the receiver.
+The decoder cannot perform the inverse of the encoder's function, because the channel applies noise to the information.
+We will concentrate on the noisy channel, without considering encoder and decoder's interfaces to source and receiver.
 
 %NOTE: here he said something on asimptotic equipartition
 
-\section{Discrete Memoryless Channel (DMC)}
+\section{\acl{DMC}}
 
-For now, the channel is a black box. Let $\xset$ be the input alphabet and $\yset$ be the output alphabet for the strings that respectively enter and exit the channel. Select an input symbol $x \in \xset$; a random symbol $y \in \yset$ comes out of the channel.
+For now, the channel is a black box.
+Let $\X$ be the input alphabet and $\Y$ be the output alphabet for the strings that respectively enter and exit the channel.
+Select an input symbol $x \in \X$; a random symbol $y \in \Y$ comes out of the channel.
 
-We can think that there is a ``devil'' inside the black box (yes, you've read correctly, lol). The devil has dices that have $|\yset|$ faces. Whenever an input signal enters the channel, the devil launches a dice and outputs the symbol on the facet that comes up. The devil can't launch any dice; instead, there is a mapping between dices and input symbols (you can think of $x$ as the name of the dice that the devil has to use). So we can influence the devil in using some specific dice (out of the $|\xset|$ dices), but the outcome is still stochastic. The probability distribution of each dice is arbitrary. Note that the channel is usable if e have different dices; otherwise, the output is completely uncontrollable.
-
+We can think that there is a ``devil'' inside the black box.
+The devil has dices that have $\abs{\Y}$ faces.
+Whenever an input signal enters the channel, the devil launches a dice and outputs the symbol on the facet that comes up.
+The devil cannot launch any dice he likes; instead, there is a mapping between dices and input symbols (you can think of $x$ as the name of the dice that the devil has to use).
+So we can influence the devil in using some specific dice (out of the $\abs{\X}$ dices), but the outcome is still stochastic: the probability distribution of each dice is arbitrary.
+Note that the channel is usable if we have different dices; otherwise, the output is completely uncontrollable.
 
 Let $W(y|x)$ be the probability that the dice named $x$ will fall onto its facet $y$, with the following conditions: 
 \begin{itemize}
-	\item 
-	$W(y|x) \geq 0$,
-	\item $\forall x \sum_{y \in \yset} w(y|x) = 1$.
+	\item $W(y|x) \ge 0$,
+	\item $\forall x . \sum_{y \in \Y} W(y|x) = 1$.
 \end{itemize}
-
 We can think of $W$ as a matrix whose columns are indexed by $y$ and rows are indexed by $x$.
 
-To communicate iteratively pick $x_1,x_2, \ldots, x_n \in \xset^n$ and launch a sequence of dices. There is a probability distribution for $y_1, y_2, \ldots, y_n \in Y^n$. Consider the function
-\[
-W^n(\str{x}, \str{y}): \xset^n \rightarrow \yset^n
-\]
+To communicate iteratively pick $x_1, x_2, \dots, x_n \in \X^n$ and launch a sequence of dices.
+There is a probability distribution for $y_1, y_2, \dots, y_n \in Y^n$. Consider the function
+\begin{equation*}
+	W^n : \X^n \to \Y^n,
+\end{equation*}
 defined as
-\[
-W^n(\str{x}, \str{y}) = \prod_{i = 1}^n W(y_i | x_i)
-\]
+\begin{equation*}
+	W^n \left( \str{x}, \str{y} \right)
+	= \prod_{i = 1}^n W \left( y_i | x_i \right).
+\end{equation*}
 
-We assume that every symbol is independently modified (lack of memory of the channel). We can now define the DMC (over time instants) as
-\[
-\emph{DMC} = \{W^n\}_{n = 1}^\infty
-\]
+We assume that every symbol is independently modified (lack of memory of the channel).
+Our \ac{DMC} (over time instants) is defined by the set $\left\{ W^n \right\}_{n = 1}^{\infty}$.
 
 \section{Shannon's Noisy Channel Theorem}
 
-The encoder takes the messages of the source and maps it to an arbitrary subset $C \subseteq \xset^n$. So we have $|C|$ many messages that flow in the channel; they can be non-binary strings, but to have an approximation of their length we can assume they are binary. Then, the length of these messages is $\log_2|C|$. We define the speed of the channel as $$\dfrac{1}{n}\log_2|C|,$$ where $n$ is the length of transmission in some unit of time. We can call this \emph{rate} of the code.
+The encoder takes the messages of the source and maps it to an arbitrary subset $\C \subseteq \X^n$.
+So we have $\abs{\C}$ many messages that can flow in the channel; they can be non-binary strings, but to have an approximation of their length we can assume they are binary.
+Then, the length of these messages is $\logtwo{\abs{\C}}$.
+We define the speed of the channel as
+\begin{equation*}
+	\frac{1}{n} \cdot \logtwo{\abs{\C}},
+\end{equation*}
+where $n$ is the length of transmission in some unit of time.
+We can call this \emph{rate} of the code.
 
-Now we are interested in the quality of transmission, that is how well data transmitted can be recovered. The decoder is a function $\varphi: \yset^n \rightarrow C$. An error event happens when $\str{x} \in \xset^n$ is transmitted and $\varphi(\str{y}) \not= \str{x}$. Define $$W^n(T|\str{x}) = \sum_{\str{y} \in T}W^n(\str{y}|\str{x}),$$
+Now we are interested in the quality of transmission, that is how well data transmitted can be recovered.
+The decoder is a function $\phi: \Y^n \to \C$.
+An error event happens when $\str{x} \in \X^n$ is transmitted and $\phi(\str{y}) \neq \str{x}$ is received.
+Define
+\begin{equation*}
+	W^n \left( T|\str{x} \right)
+	=
+	\sum_{\str{y} \in T} W^n \left( \str{y}|\str{x} \right),
+\end{equation*}
+where $T \subseteq \Y$.
+The error probability of a string $\str{x} \in \X^n$ is
+\begin{equation*}
+	1 - W^n \left( \phi^{-1}(\str{x}) | \str{x} \right)
+	=
+	W^n \left( \overline{\phi^{-1}(\str{x})} | \str{x} \right),
+\end{equation*}
+where
+\begin{equation*}
+	\phi^{-1}(\str{x}) = \left\{ \str{y} : \phi(\str{y}) = \str{x} \right\}.
+\end{equation*}
 
-where $T \subseteq \yset$. The error probability of a string $\str{x} \in \xset^n$ is $$1 - W^n(\varphi^{-1}(\str{x})|\str{x}) = W^n(\overline{\varphi^{-1}(\str{x})}|\str{x})$$ where $$\varphi^{-1}(\str{x}) = \{\str{y}\ |\ \varphi(\str{y}) = \str{x} \}$$
-
-Define the (maximum) error probability of the code $(C_n, \varphi_n)$ ($W^n$ is fixed) as 
-\[
-e_m(W^n, C_n, \varphi_n) = \max_{\str{x} \in C} W^n(\overline{\varphi^{-1}(\str{x})}, \str{x}).
-\]
+Define the (maximum) error probability of the code $(\C_n, \phi_n)$ ($W^n$ is fixed) as 
+\begin{equation*}
+	e_m \left( W^n, \C_n, \phi_n \right)
+	=
+	\max_{\str{x} \in \C} W^n \left( \overline{\phi^{-1}(\str{x})}, \str{x} \right).
+\end{equation*}
 
 \begin{prop}
-	$R \geq 0$ is an \emph{achievable rate} of transmission over the DMC $\{W\}$ if exists $\{(C_n, \varphi_n)\}_{n=1}^\infty$ such that:
+	$R \geq 0$ is an \emph{achievable rate} of transmission over the \ac{DMC} $\{ W \}$ if exists $\{(\C_n, \phi_n)\}_{n=1}^\infty$ such that:
 	\begin{itemize}
-		\item $\lim_{n \rightarrow \infty} \dfrac{1}{n}\log_2(|C_n|) \geq R$, and
-		\item $\lim_{n \rightarrow \infty} e_m(W, C_n, \varphi_n) = 0$.
+		\item $\lim_{n \to \infty} \frac{1}{n} \logtwo{\abs{\C_n}} \ge R$;
+		\item $\lim_{n \to \infty} e_m(W, \C_n, \phi_n) = 0$.
 	\end{itemize}
 \end{prop}
 
-What is the highest achievable rate? $$C \subseteq \xset^n \Rightarrow \dfrac{1}{n}\log_2|C| \leq \log_2|\xset^n|$$
-So the maximum achievable rate is $\log_2|\xset^n|$. Also, if $R_t \rightarrow R$ and $R_t$ is a series of values representing achievable rates, then $R$ is an achievable rate too (simple analysis, will not be demonstrated).
+What is the highest achievable rate?
+\begin{equation*}
+	\C \subseteq \X^n \implies \frac{1}{n} \logtwo{\abs{C}} \le \logtwo{\abs{\X^n}}.
+\end{equation*}
+So the maximum achievable rate is $\logtwo{\abs{\X^n}}$.
+Also, if $R_t$ is a series of achievable rates and $R_t$ tends to $R$, then $R$ is an achievable rate too (simple analysis, will not be demonstrated).
 
-Shannon wondered about the highest achievable rate $C(W)$ of a given DMC $\{W\}$. He called this number \emph{capacity of the channel}. The answer came out of his intuition but it has been proved true by his students and coworkers.
+Shannon wondered about the highest achievable rate $C(W)$ of a given DMC $\{W\}$.
+He called this number \emph{capacity of the channel}.
+The answer came out of his intuition but it has been proved true by his students and co-workers.
 
-Let $x \in\xset$ be a symbol chosen following a probability distribution $P|\xset$. The input symbol will be sent through the channel $W$ and the output is conditioned by $W$. Let $Y$ be the random variable (RV), $Y \in \yset$, be the output of $W$ with respect to input $X$. Then, we have a joint distribution $P, W | \xset \times \yset$. The probability that a specific input $x$ corresponds to a received symbol $y$ is
-\[Pr\{X=x, Y=y\} = P(x)W(y|x).\]
+Let $x \in \X$ be a symbol chosen following a probability distribution $P|\X$.
+The input symbol will be sent through the channel $W$ and the output is conditioned by $W$.
+Let $Y$ be a \ac{RV} $Y \in \Y$ representing the output of $W$ with respect to input $X$.
+Then, we have a joint distribution $P, W | \X \times \Y$.
+The probability that a specific input $x$ corresponds to a received symbol $y$ is
+\begin{equation*}
+	\Pr{X = x, Y = y} = P(x) W(y|x).
+\end{equation*}
 
-Define $I(X \wedge Y)$ to be the number of bits that one can transmit over a channel in a unit of time. Intuitively, it is what $y$ retains of input $x$ (mutual information). We can maximize $I$ by controlling the probability distribution $P|\xset$ (pardon the abuse of notation): $$\max_{P|\xset}I(P, W)$$
-
-So, what is the formula for $I$?
-
-\[
-I(X \wedge Y) = \sum_{(x, y)\in X\times Y} Pr\{X=x, Y=y\}\log_2\left(\dfrac{Pr\{X=x, Y=y\}}{Pr\{X=x\}Pr\{Y=y\}}\right) =
-\]
-
-\[
-= \sum_{x \in X,  y\in Y} Pr\{X=x\}W(y|x)\log_2\left(\dfrac{Pr\{X=x\}W(y|x)}{\sum_{x\in X}Pr\{X=x\}W(y|x)}\right) = I(P, W)
-\]
+Define $\MutualInformation{X \land Y}$ to be the number of bits that one can transmit over a channel in a unit of time.
+Intuitively, it is what $y$ retains of input $x$ (mutual information).
+We can maximize $I$ by controlling the probability distribution $P|\X$.
+With some abuse of notation:
+\begin{equation*}
+	\max_{P|\X} \MutualInformation{P, W}.
+\end{equation*}
+What is the formula for $I$?
+\begin{align*}
+	\MutualInformation{X \land Y}
+	& =
+	\sum_{(x, y) \in \X \times \Y}
+	\Pr{X=x, Y=y} \cdot
+	\logtwo{\frac{\Pr{X=x, Y=y}}{\Pr{X=x} \cdot \Pr{Y=y}}}
+	\\
+	& =
+	\sum_{x \in \X,  y \in \Y}
+	\Pr{X=x} \cdot W(y|x) \cdot
+	\logtwo{\frac{\Pr{X=x} \cdot W(y|x)}{\sum_{x \in X} \Pr{X=x} \cdot W(y|x)}}
+	\\
+	& =
+	\MutualInformation{P, W}.
+\end{align*}
 
 \begin{thm}[Shannon's Noisy Channel Theorem]\label{thm:nct}
-	The highest achievable rate, given a DMC $W$, is $$C(w) = \max_{P|X}I(P, W).$$
+	The highest achievable rate, given a \ac{DMC} $W$, is
+	\begin{equation*}
+		C(w) = \max_{P|X} \MutualInformation{P, W}.
+	\end{equation*}
 \end{thm}
 
-Notice that $C(W)$ is 0 if $X$ and $Y$ are independent $\Leftrightarrow$ all rows in $W$ are the same. 
+Notice that $C(W)$ is 0 if $X$ and $Y$ are independent, \ie all rows in $W$ are the same. 
 
-\section{Binary Symmetric Channel}
+\section{\acl{BSC}}
 
-A binary symmetric channel is used to transmit binary strings and the DMC has the form
-\[
-W = \left({\begin{array}{cc}
-	1-p & p\\
-	p & 1-p\\
-	\end{array}}\right), \xset = \yset = \{0, 1\}
-\]
+A \ac{BSC} is used to transmit binary strings and the \ac{DMC} has the form
+\begin{equation*}
+	W = 
+	\begin{pmatrix}
+		1-p & p \\
+		p & 1-p
+	\end{pmatrix},
+\end{equation*}
+with $\X = \Y = \{0,1\}$.
 
-It is called symmetric because $W$ is. In this context $P|\xset$ is called \emph{crossover} probability. The (hypothetical, since we proved nothing) capacity of this channel according to Theorem \ref{thm:nct} is:
-\[I(X \wedge Y) = H(Y) - H(Y|X) \leq 1 -h(p)\]
+It is called symmetric because $W$ is symmetric.
+In this context $P|\X$ is called \emph{crossover} probability.
+The capacity of this channel according to \cref{thm:nct} is
+\begin{equation*}
+	\MutualInformation{X \wedge Y}
+	=
+	\Entropy{Y} - \Entropy{Y|X}
+	\le
+	1 - \entropy{p}.
+\end{equation*}
 
 This is true because:
 \begin{itemize}
-	\item the maximum value for $H(Y)$ is 1;
+	\item the maximum value for $\Entropy{Y}$ is 1;
 	\item the following equations hold:
-	\[H(Y|X) = \sum_{x\in X}Pr\{X=x\}H(Y|X=x) = h(p),\] where 
-	\[H(Y|X=x) = \sum_{y \in Y}Pr\{Y=y|X=x\}\log_2\left(\dfrac{1}{Pr\{Y=y | X=x\}} \right).\]
+		\begin{equation*}
+			\Entropy{Y | X} =
+			\sum_{x \in \X} \Pr{X = x} \cdot \Entropy{Y | X = x} =
+			\entropy{p},
+		\end{equation*}
+		where
+		\begin{equation*}
+			\Entropy{Y | X = x} =
+			\sum_{y \in \Y} \Pr{Y = y | X = x} \cdot
+			\logtwo{\frac{1}{\Pr{Y = y | X = x}}}.
+		\end{equation*}
 \end{itemize} 
 
-Is this upper bound achievable? We must make sure that $$\exists X\ H(Y) =1$$
-We can impose the uniform distribution when picking the input values, i.e. $Pr\{X = 0\} = \ifrac{1}{2}$.
-
-We will show that $1-h(2p)$ is an achievable rate if $p < \ifrac{1}{4}$. We will do this using error correcting codes.
+Is this upper bound achievable? We must make sure that
+\begin{equation*}
+	\exists X : \Entropy{Y} = 1.
+\end{equation*}
+We can impose the uniform distribution when picking the input values, \ie $\Pr{X = 0} = \frac{1}{2}$.
 
 \begin{obs}
- $1-h(2p)$ is an achievable rate if $p < \ifrac{1}{4}$.
+	$1-\entropy{2p}$ is an achievable rate if $p < \frac{1}{4}$.
 \end{obs}
+We will do this using error correcting codes.
 
-\noindent\textbf{Ver}. Choose $\str{x} \in \{0, 1\}^n$ arbitrary, but think of $\str{0}$ (it's easier). Consider the Hamming ball $\hball{\str{0}}{n(p+\epsilon)}$; we want that $$W^n(\phi^{-1}_n(\str{0}) | \str{0}) \rightarrow 1.$$ Consider a code for which $$\forall \str{x} \in \cwset\ \phi^{-1}_n(\str{x}) \supseteq \hball{\str{x}}{n(p+\epsilon)};$$ these H-balls should be disjoint. Is it true that $$W^n(\hball{\str{0}}{n(p+\epsilon)} | \str{0}) \rightarrow 1?$$ This is what we should achieve , and prove that $np$ is a good choice. Take what you receive: $\str{x} \oplus Z^n$. We say $Z^n \cdot \str{x} \oplus Y^n$ (?).
-\[
- Y^n \in \hball{\str{0}}{n(p+\epsilon)} iff Z^n \text{has at most}\ n(p+\epsilon) 1s. 
-\]
+\begin{proof}
+	Choose arbitrary $\str{x} \in \{0, 1\}^n$, but think of $\zero$ (it's easier).
+	Consider the Hamming ball $\hball{\zero}{n(p+\epsilon)}$; we want that
+	\begin{equation*}
+		W^n \left( \phi^{-1}_n(\zero) | \zero \right) \to 1.
+	\end{equation*}
+	Consider a code for which
+	\begin{equation*}
+		\forall \str{x} \in \C_n .
+		\phi^{-1}_n(\str{x}) \supseteq \hball{\str{x}}{n(p+\epsilon)};
+	\end{equation*}
+	these Hamming balls should be disjoint.
+	We wonder if it is true that
+	\begin{equation*}
+		W^n \left( \hball{\zero}{n(p+\epsilon)} | \zero \right) \to 1.
+	\end{equation*}
+	This is what we should achieve, and prove that $np$ is a good choice.
+	What we receive is $\str{x} \xor Z^n$, for some \ac{RV} $Z^n$, defined as $Z^n = \str{x} \xor Y^n$.
+	\begin{equation*}
+		Y^n \in \hball{\zero}{n(p+\epsilon)} \iff Z^n \text{ has at most } n(p+\epsilon) \text{ 1s}. 
+	\end{equation*}
 
-\[
- \text{\#1s in }Z^n = \sum_{i=1}^n Z_i,
-\]
-where $Z_i \sim (1-p, p)$ is a random variable.
+	The number of 1s in $Z^n$ is equal to $\sum_{i = 1}^{n} Z_i$, where $Z_i \sim (1-p, p)$ is a \ac{RV}.
 
-\[
- E(Z_i) = Pr[Z_i = 0]0 + Pr[Z_i = 1] = p
-\]
+	\begin{equation*}
+		\expectation{Z_i} = \Pr{Z_i = 0} \cdot 0 + \Pr{Z_i = 1} \cdot 1 = p.
+	\end{equation*}
 
-$\{Z_i\}_{i=1}^n$ is an i.i.d. sequence of RVs.
+	$\{Z_i\}_{i=1}^n$ is an \ac{IID} sequence of \acp{RV}.
+	\begin{equation*}
+		\expectation{Z^n} =
+		\expectation{\sum_{i = 1}^{n} Z_i} =
+		\sum_{i = 1}^{n} \expectation{Z_i} =
+		n \cdot p.
+	\end{equation*}
 
-\[
-E(Z^n) = E(\sum_{i=1}^nZ_i) = \sum_{i=1}^nE(Z_i) = np
-\]
+	By the law of large numbers,
+	\begin{equation*}
+		\Pr{\abs{\frac{1}{n} \sum_{i = 1}^{n} Z_i - p} > \epsilon} \to 0.
+	\end{equation*}
+	The complement of this event has a probability that converges to 1.
+	How can we guarantee that these Hamming balls of radius $n(p+\epsilon)$ are disjoint?
+	This is guaranteed if $\hdist{\str{x}',\str{x}''} \ge 2n (p+\epsilon)$.
+	Thus $\hdist{\C_n} \ge 2n(p+\epsilon)$.
+	The Gilbert-Varhsamov bound (\cref{thm:gilbert-varshamov}) says that, if $\delta < \frac{1}{2}$,
+	\begin{equation*}
+		\exists \C_n : \abs{\C_n} \gtrsim 2^{n \, (1-\entropy{\delta})},
+	\end{equation*}
+	and that
+	\begin{equation*}
+		\hdist{\C_n} \gtrsim n \delta.
+	\end{equation*}
 
-by the law of large numbers 
-\[
-Pr\left[\left|\dfrac{1}{n} \sum_{i=1}^nZ_i -p \right| > \epsilon \right] \rightarrow 0
-\]
+	We want that $d_H(\C_n) \ge 2n(p+\epsilon)$, thus what we want is achievable if and only if
+	\begin{equation*}
+		2p + \epsilon < \dfrac{1}{2} \sim p < \dfrac{1}{4}. \qedhere
+	\end{equation*}
+\end{proof}
 
-the complement of this event has a probability that converges to 1. How can we guarantee that these H-balls of radius $n(p+\epsilon)$ are disjoint? This is guaranteed if $d_H(\str{x}',\str{x}'') \geq 2n(p+\epsilon)$. Thus $d_H(\cwset) \geq 2n(p+\epsilon)$. G.V. Bound says that
-
-\[
-\exists \cwset\ |\cwset | \gnsim 2^{n(1-h(\delta))},\ \delta < \ifrac{1}{2}
-\]
-
-and
-
-\[
-d_H(\cwset) \gnsim n\delta.
-\]
-
-We want $d_H(\cwset) \geq 2n(p+\epsilon)$, thus what we want is achievable iff
-
-\[
-2p + \epsilon < \dfrac{1}{2} \sim p < \dfrac{1}{4}
-\]
-$\hfill\Box$
-
-Shannon stated something stronger, namely that the capacity is $1 - h(p)$. Shannon uses ``maximum likelihood''. Chooses $2^{nR}$ strings at random from $\Tau^n_p$, given $P|\xset$.
+Shannon stated something stronger, namely that the capacity is $1 - \entropy{p}$.
+Shannon uses ``maximum likelihood''.
+He chooses $2^{n \, R}$ strings at random from $T^n_p$, given $P|\X$.
 
 \begin{thm}[Converse part of Shannon's noisy channel coding theorem]
-	If $R$ is such that $\exists \{\cwset, \cwset\}_{n=1}^\infty$ with
-	$$\overline{\lim_{n \rightarrow \infty}} \dfrac{1}{n} \log|\cwset| \geq R$$
+	If $R$ is such that $\exists \{\C_n, \phi_n\}_{n=1}^\infty$ with
+	\begin{equation*}
+		\limsup_{n \to \infty}
+		\frac{1}{n} \cdot \logtwo{\abs{\C_n}} \ge R,
+	\end{equation*}
 	and
-	$$\lim_{n\rightarrow \infty} e_n(W^n, \cwset, \varphi) = 0$$
+	\begin{equation*}
+		\lim_{n \to \infty} e_n (W^n, \C_n, \phi) = 0,
+	\end{equation*}
 	then
-	$$R \leq \max_{X \in \xset:P_{Y|X} = W} I(W \wedge Y).$$
+	\begin{equation*}
+		R \le \max_{
+			\substack{
+				X \in \X : \\
+				P_{Y|X} = W
+			}
+		}
+		\MutualInformation{X \land Y}.
+	\end{equation*}
 \end{thm}
 
-\noindent\textbf{Proof.} Let $M_n$ be a RV uniformly distributed over $\cwset$. Take $(\ifrac{1}{n})H(M_n)$, the average entropy.
-\[
- \dfrac{1}{n})H(M_n) ) \dfrac{1}{n})\log|\cwset|
-\]
+\begin{proof}
+	Let $M_n$ be a \ac{RV} uniformly distributed over $\C_n$.
+	Take $\frac{1}{n} \cdot \Entropy{M_n}$, the average entropy.
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{M_n} =
+		\frac{1}{n} \cdot \logtwo{\abs{\C_n}}.
+	\end{equation*}
+	To get the upper bound, we manipulate the \ac{LHS}.
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{M_n} =
+		\frac{1}{n} \cdot \left[ \Entropy{M_n} - \Entropy{M_n | \phi_n(Y^n)} \right] +
+		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y^n)},
+	\end{equation*}
+	where $Y^n$ is the \ac{RV} defined by $P_{Y^n | M_n} = W^n$.
+	In the square brackets we have a mutual information, so
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{M_n} =
+		\frac{1}{n} \cdot \MutualInformation{M_n \land \phi_n(Y^n)} +
+		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y^n)}.
+	\end{equation*}
+	We should be able to prove that this is not more than the upper bound.
+	We expect the other therm to be negligible; with high probability the result of decoding the received codeword is the codeword that was sent.
+	\begin{equation*}
+		\MutualInformation{M_n \land \phi_n(Y^n)} \le
+		\MutualInformation{M_n \land Y^n}.
+	\end{equation*}
+	This is from the fact that information cannot be gained by processing the \acp{RV}.
+	We see this by looking at
+	\begin{equation} \label{eq:dis1}
+		\MutualInformation{M_n \land \phi_n(Y^n)} \le
+		\MutualInformation{M_n \wedge \phi_n(Y^n), Y^n},
+	\end{equation}
+	since
+	\begin{equation*}
+		\Entropy{M_n} - \Entropy{M_n | \phi_n(Y^n)} \le
+		\Entropy{M_n} - \Entropy{M_n | \phi_n(Y^n), Y^n},
+	\end{equation*}
+	and since
+	\begin{equation*}
+		\Entropy{M_n | \phi_n(Y^n)} \ge
+		\Entropy{M_n | \phi_n(Y^n), Y^n},
+	\end{equation*}
+	\Cref{eq:dis1} follows.
 
-to get the upper bound, we manipulate the left hand side.
+	The \ac{RHS} of \cref{eq:dis1} can be written as
+	\begin{align*}
+		\MutualInformation{M_n \land \phi_n(Y^n), Y^n}
+		& =
+		\MutualInformation{M_n \land Y^n} +
+		\MutualInformation{M_n \land \phi_n(Y^n) | Y^n}
+		\\
+		& =
+		\MutualInformation{M_n \land Y^n}.
+	\end{align*}
+	we see that
+	\begin{equation*}
+		\MutualInformation{M_n \land \phi_n(Y^n) | Y^n} \le
+		\Entropy{\phi_n(Y^n) | Y^n} = 0.
+	\end{equation*}
 
-\[
- \dfrac{1}{n}H(M_n) = \dfrac{1}{n}[H(M_n) - H(M_n | \varphi_n(Y^n))] + \dfrac{1}{n}H(M_n|\varphi_n(Y^n))
-\]
+	So we obtain the following inequality:
+	\begin{equation*}
+		\MutualInformation{M_n \land \phi_n(Y^n)} \le
+		\MutualInformation{M_n \land Y^n}.
+	\end{equation*}
+	As notation, $M_n = X_1 \dots X_n$ is a vector of \acp{RV}.
+	Thus,
+	\begin{equation*}
+		\MutualInformation{M_n \land Y^n} =
+		\MutualInformation{X^n \land Y^n}.
+	\end{equation*}
+	This is what we want to upper bound with the conjectured value of capacity.
+	We write
+	\begin{equation*}
+		\MutualInformation{X^n \land Y^n} =
+		\Entropy{Y^n} - \Entropy{X^n | Y^n} \le
+		\sum_{i = 1}^n \Entropy{Y_i} - \Entropy{Y^n | X^n}.
+	\end{equation*}
+	For $\Entropy{Y^n | X^n}$ we use the chain rule:
+	\begin{equation*}
+		\Entropy{Y^n | X^n} =
+		\sum_{i = 1}^n \Entropy{Y_i | X^n, Y_1, \dots, Y_{i-1}}.
+	\end{equation*}
 
-where $Y^n$ is the RV defined by $P_{Y^n|M_n} = W^n$. In the square brackets we have a mutual information.
+	But in a \ac{DMC} we have that
+	\begin{equation*}
+		\Entropy{Y_i | X^n, Y_1, \dots, Y_{i-1}} =
+		\Entropy{Y_i | X_i},
+	\end{equation*}
+	so
+	\begin{equation*}
+		\Entropy{Y^n | X^n} = \sum_{i = 1}^{n} \Entropy{Y_i | X_i}.
+	\end{equation*}
 
-\[
- \dfrac{1}{n}I(M_n \wedge \varphi_n(Y^n)) + \dfrac{1}{n}H(M_n|\varphi_n(Y^n))
-\]
+	So what we get is that
+	\begin{equation*}
+		\MutualInformation{X^n \land Y^n} =
+		\sum_{i = 1}^{n} \MutualInformation{X_i \land Y_i}.
+	\end{equation*}
+	This is true because our channel is a particular type of channel.
 
-we should be able to prove that this is not more than the upper bound. We expect the other therm to be negligible; with high probability the result of deconding the received codeword is the codeword that was sent.
+	\begin{equation*}
+		\sum_{i = 1}^{n} \MutualInformation{X_i \land Y_i} \le
+		n \cdot \max_{P_{Y|X} = W} \MutualInformation{X \land Y}.
+	\end{equation*}
+	which is $n$ times capacity.
+	So:
+	\begin{equation*}
+		\frac{1}{n} \cdot \MutualInformation{M_n \land \phi_n(Y^n)} \le C(W).
+	\end{equation*}
 
-\[
- I(M_n\wedge \varphi_n(Y^n)) \leq I(M_n \wedge \varphi_n(Y^n))
-\]
+	For the second part, we have to prove that 
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y^n)} \to 0.
+	\end{equation*}
 
-this is from the fact that information cannot be gained by processing the RVs. We see this by looking at
+	We do so using Fano's inequality.
+	We introduce the \ac{RV} $Z_n$ defined as
+	\begin{equation*}
+		Z_n =
+			\begin{cases}
+				1 \text{ if } \phi_n(Y^n) \neq M_n,\\
+				0 \text{ otherwise.}
+			\end{cases} 
+	\end{equation*}
 
-\begin{equation}\label{eq:dis1}
- I(M_n\wedge \varphi_n(Y^n)) \leq I(M_n \wedge \varphi_n(Y^n)Y^n) 
-\end{equation}
+	We can say that
+	\begin{equation*}
+		\Entropy{M_n | \phi_n(Y^n)} \le
+		\Entropy{M_n, Z_n | \phi_n(Y^n)}
+	\end{equation*}
+	since we ``added'' something to a \ac{RV}.
 
-since
+	\begin{align*}
+		\Entropy{M_n, Z_n | \phi_n(Y^n)}
+		& =
+		\Entropy{Z_n | \phi_n(Y^n)} +
+		\Entropy{M_n | \phi_n(Y^n), Z_n}
+		\\
+		& \le
+		\Entropy{Z_n} +
+		\Entropy{M_n | \phi_n(Y^n), Z_n}
+		\\
+		& \le
+		1 +
+		\Entropy{M_n | \phi_n(Y^n), Z_n}.
+	\end{align*}
+	So for now we have that
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y^n)} \le
+		\frac{1}{n} + \frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y_n), Z_n}.
+	\end{equation*}
+	We have to show that
+	\begin{equation*}
+		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y_n), Z_n}
+	\end{equation*}
+	is small.
+	We can break this up:
+	\begin{equation} \label{eq:eqbreak}
+	\begin{aligned}
+		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y_n), Z_n}
+		= &~
+		\Pr{Z_n = 1} \cdot \Entropy{M_n | \phi_n(Y^n), Z_n = 1} +
+		\\
+		&~+
+		\Pr{Z_n = 0} \cdot \Entropy{M_n | \phi_n(Y^n), Z_n = 0}.  
+	\end{aligned}
+	\end{equation}
+	Now we have to bring in the error probability.
+	\begin{align*}
+	  \epsilon_n
+	  & =
+	  \Pr{Z_n = 1} =
+	  \Pr{M_n \neq \phi_n(Y^n)}
+	  \\
+	  & \le
+	  e_n(W^n, \C_n, \phi_n) \to 0.
+	\end{align*}
+	So $\epsilon_n \to 0$, since the average is not more than the maximum.
+	\begin{align*}
+		\Entropy{M_n | \phi_n(Y^n), Z_n = 1}
+		& =
+		\\
+		\sum_{y \in \Y^n} \Pr{Y^n = y}
+		& \cdot
+		\Entropy{M_n | \phi_n(Y^n) = \phi_n(y), Z_n = 1}.
+	\end{align*}
 
-\[
- H(M_n|\varphi_n(Y^n)) \geq H(M_n|\varphi_n(Y^n)Y^n),
-\]
+	$M_n \in \X^n$.
+	So that entropy is less than $\logtwo{\abs{\X^n}}$.
+	So the first term of \cref{eq:eqbreak} can be bounded by
+	\begin{equation*}
+		\epsilon_n \cdot
+		\frac{1}{n} \cdot
+		\Entropy{M_n | \phi_n(Y^n), Z_n = 1} \le
+		\epsilon_n \cdot
+		\frac{1}{n} \cdot
+		\logtwo{\abs{\X^n}} =
+		\epsilon_n \cdot \logtwo{\abs{\X}} \to 0.
+	\end{equation*}
+	The second term of \cref{eq:eqbreak} is equal to 0.
+	\begin{equation*}
+		\frac{1}{n} \cdot \Pr{Z_n = 0} \cdot \Entropy{M_n | \phi_n(Y^n), Z_n = 0}.
+	\end{equation*}
+	To see why, note that there is no error, so $M_n = \phi_n(Y^n)$.
+\end{proof}
 
-Disequation \ref{eq:dis1} follows. The right hand side of Disequation \ref{eq:dis1} can be written as
-
-\begin{align*}
- I(M_n \wedge \varphi_n(Y^n)Y^n) & = I(M_n \wedge Y^n) + I(M_n + \varphi_n(Y^n)|Y^n) \\ & = I(M_n \wedge Y^n).
-\end{align*}
-
-we see that
-
-\[
- I(M_n \wedge \varphi_n(Y^n)|Y^n) \leq H(\varphi_n(Y^n)|Y^n) = 0.
-\]
-
-So we obtain the following inequality:
-
-\[
-I(M_n \wedge \varphi_n(Y^n)) \leq I(M_n \wedge Y^n) 
-\]
-
-as notation, $M_n = X_1 \leq X_n$ is a vector of random variables. Thus,
-
-\[
- I(M_n \wedge Y^n) = I(X^n \wedge Y^n)
-\]
-
-this we want to upper bound by the conjectured value of capacity. We write
-\[
- I(X^n \wedge Y^n) = H(Y^n) -H(X^n |Y^n) \leq \sum_{i=1}^n H(Y_i) - H(Y^n | X^n)
-\]
-for $H(Y^n | X^n)$ we use the chain rule:
-
-\[
- H(Y^n | X^n) = \sum_{i=1}^n H(Y_i | X^nY_1\ldots Y_{i-1}).
-\]
-
-But in a discrete memoryless channel we have that
-\[
- H(Y_i | X^nY_1\ldots Y_{i-1}) = H(Y_i |X_i)
-\]
-so
-\[
- H(Y^n |X^n) = \sum_{i=1}^nH(Y_i|X_i).
-\]
-
-So what we get is that
-
-\[
- I(X^n \wedge Y^n) = \sum_{i=1}^n I(X_i \wedge Y_i).
-\]
-
-This is true because our channel is particular.
-
-\[
- \sum_{i=1}^n I(X_i \wedge Y_i) \leq n \max_{P_{Y|X} = W}I(X \wedge Y).
-\]
-
-which is $n$ times capacity. So:
-
-\[
- \dfrac{1}{n}I(M_n \wedge \varphi_n(Y^n)) \leq C(W).
-\]
-
-For the second part, we have to prove that 
-\[
- \dfrac{1}{n}H(M_n|\varphi_n(Y^n)) \rightarrow 0.
-\]
-
-We do so using Fano's inequality. We introduce the random variable $Z_n$ as
-
-\begin{equation*}
-Z_n = \begin{cases}
-1 \text{ if }\varphi_n(Y^n) \not=M_n,\\
-0  \text{ otherwise.}
-\end{cases} 
-\end{equation*}
-
-We can say that
-\[
- H(M_n|\varphi_n(Y^n)) \leq H(M_nZ_n | \varphi_n(Y^n))
-\]
-since we ``added'' something to a RV.
-
-\begin{align*}
- H(M_nZ_n | \varphi_n(Y^n)) & = H(Z_n|\varphi_n(Y^n)) + H(M_n|\varphi_n(Y^n), Z_n)\\
- & \leq H(Z_n) + H(M_n|\varphi_n(Y^n), Z_n) \\
- & \leq 1+ H(M_n|\varphi_n(Y^n), Z_n).
-\end{align*}
-
-so, for now we have that
-
-\[
- \dfrac{1}{n}H(M_n|\varphi_n(Y^n)) \leq \dfrac{1}{n} + \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n)
-\]
-we have to show that $$ \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n)$$ is small. We can break this up:
-
-\begin{equation}\label{eq:eqbreak}
-\begin{aligned}
- \dfrac{1}{n}H(M_n|\varphi_n(Y_n), Z_n) &= Pr[Z_n = 1]H(M_n|\varphi_n(Y^n), Z_n = 1) + \\
- &+ Pr[Z_n = 0]H(M_n|\varphi_n(Y^n), Z_n = 0).  
-\end{aligned}
- \end{equation}
-Now we have to bring in the error probability.
-
-\begin{align*}
-  & \varepsilon_n = Pr[Z_n = 1] = Pr[M_n \not=\varphi_n(Y^n)]\\
-  & \leq e_n(W^n, \cwset, \varphi_n) \rightarrow 0.
-\end{align*}
-
-so $\varepsilon_n \rightarrow 0$. ``average is not more than maximum''.
-
-\begin{align*}
- H(M_n | \varphi_n(Y^n), Z_n = 1) &= \\
- & =\sum_{y \in \yset^n} Pr[Y^n = y]H(M_n|\varphi_n(Y^n) = \varphi_n(y), Z_n = 1).
-\end{align*}
-
-
-$M_n \in \xset^n$. So that entropy is less than $\log|\xset^n|.$ So the first term of Equation \ref{eq:eqbreak} can be bounded by
-
-\[
- \varepsilon_n \dfrac{1}{n}H(M_n|\varphi_n(Y^n), Z_n = 1) \leq \varepsilon_n \dfrac{1}{n} \log|\xset^n| = \varepsilon_n \log|\xset| \rightarrow 0.
-\]
-
-The second term of Equation \ref{eq:eqbreak} is equal to 0.
-
-\[
- \dfrac{1}{n}Pr[Z_n = 0] H(M_n|\varphi_n(Y^n), Z_n = 0)
-\]
-
-to see why, note that there is no error, so $M_n = \varphi_n(Y^n).$
-
-$\hfill\Box$
 
 \section{Zero Error Capacity}
 Zero stands for zero probability, so the probability of error is bound to be equal to 0. We translate this problem in graph theory: we will look
-at product of graphs and powers of graphs. We have a DMC $\{W\},\ W:\xset \rightarrow \yset$. $W^n:\xset^n \rightarrow \yset^n$, the mathematical model of a code is the very same. A code is $(\cwset, \varphi)$ with $\cwset \subseteq \xset^n$ and $\varphi: \yset^n \rightarrow \cwset$. A code has two parameters:
+at product of graphs and powers of graphs. We have a DMC $\{W\},\ W:\X \rightarrow \Y$. $W^n:\X^n \rightarrow \Y^n$, the mathematical model of a code is the very same. A code is $(\C_n, \phi)$ with $\C_n \subseteq \X^n$ and $\phi: \Y^n \rightarrow \C_n$. A code has two parameters:
 
 \begin{itemize}
-	\item $\dfrac{1}{n}|\cwset|$ is the size of the code compared to $n$. It is the number of bits transmitted over the channel per use of the channel.
-	\item $e_n(W^n, \cwset, \varphi) = \max_{\str{x} \in \cwset} W^n(\overline{\varphi^{-1}(\str{x})}|\str{x})$ is the probability of error.
+	\item $\dfrac{1}{n}|\C_n|$ is the size of the code compared to $n$. It is the number of bits transmitted over the channel per use of the channel.
+	\item $e_n(W^n, \C_n, \phi) = \max_{\str{x} \in \C_n} W^n(\overline{\phi^{-1}(\str{x})}|\str{x})$ is the probability of error.
 \end{itemize}
 
-$(\cwset, \varphi)$ is a zero error code if $e_n(W^n, \cwset, \varphi)=0$. $R \geq 0$ is an achievable rate for error probability $0$ if $\exists (\cwset, \varphi_n)$, $\cwset \subseteq \xset^n$ with
+$(\C_n, \phi)$ is a zero error code if $e_n(W^n, \C_n, \phi)=0$. $R \geq 0$ is an achievable rate for error probability $0$ if $\exists (\C_n, \phi_n)$, $\C_n \subseteq \X^n$ with
 \[
-\overline{\lim_{n \rightarrow \infty}} \dfrac{1}{n}\log|\cwset| \geq R\text{ and }
+\overline{\lim_{n \rightarrow \infty}} \dfrac{1}{n}\log|\C_n| \geq R\text{ and }
 \]
 
 \[
-e_n(W^n, \cwset, \varphi_n) = 0.
+e_n(W^n, \C_n, \phi_n) = 0.
 \]
 
 If $W(y|x) > 0$ for all $x, y$ then this is not possible. If you have 0s in the matrix, we are only interested in the patterns of the 0s. To have 0 error, we should have that
 \[
-W^n(\varphi^{-1}(\str{x})|\str{x}) = 1,\ \forall\str{x} \in \cwset
+W^n(\phi^{-1}(\str{x})|\str{x}) = 1,\ \forall\str{x} \in \C_n
 \]
 
-The decoding function must be fixed if we want $0$ error. If $W^n(\str{y}|\str{x}) \geq 0$, we must have that $\varphi^{-1}(\str{y}) = \str{x}$. Given $\str{x}$, the set $\{\str{y}| W^(\str{y}|\str{x})>0 \}$ is uniquely defined. This is the support of conditional distribution:
+The decoding function must be fixed if we want $0$ error. If $W^n(\str{y}|\str{x}) \geq 0$, we must have that $\phi^{-1}(\str{y}) = \str{x}$. Given $\str{x}$, the set $\{\str{y}| W^(\str{y}|\str{x})>0 \}$ is uniquely defined. This is the support of conditional distribution:
 \begin{equation}
 \supp(\str{x}) = \{\str{y}| W^n(\str{y}|\str{x})>0 \}
 \end{equation}
 
 We should have that 
 \[
-\supp(\str{x}) \subseteq \varphi^{-1}(\str{x}),\ \forall\str{x} \in \cwset
+\supp(\str{x}) \subseteq \phi^{-1}(\str{x}),\ \forall\str{x} \in \C_n
 \]
 
-So this,\ie how to get the 0 error probability, only depends on the set $\cwset$. Support sets have to be disjoint. $\cwset$ is a $0$ error code if
+So this,\ie how to get the 0 error probability, only depends on the set $\C_n$. Support sets have to be disjoint. $\C_n$ is a $0$ error code if
 \[
-\forall \{\str{x}',\str{x}'' \} \in \binom{\cwset}{2}\ \supp(\str{x}') \cap \supp(\str{x}'') = \emptyset
+\forall \{\str{x}',\str{x}'' \} \in \binom{\C_n}{2}\ \supp(\str{x}') \cap \supp(\str{x}'') = \emptyset
 \]
 
 \begin{obs}
-	Let $\str{x} \in \xset^n$. Then $$\str{y} \in \supp(\str{x}) \Leftrightarrow W^n(\str{y}|\str{x}) >0,$$ but $W^n$ is a product of probabilities; thus, since
+	Let $\str{x} \in \X^n$. Then $$\str{y} \in \supp(\str{x}) \Leftrightarrow W^n(\str{y}|\str{x}) >0,$$ but $W^n$ is a product of probabilities; thus, since
 	$$W^n(\str{y}|\str{x}) = \prod_{i=1}^nW(y_i|x_i)$$
 	it must be that
 	$$W(y_i, x_i) > 0,\ \forall i.$$ So the support set is $$\supp(\str{x}) = \times_{i=1}^n\supp(x_i)$$
@@ -408,7 +571,7 @@ This is a combinatorial condition. The support is the set of positive elements o
 \end{align*}
 $\hfill\Box$
 
-Consider the graph $G = G(W)$ such that $V(G) = \xset$ and $\{x',x'' \} \in E(G)$ if $\supp(x') \cap \supp(x'') = \emptyset$. We are looking for a clique in this graph, which is the size of the best code one can have $\omega(G)$ (?) What about when we use the channel more than once? We look at $G^n = G(W^n)$, where $V(G^n) = \xset^n$ and $\{\str{x}',\str{x}''\} \in E(G^n)$ if $\exists i\ \supp(x_i') \cap \supp(x_i'') = \emptyset$. This sequence of graphs can be built using the first graph, not using always the matrix.
+Consider the graph $G = G(W)$ such that $V(G) = \X$ and $\{x',x'' \} \in E(G)$ if $\supp(x') \cap \supp(x'') = \emptyset$. We are looking for a clique in this graph, which is the size of the best code one can have $\omega(G)$ (?) What about when we use the channel more than once? We look at $G^n = G(W^n)$, where $V(G^n) = \X^n$ and $\{\str{x}',\str{x}''\} \in E(G^n)$ if $\exists i\ \supp(x_i') \cap \supp(x_i'') = \emptyset$. This sequence of graphs can be built using the first graph, not using always the matrix.
 
 \noindent From $G$ to $G^n$.
 
