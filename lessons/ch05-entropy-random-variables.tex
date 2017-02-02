@@ -365,22 +365,9 @@ Repeat this and the sequence oscillates between $\frac{3}{4}$ and $\frac{1}{2}$.
 		\Entropy{X_1} + \sum_{i=2}^{n-1} \Entropy{X_i | X^{i-1}}
 	\end{equation*}
 
-	Since the source is stationary, $\Entropy{X^{n-1}} = \Entropy{X_2, \dots, X_n}$, and we can rewrite the \ac{RHS} as follows:
-	\begin{align*}
-		\Entropy{X_1} + \sum_{i=2}^{n-1} \Entropy{X_i | X^{i-1}}
-		& =
-		\Entropy{X^{n-1}}
-		=
-		\Entropy{X_2, \dots, X_{n}}
-		\\
-		& =
-		\Entropy{X_{n}, \dots, X_2}
-		\\
-		& =
-		\Entropy{X_n} + \sum_{i=2}^{n-1} \Entropy{X_n | X_{1 + n - i}, \dots, X_{n-1}}.
-	\end{align*}
-
-	Our thesis thus becomes
+	Since the source is stationary, we have that $\Entropy{X_1} = \Entropy{X_2}$, and that $\Entropy{X_2 | X_1} = \Entropy{X_n | X_{n-1}}$, and so on.
+	In general, $\Entropy{X_i | X_1, \dots, X_{i-1}} = \Entropy{X_n | X_{1+n-i}, \dots, X_{n-1}}$.
+	Thus our thesis becomes
 	\begin{equation*}
 		(n-1) \cdot \Entropy{X_n | X^{n-1}}
 		\le
