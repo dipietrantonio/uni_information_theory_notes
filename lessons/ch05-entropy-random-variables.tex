@@ -1,3 +1,4 @@
+
 \chapter{Entropy of \aclp{RV}}
 
 Let's reason on the probability of a message.
@@ -5,7 +6,7 @@ You can consider an infinite sequence of \acp{RV} $X_i$ which take values in $\M
 We implicitly assume that $X_i$ are independent \acp{RV}.
 If we group \acp{RV} before encoding we can asymptotically reach entropy.
 
-\section{Joint Entropy, Conditional Etropy and Mutual Information}
+\section{Joint Entropy, Conditional Entropy and Mutual Information}
 
 Given a \ac{RV} $X$, the entropy of $X$ is defined as
 \begin{equation*}
@@ -24,11 +25,12 @@ If $X = Y$ then $\Entropy{X,Y} = \Entropy{X}.$
 	$\Entropy{X,Y}$ is defined a the \emph{joint entropy} of $X$ and $Y$. 
 \end{definition}
 
-\begin{prop}
+\begin{prop}[Upper bound to the entropy of a distribution]
+	Let $P | \X$, then
 	\begin{equation*}
 		\Entropy{P} \le \log_2 \left( \abs{\X} \right),
 	\end{equation*}
-	with $P|\X$ and with equality if and only if $P$ is the equidistribution, \ie $P(x) = \frac{1}{\abs{\X}}$ for all $x \in \X.$
+	with equality if and only if $P$ is the equidistribution, \ie $P(x) = \frac{1}{\abs{\X}}$ for all $x \in \X.$
 \end{prop}
 
 \begin{proof}
@@ -47,11 +49,11 @@ If $X = Y$ then $\Entropy{X,Y} = \Entropy{X}.$
 		& =
 		-\Entropy{P} + \log_2 \left( \abs{\X} \right).
 	\end{align*}
-	This quantity is nonnegative with equality to zero if and only if $P = \U$.
+	This quantity is non-negative with equality to zero if and only if $P = \U$.
 \end{proof}
 
 We write $X \in \X$ since $X$ is like an unknown element of $\X$.
-Random variables don't always have an expected value.
+\acp{RV} don't always have an expected value.
 We can think of $\Entropy{X}$ as the information content of $X$.
 If we consider entropy as the amount of information in a \ac{RV}, then it should be that $\Entropy{X,Y} \ge X$.
 We can think of entropy as  measure over a set.
@@ -61,7 +63,7 @@ We can think of entropy as  measure over a set.
 	\Entropy{X,Y} \sim \mu(A \cup B), & \, \mu(A \cup B) \geq \mu(A)
 \end{align*}
 
-\begin{prop}
+\begin{prop}[Lower bound to joint entropy]
 	\begin{equation*}
 		\Entropy{X,Y} \ge \Entropy{X}.   
 	\end{equation*}
@@ -104,8 +106,8 @@ We can think of entropy as  measure over a set.
 		\sum_{x \in \X} \Pr{X = x} \sum_{y \in \Y} \Pr{Y = y | X = x}
 		\log_2 \left( \frac{1}{\Pr{Y = y | X = x}} \right).
 	\end{align*}
-	We would like to say that this quantity is nonnegative.
-	Since $\Entropy{\cdot}$ is nonnegative, this difference is actually greater than (or equal to) zero.
+	We would like to say that this quantity is non-negative.
+	Since $\Entropy{\cdot}$ is non-negative, this difference is actually greater than (or equal to) zero.
 \end{proof}
 
 \begin{definition}[Conditional Entropy]
@@ -120,9 +122,9 @@ $\Entropy{X,Y} - \Entropy{X}$ is the convex combination of the entropies of the 
 It's like the expected value of the entropy of the conditional distribution $\Pr{Y = y | X = x}$.
 It can be seen as the residual information when $X$ is known.
 
-\begin{prop}
+\begin{prop}[Upper bound to conditional entropy]
 	\begin{equation*}
-	\Entropy{Y} \ge \Entropy{Y | X}. 
+		\Entropy{Y} \ge \Entropy{Y | X}. 
 	\end{equation*}
 \end{prop}
 
@@ -151,7 +153,7 @@ It can be seen as the residual information when $X$ is known.
 		\ge 0,
 	\end{equation*}
 	and we have equality when $P_{XY} = P_X \times P_Y$.
-	It is a measure of indipendence of $X$ and $Y$.
+	It is a measure of independence of $X$ and $Y$.
 \end{proof}
 
 \begin{definition}[Mutual Information]
@@ -160,7 +162,7 @@ It can be seen as the residual information when $X$ is known.
 		\MutualInformation{X \land Y} = \Entropy{Y} - \Entropy{Y | X}, 
 	\end{equation*}
 	and it is called mutual information.
-	It is symmetric and nonnegative. 
+	It is symmetric and non-negative. 
 \end{definition}
 
 Notice that
@@ -252,28 +254,26 @@ We denote the information source as $X^\infty$, and with $X^n = X_1, \dots, X_n$
 
 The ``speed'' of information from a sequence of \acp{RV} is 
 \begin{equation*}
-	\frac{1}{n} \Entropy{X_1, \dots, X_n}.
+	\frac{1}{n} \cdot \Entropy{X_1, \dots, X_n}.
 \end{equation*}
 
 The information rate of $H^\infty$, if it exists, is
 \begin{equation*}
-	\lim_{n \to \infty} \frac{1}{n} \Entropy{X^n}. 
+	\lim_{n \to \infty} \frac{1}{n} \cdot \Entropy{X^n}. 
 \end{equation*}
 
 
-Consider $\{X_i\}_{i = 1}^\infty$, an infinite sequence of independent and identically distributed \acp{RV}, and denote by $P$ the common distribution of $\{X_i\}_{i = 1}^\infty$, so that $\Entropy{X_i} = \Entropy{P}$ for all $i$.
+Consider $\{X_i\}_{i = 1}^\infty$, an infinite sequence of \ac{IID} \acp{RV}, and denote by $P$ the common distribution of $\{X_i\}_{i = 1}^\infty$, so that $\Entropy{X_i} = \Entropy{P}$ for all $i$.
 
 In this case,
 \begin{equation*}
-	\Entropy{X_1, \dots, X_n}
-	=
-	\sum_{i = 1}^n \Entropy{X_i}
-	=
+	\Entropy{X_1, \dots, X_n} =
+	\sum_{i = 1}^n \Entropy{X_i} =
 	n \cdot \Entropy{P},
 \end{equation*}
 so
 \begin{equation*}
-	\lim_{n \to \infty} \frac{1}{n} \Entropy{X^n} = \Entropy{P}.
+	\lim_{n \to \infty} \frac{1}{n} \cdot \Entropy{X^n} = \Entropy{P}.
 \end{equation*}
 
 What is the sufficient condition for this to hold (\ie for the limit to exists)?
@@ -421,7 +421,7 @@ Repeat this and the sequence oscillates between $\frac{3}{4}$ and $\frac{1}{2}$.
 	\begin{align*}
 		\MutualInformation{A \land B | C} \ge 0
 		\implies
-		\Entropy{A | C} \ge \Entropy{A | B, C}.
+		\Entropy{A | C} \ge \Entropy{A | B, C}. \qedhere
 	\end{align*}
 \end{proof}
 
@@ -464,5 +464,5 @@ Let $f_n$ be an optimal (in the sense of length of output) prefix code for $X_1,
 	\le
 	\frac{1}{k} \cdot \left[ \Entropy{X^k} + 1 \right].
 \end{equation*}
-If $k \to \infty$ (and we enlarge the conding window), both sides go to the entropy rate.
+If $k \to \infty$ (and we enlarge the coding window), both sides go to the entropy rate.
 Thus the entropy is the ``limit''.

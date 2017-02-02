@@ -224,7 +224,7 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 \end{definition}
 If $f$ is a prefix code, $f$ is \ac{UD}.
 
-\begin{thm}[Kraft - McMillan]
+\begin{thm}[Kraft - McMillan theorem on \acl{UD} codes]
 	If $f$ is \ac{UD} then Kraft's inequality holds, \ie
 	\begin{equation*}
 		\sum_{m \in \M} 2^{-\abs{f(m)}} \le 1.
@@ -482,7 +482,7 @@ Also, recall the definition of Hamming weight:
 	\hweight{\str{x}} = \sum_{i = 1}^n x_i.
 \end{equation*}
 
-\begin{obs}
+\begin{obs}[Hamming distance of a linear code]
 	If $\L \subseteq \{0, 1\}^n$ is a linear code, then
 	\begin{equation*}
 		\hdist{\L} = \min_{\str{x} \in \L : \str{x} \neq \zero} \hweight{\str{x}}.
@@ -543,7 +543,7 @@ So we have that
 	M(n, 3) \le \frac{2^n}{n+1}.
 \end{equation*}
 
-\begin{thm}[Hamming]
+\begin{thm}[Hamming theorem on \aclp{ECC} for 1 error]
 	If $\exists m$ such that $n = 2^m - 1$, then
 	\begin{equation*}
 		M(n, 3) = \frac{2^n}{n+1}.

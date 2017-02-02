@@ -1,15 +1,15 @@
-%October 2016, the 4th
-\chapter{The Hamming Ball}
+
+\chapter{Entropy and the Hamming Space}
 
 This Chapter introduces an important concept: the Hamming Ball.
 
-\section{Hamming Space}
+\section{The Hamming Space}
 
 A \emph{space} is a set that has structure.
 The set $\{0,1\}^{n}$ of binary strings of length $n$ can be made into a metric space.
 To make it a metric space we have to define a metric (or distance) on it.
 
-A metric over set $\X$ is a function $d: \X \times \X \rightarrow \Reals$ that has the following properties:
+A metric over set $\X$ is a function $d: \X \times \X \to \Reals$ that has the following properties:
 \begin{enumerate}
 	\item it's greater than zero, \ie $d(x, y) \geq 0$ $\forall (x, y) \in \X \times \X$, with equality when its arguments are the same, \ie $d(x, y) = 0 \iff x = y$;
 	\item it's symmetric, \ie $d(x, y) = d(y, x)$ $\forall (x, y) \in \X \times \X$;
@@ -62,8 +62,8 @@ We say that $\str{y}$ is in a \emph{Hamming Ball} of radius $r$ around $\str{x}$
 	\end{equation}
 \end{definition}
 
-\begin{obs}
-	$r$ needs not to be an integer, but for $r \in \Reals$ it holds that
+\begin{obs}[Radius of the Hamming ball]
+	$r$ does not need to be an integer, but for $r \in \Reals$ it holds that
 	\begin{equation*}
 		\hball{\str{x}}{r} = \hball{\str{x}}{\floor{r}}.
 	\end{equation*}
@@ -114,7 +114,7 @@ It cannot be partitioned into $s$ balls with $3 \leq s \leq n + 1$ (this result 
 
 We have seen that the volume of a generic Hamming ball is described by Equation \ref{eq:volume}.
 We can use the Pascal triangle to get a feeling about the order of magnitude of the Hamming ball.
-Consider the $n$th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row.
+Consider the $n$-th row in the triangle; since it is symmetric, if we split the row in half the sum of the terms of the first part is equal to the sum of the terms of the second part of the row.
 The volume of the greatest ball is $\abs{\hball{\str{0}}{n}} = 2^n$.
 Instead, the volume of the ball with radius $n/2$ (in the triangle's point of split) is $\frac{2^n}{2} = 2^n2^{-1} = 2^{n-1}$.
 It follows, if $r \ge \frac{n}{2}$, that $2^{n-1} \le \abs{\hball{\str{0}}{r}} \le 2^n$.
@@ -124,7 +124,7 @@ Can we bound the volume for $r < \frac{n}{2}$?
 First we introduce the notion of \emph{entropy}.
 
 \begin{definition}[Entropy]
-Entropy is a function $h: [0, 1] \rightarrow [0, 1]$ defined as follows:
+Entropy is a function $h: [0, 1] \to [0, 1]$ defined as follows:
 \begin{equation}
 	\entropy{t} =
 	t \cdot \log_2 \left( \frac{1}{t} \right)
@@ -148,9 +148,9 @@ Entropy measures symmetry and with $t = \frac{1}{2}$ we have maximum chaos (the 
 \subsection{Lower and Upper Bounds}
 
 \begin{thm}[Upper bound of the volume of the Hamming Ball]
-	The volue of the Hamming ball of radius $r$, for $r \leq \frac{n}{2}$, is
+	The volume of the Hamming ball of radius $r$, for $r \leq \frac{n}{2}$, is
 	\begin{equation*}
-		\abs{\hball{\str{0}}{r}} \leq 2^{nh\left(\frac{r}{n}\right)}.
+		\abs{\hball{\str{0}}{r}} \leq 2^{n \, \entropy{\frac{r}{n}}}.
 	\end{equation*}
 \end{thm}
 
@@ -227,31 +227,31 @@ The number of the total chickens in the box can't be greater than $\frac{w}{W}$.
 		2^{n\left[\frac{r}{n}\log_2\frac{r}{n} + \left(1 - \frac{r}{n}\right)\log_2\left(1 - \frac{r}{n}\right)\right]}
 		\\
 		& =
-		2^{-nh\left(\frac{r}{n}\right)}.
+		2^{-n \, \entropy{\frac{r}{n}}}.
 	\end{align*}
 
 	So we have 
 	\begin{equation*}
 		1
 		\geq
-		\abs{\hball{\str{0}}{r}} \cdot \frac{1}{2^{nh\left(\frac{r}{n}\right)}}
+		\abs{\hball{\str{0}}{r}} \cdot \frac{1}{2^{n \, \entropy{\frac{r}{n}}}}
 		\implies
-		\abs{\hball{\str{0}}{r}} \le 2^{n \, h\left(\frac{r}{n}\right)}.
+		\abs{\hball{\str{0}}{r}} \le 2^{n \, \entropy{\frac{r}{n}}}. \qedhere
 	\end{equation*}
 \end{proof}
 
-\begin{thm}[Lower bound on the volume of the Hamming Ball]
+\begin{thm}[Lower bound of the volume of the Hamming Ball]
 	The volume of the Hamming ball of radius $r$, for $ r \leq \frac{n}{2}$, is
 	\begin{equation*}
 		\abs{\hball{\str{0}}{r}}
 		\ge
-		\frac{1}{n+1} \cdot 2^{n \, h\left(\frac{r}{n}\right)}.
+		\frac{1}{n+1} \cdot 2^{n \, \entropy{\frac{r}{n}}}.
 	\end{equation*}
 \end{thm}
 
 \begin{proof}
 	\begin{equation*}
-		P(1) = \frac{r}{n},\quad P(0) = 1 - P(1),\quad P^n(\{0, 1\}^n) = 1.
+		P(1) = \frac{r}{n}, \quad P(0) = 1 - P(1), \quad P^n(\{0, 1\}^n) = 1.
 	\end{equation*}
 	Consider the set of all strings of length $n$ and partition it in the following way.
 	\begin{equation*}
@@ -267,7 +267,7 @@ The number of the total chickens in the box can't be greater than $\frac{w}{W}$.
 	In the formula above there are binomials we want to bound.
 	In order to do that, we need the following observation.
 
-	\begin{obs}
+	\begin{obs}[Upper bound to factorial]
 		\begin{equation*}
 			\frac{k!}{l!} \le k^{k-l}.
 		\end{equation*}
@@ -281,7 +281,7 @@ The number of the total chickens in the box can't be greater than $\frac{w}{W}$.
 
 		If $k < l$:
 			\begin{equation*}
-				\frac{k!}{l!} = \frac{k(k-1) \cdots 1}{l(l -1) \cdots k(k-1) \cdots 1} \le \left(\frac{1}{k+1}\right)^{l-k} < \left(\frac{1}{k}\right)^{l-k} = k^{k-l}.
+				\frac{k!}{l!} = \frac{k(k-1) \cdots 1}{l(l -1) \cdots k(k-1) \cdots 1} \le \left(\frac{1}{k+1}\right)^{l-k} < \left(\frac{1}{k}\right)^{l-k} = k^{k-l}. \qedhere
 			\end{equation*}
 	\end{proof}
 
@@ -336,7 +336,7 @@ The number of the total chickens in the box can't be greater than $\frac{w}{W}$.
 		(n + 1) \abs{T_r} \cdot 2^{-n \, h \left(\frac{r}{n}\right)}
 	\end{align*}
 
-	Thus, we know that $\abs{T_r} \ge \frac{1}{n+1} 2^{n \, h(\frac{r}{n})}$, and since $T_r \subseteq \hball{\str{0}}{r}$ we have proved that $\abs{T_r} \le \abs{\hball{\str{0}}{r}}$.
+	Thus, we know that $\abs{T_r} \ge \frac{1}{n+1} 2^{n \, \entropy{\frac{r}{n}}}$, and since $T_r \subseteq \hball{\str{0}}{r}$ we have proved that $\abs{T_r} \le \abs{\hball{\str{0}}{r}}$.
 \end{proof}
 
 So this proof is important because the cardinality of the Hamming ball comes up in many contexts, such as error correction (a string that has been altered at most $r$ times is in a certain radius from the original string).
@@ -344,7 +344,7 @@ So this proof is important because the cardinality of the Hamming ball comes up 
 \section{Generalization to Any Finite Alphabet}
 
 Let $\X$ be the (usual) finite set, which we call the alphabet.
-We are insterested in sequences of elements of $\X$, called \emph{strings} or \emph{words}.
+We are interested in sequences of elements of $\X$, called \emph{strings} or \emph{words}.
 So $\X^n, n \in \mathbb{N}$, is a set of words.
 $\X^n$ can be partitioned by putting together those sequences that can be transformed one into the other by permutation, \ie sequences that have the same number of occurrences of elements in the alphabet.
 
@@ -384,9 +384,9 @@ Now, given $\X$ and $n$, how many distributions $P|\X$ are types in $\X^n$?
 A rough upper bound is $(n + 1)^{\abs{\X}}$.
 The last value is redundant, since the values sum up to $1$.
 So we could do better with $(n + 1)^{\abs{\X} - 1}$.
-We can partition $\X^n$ into sets of strings of the same type, $T_p$, with $P|\X$.
+We can partition $\X^n$ into sets of strings of the same type, $\T_P$, with $P|\X$.
 \begin{equation*}
-	T_p = T_p^n = \{\str{x}\ :\ P_{\str{x}} = P\}.
+	\T_P = \T_P^n = \{\str{x}\ :\ P_{\str{x}} = P\}.
 \end{equation*}
 
 \begin{definition}[Generalised Entropy]
@@ -396,12 +396,12 @@ We can partition $\X^n$ into sets of strings of the same type, $T_p$, with $P|\X
 	\end{equation*}
 \end{definition}
 
-\begin{thm} \label{thms:taupcard}
-	If $T_p \ne \emptyset$, then
+\begin{thm}[Cardinality of $\T_P$] \label{thms:taupcard}
+	If $\T_P \ne \emptyset$, then
 	\begin{equation*}
 		\frac{1}{(n+1)^{\abs{\X} -1}} \cdot 2^{n \, \Entropy{P}}
 		\leq
-		\abs{T_p}
+		\abs{\T_P}
 		\le 2^{n \, \Entropy{P}}.
 	\end{equation*}
 \end{thm}
@@ -414,12 +414,12 @@ We can partition $\X^n$ into sets of strings of the same type, $T_p$, with $P|\X
 
 	We can define it additively on subsets of $\X^n$.
 	\begin{equation*}
-		1 = P^n(\X^n) \ge P^n(T_p^n)
+		1 = P^n(\X^n) \ge P^n(\T_P^n)
 	\end{equation*}
 
 	Now,
 	\begin{align*}
-		\forall \str{x} \in T_p^n . P^n(\str{x})
+		\forall \str{x} \in \T_P^n . P^n(\str{x})
 		& =
 		\prod_{a \in \X} P(a)^{n P(a)}
 		\\
@@ -435,7 +435,7 @@ We can partition $\X^n$ into sets of strings of the same type, $T_p$, with $P|\X
 
 	So,
 	\begin{equation*}
-		1 = P^n(\X^n) \ge P^n(T^n_p) = \abs{T_p^n} \cdot 2^{-n \, \Entropy{p}}.
+		1 = P^n(\X^n) \ge P^n(\T_P^n) = \abs{\T_P^n} \cdot 2^{-n \, \Entropy{p}}. \qedhere
 	\end{equation*}
 \end{proof}
 
@@ -443,40 +443,38 @@ The lower bound proof is a straightforward generalization of what has been done 
 Entropy is greatest when the distribution is uniform.
 Now, to prove the lower bound, consider
 \begin{equation*}
-	1
-	=
-	\sum_{P\ :\ T_p^n \neq \emptyset} P^n(T_p^n)
-	\le
-	(n+1)^{\abs{\X}-1} \max_{Q|\X} P^n(T_q^n).
+	1 =
+	\sum_{P\ :\ \T_P^n \neq \emptyset} P^n(\T_P^n) \le
+	(n+1)^{\abs{\X}-1} \max_{Q|\X} P^n(\T_Q^n).
 \end{equation*}
 
-\begin{obs}
-	If $T^n_p \neq \emptyset$ then 
+\begin{obs}[Ratio between probability of types]
+	If $\T_P^n \neq \emptyset$, then 
 	\begin{equation*}
-		\frac{P^n(T^n_q)}{P^n(T^n_p)} \le 1.
+		\frac{P^n(\T_Q^n)}{P^n(\T_P^n)} \le 1.
 	\end{equation*}
-	If a distribution is a type, it maximizes its (product) value on the strings of that type. 
+	This means that if a distribution is a type, it maximizes its (product) value on the strings of that type. 
 \end{obs}
 
 \begin{proof}
-	We can suppose, without loss of generality, that $T^n_q \neq \emptyset$.
+	We can suppose, without loss of generality, that $\T_Q^n \neq \emptyset$.
 	\begin{align*}
-		P^n(T_q^n)
+		P^n(\T_Q^n)
 		& =
-		\prod_{a \in \X} P(a)^{n \, Q(a)} \abs{T_q^n}
+		\prod_{a \in \X} P(a)^{n \, Q(a)} \abs{\T_Q^n}
 		\\
 		& \implies
 		\\
 		\frac{
-			P^n(T_q^n)
+			P^n(\T_Q^n)
 		}{
-			P^n(T_p^n)
+			P^n(\T_P^n)
 		}
 		& =
 		\frac{
-			\abs{T_q^n} \prod_{a \in \X} [P(a)]^{n Q(a)}
+			\abs{\T_Q^n} \prod_{a \in \X} [P(a)]^{n Q(a)}
 		}{
-			\abs{T_p^n} \prod_{a \in \X} [P(a)]^{n P(a)}
+			\abs{\T_P^n} \prod_{a \in \X} [P(a)]^{n P(a)}
 		}
 		\\
 		& =
@@ -517,19 +515,19 @@ Now, to prove the lower bound, consider
 
 	So we can write
 	\begin{equation*}
-		\max_{Q|\X} P^n(T_q^n)
+		\max_{Q|\X} P^n(\T_Q^n)
 		=
-		\abs{T_p^n} \prod_{a \in \X} P(a)^{n \, P(a)}
+		\abs{\T_P^n} \prod_{a \in \X} P(a)^{n \, P(a)}
 		=
-		\abs{T_p^n} \cdot 2^{-n \, \Entropy{P}}
+		\abs{\T_P^n} \cdot 2^{-n \, \Entropy{P}}
 	\end{equation*}
 	and conclude that
 	\begin{equation*}
 		1
 		\le
-		(n+1)^{\abs{\X}-1} \abs{T_p^n} \cdot 2^{-n \, \Entropy{P}}
+		(n+1)^{\abs{\X}-1} \abs{\T_P^n} \cdot 2^{-n \, \Entropy{P}}
 		\implies
-		\frac{1}{(n+1)^{\abs{\X}-1}} \cdot 2^{n \, \Entropy{P}} \le \abs{T_p^n}.
+		\frac{1}{(n+1)^{\abs{\X}-1}} \cdot 2^{n \, \Entropy{P}} \le \abs{\T_P^n}. \qedhere
 	\end{equation*}
 \end{proof}
 

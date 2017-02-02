@@ -93,38 +93,38 @@ We denote with $\abs{f(m)}$ the length of the codeword assigned to $m$ by $f$, \
 \end{prop}
 
 \begin{proof}
-The log sum inequality (\cref{prop:logsum}) gives us that
-\begin{equation*}
-	\sum_{m \in \M} P(m) \log_2 \left( \frac{P(m)}{2^{-\abs{f(m)}}} \right) \ge 0,
-\end{equation*}
-with equality if and only if $P(m) = 2^{-\abs{f(m)}}$.
-Then:
-\begin{align*}
-	\sum_{m \in \M} P(m) \log_2 \left( \frac{P(m)}{2^{-\abs{f(m)}}} \right)
-	= &
-	\sum_{m \in \M} P(m) \log_2 \left( P(m) \right)
-	\\
-	&~-
-	\sum_{m \in \M} P(m) \log_2 \left( 2^{-\abs{f(m)}} \right)
-	\\
-	=
-	&~-
-	H(P) + \sum_{m \in \M} P(m) \cdot \abs{f(m)}
-	\\
-	\ge &~0
-	\\
-	&
-	\implies
-	\\
-	H(P)
-	\le &
-	\sum_{m \in \M} P(m) \cdot \abs{f(m)}.
-\end{align*}
-We have equality when $P(m) = 2^{-\abs{f(m)}}$.
+	The log sum inequality (\cref{prop:logsum}) gives us that
+	\begin{equation*}
+		\sum_{m \in \M} P(m) \log_2 \left( \frac{P(m)}{2^{-\abs{f(m)}}} \right) \ge 0,
+	\end{equation*}
+	with equality if and only if $P(m) = 2^{-\abs{f(m)}}$.
+	Then:
+	\begin{align*}
+		\sum_{m \in \M} P(m) \log_2 \left( \frac{P(m)}{2^{-\abs{f(m)}}} \right)
+		= &
+		\sum_{m \in \M} P(m) \log_2 \left( P(m) \right)
+		\\
+		&~-
+		\sum_{m \in \M} P(m) \log_2 \left( 2^{-\abs{f(m)}} \right)
+		\\
+		=
+		&~-
+		\Entropy{P} + \sum_{m \in \M} P(m) \cdot \abs{f(m)}
+		\\
+		\ge &~0
+		\\
+		&
+		\implies
+		\\
+		\Entropy{P}
+		\le &
+		\sum_{m \in \M} P(m) \cdot \abs{f(m)}.
+	\end{align*}
+	We have equality when $P(m) = 2^{-\abs{f(m)}}$.
 \end{proof}
 
-\begin{obs}
-	Let $P|\M$ be a probability distribution over $\M$, then it holds that $H(P) \le \log_2 \left(\abs{\M}\right)$, with equality if and only if $P$ is the equidistribution.
+\begin{obs}[Upper bound to the entropy of a distribution]
+	Let $P|\M$ be a probability distribution over $\M$, then it holds that $\Entropy{P} \le \logtwo{\abs{\M}}$, with equality if and only if $P$ is the equidistribution.
 \end{obs}
 
 \begin{proof}
@@ -142,11 +142,11 @@ We have equality when $P(m) = 2^{-\abs{f(m)}}$.
 		\sum_{m \in \M} P(m) \log_2 \left( \frac{1}{\abs{\M}} \right)
 		\\
 		=
-		&~- H(P) + \log_2 \left( \abs{\M} \right).
+		&~- \Entropy{P} + \log_2 \left( \abs{\M} \right). \qedhere
 	\end{align*}
 \end{proof}
 
-\begin{thm}[Kraft]
+\begin{thm}[Kraft theorem]
 	Let $l : \M \to \Naturals$ be a prescribed codeword length, \ie $l(m)$ is the length of the codeword we want to assign to $m$.
 	If $l$ satisfies Kraft's inequality (\cref{prop:kraft}), then 
 	$\exists f : \M \to \{0, 1\}^*$ prefix code such that $\abs{f(m)} = l(m)$ for all $m$.
@@ -223,7 +223,7 @@ A maximal prefix code is a prefix code to which you cannot add more codewords (a
 \begin{prop}[Prefix codes and entropy $+1$] \label{prop:prefix-entropy-lower}
 	For all $P|\M$ probability distributions over $\M$, $\exists f : \M \to \{0, 1\}^*$ prefix code such that
 	\begin{equation*}
-		\sum_{m \in \M} P(m) \cdot \abs{f(m)} < H(P) + 1.
+		\sum_{m \in \M} P(m) \cdot \abs{f(m)} < \Entropy{P} + 1.
 	\end{equation*}
 \end{prop}
 
@@ -231,10 +231,10 @@ A maximal prefix code is a prefix code to which you cannot add more codewords (a
 	We'll give a prescription satisfying both Kraft's inequality and this inequality. 
 	Recall that entropy is defined as
 	\begin{equation*}
-		H(P) = \sum_{m \in \M} P(m) \log_2 \left( \frac{1}{P(m)} \right). 
+		\Entropy{P} = \sum_{m \in \M} P(m) \log_2 \left( \frac{1}{P(m)} \right). 
 	\end{equation*}
 
-	We could choose $l(m) = \frac{1}{P(m)}$, but this is not always an integer, and we could't build a prescription satysfing Kraft's inequality this way.
+	We could choose $l(m) = \frac{1}{P(m)}$, but this is not always an integer, and we could not build a prescription satisfying Kraft's inequality this way.
 	Thus, we choose
 	\begin{equation*}
 		l(m) = \ceil{\log_2 \left( \frac{1}{P(m)} \right)}.
@@ -249,7 +249,7 @@ A maximal prefix code is a prefix code to which you cannot add more codewords (a
 		&~+
 		\sum_{m \in \M} P(m)
 		\\
-		= &~H(P) + 1. 
+		= &~\Entropy{P} + 1. 
 	\end{align*}
 
 	We now check that $l$ satisfies Kraft's inequality.
@@ -266,6 +266,6 @@ A maximal prefix code is a prefix code to which you cannot add more codewords (a
 		\sum_{m \in \M} 2^{\log_2 (P(m))}
 		\\
 		& =
-		\sum_{m \in \M} P(m) = 1.
+		\sum_{m \in \M} P(m) = 1. \qedhere
 	\end{align*}
 \end{proof}

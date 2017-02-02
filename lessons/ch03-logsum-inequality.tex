@@ -1,8 +1,9 @@
 \chapter{The log sum inequality}
 
 We now prove a consequence of the concavity of the logarithm, which will be used to prove some results about entropy.
-\begin{obs}\label{obs:cap-convex}
-	The logarithm function is cap-convex ($\cap$-Convex).
+
+\begin{obs}[Logarithm cap-convex] \label{obs:cap-convex}
+	The logarithm function is cap-convex ($\cap$-convex).
 	Remember that $\ln(t) \le t - 1$ (with equality if and only if $t=1$) and $\log_2(t) = \frac{\ln(t)}{\ln(2)}$.
 \end{obs}
 
@@ -24,96 +25,96 @@ So:
 \end{equation*}
 and we have equality if and only if $P = Q$.
 We denote this with $D(P||Q)$, called the informational divergence of $P$ from $Q$.
-This is not a metric (it lacks of simmetry and triangle inequality), but it can be seen as a ``dissimilarity'' measure.
+This is not a metric (it lacks of symmetry and triangle inequality), but it can be seen as a ``dissimilarity'' measure.
 It's called also Kullback-Leibler divergence or \emph{relative entropy}\footnote{From the book Elements of Information Theory, Wiley.}. 
  
  \Cref{prop:logsum} is based on \cref{obs:cap-convex}.
  The Proposition will be proved for the natural logarithm.
  
 \begin{proof}
-We would like to prove that
-\begin{equation*}
-	\sum_{i= 1}^t a_i \ln \left( \frac{a_i}{b_i} \right)
-	\ge
-	a \ln \left( \frac{a}{b} \right).
-\end{equation*}
-First, there is the need to set some convetions.
-When $b_i = 0$ and $a_i = 0$, we say, by convention, that
-\begin{equation*}
-	0 \ln \left( \frac{0}{0} \right) = 0.
-\end{equation*}
- 
-The reason why?
-$[t] \subset [w]$, you can think of $\{a_i\}$ as a subset of some other set where the other values are all $0$s.
-Otherwise, if $a_i > 0$ and $b_i = 0$, we convene that
-\begin{equation*}
-	a_i \ln \left( \frac{a_i}{b_i} \right) = +\infty.
-\end{equation*}
-We accept this convention since $b_i \geq 0$, so we can think of $\frac{a_i}{0}$ as the limit of $\frac{a_i}{f_n}$, for some $f_n \ge 0$ such that $f_n \to 0$.
-The third case is
-\begin{equation*}
-  \sum_{i = 1}^{\hat{t}} a_i \ln \left( \frac{a_i}{b_i} \right)
-  +
-  \sum_{i = \hat{t} + 1}^{t} 0 \ln \left( \frac{0}{b_i} \right)
-\end{equation*}
-with $\hat{t} < t$.
-Here we convene that
-\begin{equation*}
-	0 \ln \left( \frac{0}{b_i} \right) = 0.
-\end{equation*}
-Notice that 
-\begin{equation*}
-	\sum_{i = 1}^{\hat{t}} a_i \ln \left( \frac{a_i}{b_i} \right)
-	+
-	\sum_{i = \hat{t} + 1}^{t} 0 \ln \left( \frac{0}{b_i} \right)
-	\ge a \ln \left( \frac{a}{\hat{b}} \right) + 0
-	\ge a \ln \left( \frac{a}{b} \right),
-\end{equation*}
-with $\hat{b} < b$.
+	We would like to prove that
+	\begin{equation*}
+		\sum_{i= 1}^t a_i \ln \left( \frac{a_i}{b_i} \right)
+		\ge
+		a \ln \left( \frac{a}{b} \right).
+	\end{equation*}
+	First, there is the need to set some conventions.
+	When $b_i = 0$ and $a_i = 0$, we say, by convention, that
+	\begin{equation*}
+		0 \ln \left( \frac{0}{0} \right) = 0.
+	\end{equation*}
+	 
+	The reason why?
+	$[t] \subset [w]$, you can think of $\{a_i\}$ as a subset of some other set where the other values are all $0$s.
+	Otherwise, if $a_i > 0$ and $b_i = 0$, we convene that
+	\begin{equation*}
+		a_i \ln \left( \frac{a_i}{b_i} \right) = +\infty.
+	\end{equation*}
+	We accept this convention since $b_i \geq 0$, so we can think of $\frac{a_i}{0}$ as the limit of $\frac{a_i}{f_n}$, for some $f_n \ge 0$ such that $f_n \to 0$.
+	The third case is
+	\begin{equation*}
+	  \sum_{i = 1}^{\hat{t}} a_i \ln \left( \frac{a_i}{b_i} \right)
+	  +
+	  \sum_{i = \hat{t} + 1}^{t} 0 \ln \left( \frac{0}{b_i} \right)
+	\end{equation*}
+	with $\hat{t} < t$.
+	Here we convene that
+	\begin{equation*}
+		0 \ln \left( \frac{0}{b_i} \right) = 0.
+	\end{equation*}
+	Notice that 
+	\begin{equation*}
+		\sum_{i = 1}^{\hat{t}} a_i \ln \left( \frac{a_i}{b_i} \right)
+		+
+		\sum_{i = \hat{t} + 1}^{t} 0 \ln \left( \frac{0}{b_i} \right)
+		\ge a \ln \left( \frac{a}{\hat{b}} \right) + 0
+		\ge a \ln \left( \frac{a}{b} \right),
+	\end{equation*}
+	with $\hat{b} < b$.
 
-Now the proof.
-First, suppose $a=b$.
-Keep in mind that
-\begin{equation*}
-	\ln(x) \le x - 1
-	\implies
-	\ln \left( \frac{1}{x} \right) \le \frac{1}{x} - 1.
-\end{equation*}
-So,
-\begin{align*}
-	\sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{b_i} \right)
-	& \ge
-	\sum_{i = 1}^{t} a_i \left( 1 - \frac{b_i}{a_i} \right)
-	\tag{w. eq. iff $a=b$}
-	\\
-	& =
-	\sum_{i = 1}^{t} a_i - \sum_{i = 1}^{t} a_i \frac{b_i}{a_i}
-	=
-	a - b = 0.
-\end{align*}
-The case then they are different can be easily reduced to this one.
+	Now the proof.
+	First, suppose $a=b$.
+	Keep in mind that
+	\begin{equation*}
+		\ln(x) \le x - 1
+		\implies
+		\ln \left( \frac{1}{x} \right) \le \frac{1}{x} - 1.
+	\end{equation*}
+	So,
+	\begin{align*}
+		\sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{b_i} \right)
+		& \ge
+		\sum_{i = 1}^{t} a_i \left( 1 - \frac{b_i}{a_i} \right)
+		\tag{w. eq. iff $a=b$}
+		\\
+		& =
+		\sum_{i = 1}^{t} a_i - \sum_{i = 1}^{t} a_i \frac{b_i}{a_i}
+		=
+		a - b = 0.
+	\end{align*}
+	The case then they are different can be easily reduced to this one.
 
-Assume $b = c \cdot a$, for $c \neq 1$.
-We introduce
-\begin{equation*}
-	b_i = c \cdot \hat{b}_i \implies \hat{b}_i = \frac{b_i}{c}.
-\end{equation*}
-Then,
-\begin{align*}
-	\sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{c \cdot \hat{b}_i} \right)
-	& =
-	\sum_{i = 1}^{t} a_i \ln \left( \frac{1}{c} \right) + \sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{\hat{b}_i} \right)
-	\\
-	& \ge
-	\sum_{i = 1}^{t} a_i \ln \left( \frac{1}{c} \right) + a \ln \left( \frac{a}{a} \right)
-	\tag{w. eq. iff $a_i = \hat{b}_i,\ \forall i$}
-	\\
-	& =
-	a \ln \left( \frac{1}{c} \right) + a \ln \left( \frac{a}{a} \right)
-	\\
-	& =
-	a \ln \left( \frac{a}{c \cdot a} \right)
-	=
-	a \ln \left( \frac{a}{b} \right).
-\end{align*}
+	Assume $b = c \cdot a$, for $c \neq 1$.
+	We introduce
+	\begin{equation*}
+		b_i = c \cdot \hat{b}_i \implies \hat{b}_i = \frac{b_i}{c}.
+	\end{equation*}
+	Then,
+	\begin{align*}
+		\sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{c \cdot \hat{b}_i} \right)
+		& =
+		\sum_{i = 1}^{t} a_i \ln \left( \frac{1}{c} \right) + \sum_{i = 1}^{t} a_i \ln \left( \frac{a_i}{\hat{b}_i} \right)
+		\\
+		& \ge
+		\sum_{i = 1}^{t} a_i \ln \left( \frac{1}{c} \right) + a \ln \left( \frac{a}{a} \right)
+		\tag{w. eq. iff $a_i = \hat{b}_i,\ \forall i$}
+		\\
+		& =
+		a \ln \left( \frac{1}{c} \right) + a \ln \left( \frac{a}{a} \right)
+		\\
+		& =
+		a \ln \left( \frac{a}{c \cdot a} \right)
+		=
+		a \ln \left( \frac{a}{b} \right). \qedhere
+	\end{align*}
 \end{proof}
