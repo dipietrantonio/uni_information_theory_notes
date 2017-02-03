@@ -152,18 +152,20 @@ What is the formula for $I$?
 	\logtwo{\frac{\Pr{X=x, Y=y}}{\Pr{X=x} \cdot \Pr{Y=y}}}
 	\\
 	& =
-	\sum_{x \in \X,  y \in \Y}
-	\Pr{X=x} \cdot W(y|x) \cdot
-	\logtwo{\frac{\Pr{X=x} \cdot W(y|x)}{\sum_{x \in X} \Pr{X=x} \cdot W(y|x)}}
+	\sum_{x \in \X}
+	\sum_{y \in \Y}
+	P(x) \cdot W(y|x) \cdot
+	\logtwo{\frac{P(x) \cdot W(y|x)}{\sum_{z \in X} P(x) \cdot W(y|z)}}
 	\\
 	& =
 	\MutualInformation{P, W}.
 \end{align*}
+We used the fact that $\Pr{Y = y} = \sum_{x \in \X} \Pr{Y = y | X = x} = \sum_{x \in \X} W(y|x)$.
 
 \begin{thm}[Shannon's Noisy Channel Theorem]\label{thm:nct}
 	The highest achievable rate, given a \ac{DMC} $W$, is
 	\begin{equation*}
-		C(w) = \max_{P|X} \MutualInformation{P, W}.
+		C(W) = \max_{P|X} \MutualInformation{P, W}.
 	\end{equation*}
 \end{thm}
 
@@ -195,18 +197,25 @@ The capacity of this channel according to \cref{thm:nct} is
 This is true because:
 \begin{itemize}
 	\item the maximum value for $\Entropy{Y}$ is 1;
-	\item the following equations hold:
+	\item the following equation holds:
 		\begin{equation*}
 			\Entropy{Y | X} =
-			\sum_{x \in \X} \Pr{X = x} \cdot \Entropy{Y | X = x} =
+			\sum_{x \in \X} \Pr{X = x} \cdot \underbrace{\Entropy{Y | X = x}}_{\entropy{p}} =
 			\entropy{p},
 		\end{equation*}
 		where
-		\begin{equation*}
-			\Entropy{Y | X = x} =
-			\sum_{y \in \Y} \Pr{Y = y | X = x} \cdot
-			\logtwo{\frac{1}{\Pr{Y = y | X = x}}}.
-		\end{equation*}
+		\begin{align*}
+			\Entropy{Y | X = x}
+			& =
+			\sum_{y \in \Y} \overbrace{\Pr{Y = y | X = x}}^{W(y|x)} \cdot
+			\logtwo{\frac{1}{\Pr{Y = y | X = x}}}
+			\\
+			& =
+			\sum_{y \in \Y} W(y | x) \cdot \logtwo{\frac{1}{W(y | x)}}
+			\\
+			& =
+			\entropy{p}.
+		\end{align*}
 \end{itemize} 
 
 Is this upper bound achievable? We must make sure that
@@ -327,102 +336,102 @@ He chooses $2^{n \, R}$ strings at random from $T^n_p$, given $P|\X$.
 	\end{equation*}
 	We should be able to prove that this is not more than the upper bound.
 	We expect the other therm to be negligible; with high probability the result of decoding the received codeword is the codeword that was sent.
-	\begin{equation*}
+	\begin{equation} \label{eq:mutual-info-processing}
 		\MutualInformation{M_n \land \phi_n(Y^n)} \le
 		\MutualInformation{M_n \land Y^n}.
-	\end{equation*}
+	\end{equation}
 	This is from the fact that information cannot be gained by processing the \acp{RV}.
-	We see this by looking at
+
+	To prove this, first we look at
 	\begin{equation} \label{eq:dis1}
 		\MutualInformation{M_n \land \phi_n(Y^n)} \le
-		\MutualInformation{M_n \wedge \phi_n(Y^n), Y^n},
+		\MutualInformation{M_n \wedge \phi_n(Y^n), Y^n}.
 	\end{equation}
-	since
+	By definition of mutual information, \cref{eq:dis1} can be written as
 	\begin{equation*}
 		\Entropy{M_n} - \Entropy{M_n | \phi_n(Y^n)} \le
 		\Entropy{M_n} - \Entropy{M_n | \phi_n(Y^n), Y^n},
 	\end{equation*}
-	and since
+	and since $\Entropy{A | B} \ge \Entropy{A | B, C}$ we have that
 	\begin{equation*}
 		\Entropy{M_n | \phi_n(Y^n)} \ge
-		\Entropy{M_n | \phi_n(Y^n), Y^n},
+		\Entropy{M_n | \phi_n(Y^n), Y^n}.
 	\end{equation*}
-	\Cref{eq:dis1} follows.
+	Then \cref{eq:dis1} follows.
 
 	The \ac{RHS} of \cref{eq:dis1} can be written as
 	\begin{align*}
 		\MutualInformation{M_n \land \phi_n(Y^n), Y^n}
 		& =
 		\MutualInformation{M_n \land Y^n} +
-		\MutualInformation{M_n \land \phi_n(Y^n) | Y^n}
+		\underbrace{\MutualInformation{M_n \land \phi_n(Y^n) | Y^n}}_{0}
 		\\
 		& =
 		\MutualInformation{M_n \land Y^n}.
 	\end{align*}
-	we see that
+	We used the fact that
 	\begin{equation*}
 		\MutualInformation{M_n \land \phi_n(Y^n) | Y^n} \le
 		\Entropy{\phi_n(Y^n) | Y^n} = 0.
 	\end{equation*}
+	Combining these two things, we have obtained \cref{eq:mutual-info-processing}.
 
-	So we obtain the following inequality:
-	\begin{equation*}
-		\MutualInformation{M_n \land \phi_n(Y^n)} \le
-		\MutualInformation{M_n \land Y^n}.
-	\end{equation*}
-	As notation, $M_n = X_1 \dots X_n$ is a vector of \acp{RV}.
+	What we wrote as $M_n$ is just a vector of \acp{RV}, \ie something like $X_1 \dots X_n = X^n$.
 	Thus,
 	\begin{equation*}
 		\MutualInformation{M_n \land Y^n} =
 		\MutualInformation{X^n \land Y^n}.
 	\end{equation*}
 	This is what we want to upper bound with the conjectured value of capacity.
-	We write
+
+	By definition of information gain, we write
 	\begin{equation*}
 		\MutualInformation{X^n \land Y^n} =
 		\Entropy{Y^n} - \Entropy{X^n | Y^n} \le
 		\sum_{i = 1}^n \Entropy{Y_i} - \Entropy{Y^n | X^n}.
 	\end{equation*}
-	For $\Entropy{Y^n | X^n}$ we use the chain rule:
+	Now we rewrite $\Entropy{Y^n | X^n}$ using the chain rule (\cref{prop:chain-rule}):
 	\begin{equation*}
 		\Entropy{Y^n | X^n} =
 		\sum_{i = 1}^n \Entropy{Y_i | X^n, Y_1, \dots, Y_{i-1}}.
 	\end{equation*}
 
-	But in a \ac{DMC} we have that
+	Since the channel we are using is a \ac{DMC} (and thus it is memoryless), we have that
 	\begin{equation*}
 		\Entropy{Y_i | X^n, Y_1, \dots, Y_{i-1}} =
 		\Entropy{Y_i | X_i},
 	\end{equation*}
-	so
-	\begin{equation*}
-		\Entropy{Y^n | X^n} = \sum_{i = 1}^{n} \Entropy{Y_i | X_i}.
-	\end{equation*}
+	so we can rewrite what we have broken up with the chain rule as
+	\begin{align*}
+		\Entropy{Y^n | X^n}
+		& =
+		\sum_{i = 1}^n \Entropy{Y_i | X^n, Y_1, \dots, Y_{i-1}}
+		\\
+		& =
+		\sum_{i = 1}^{n} \Entropy{Y_i | X_i}.
+	\end{align*}
 
-	So what we get is that
-	\begin{equation*}
-		\MutualInformation{X^n \land Y^n} =
+	Using the fact that we are using a \ac{DMC}, we have obtained that
+	\begin{align*}
+		\MutualInformation{X^n \land Y^n}
+		& =
 		\sum_{i = 1}^{n} \MutualInformation{X_i \land Y_i}.
-	\end{equation*}
-	This is true because our channel is a particular type of channel.
-
-	\begin{equation*}
-		\sum_{i = 1}^{n} \MutualInformation{X_i \land Y_i} \le
-		n \cdot \max_{P_{Y|X} = W} \MutualInformation{X \land Y}.
-	\end{equation*}
-	which is $n$ times capacity.
-	So:
+		\\
+		& \le
+		n \cdot \max_{P_{Y|X} = W} \MutualInformation{X \land Y},
+	\end{align*}
+	which is $n$ times capacity, so we can write this as
 	\begin{equation*}
 		\frac{1}{n} \cdot \MutualInformation{M_n \land \phi_n(Y^n)} \le C(W).
 	\end{equation*}
 
-	For the second part, we have to prove that 
+	Now we are left to prove that
 	\begin{equation*}
 		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y^n)} \to 0.
 	\end{equation*}
+	We will do this using Fano's inequality.
 
-	We do so using Fano's inequality.
-	We introduce the \ac{RV} $Z_n$ defined as
+	We introduce the \ac{RV} $Z_n$, defined as
 	\begin{equation*}
 		Z_n =
 			\begin{cases}
@@ -438,6 +447,7 @@ He chooses $2^{n \, R}$ strings at random from $T^n_p$, given $P|\X$.
 	\end{equation*}
 	since we ``added'' something to a \ac{RV}.
 
+	Now we find an upper bound for it:
 	\begin{align*}
 		\Entropy{M_n, Z_n | \phi_n(Y^n)}
 		& =
@@ -452,28 +462,30 @@ He chooses $2^{n \, R}$ strings at random from $T^n_p$, given $P|\X$.
 		1 +
 		\Entropy{M_n | \phi_n(Y^n), Z_n}.
 	\end{align*}
-	So for now we have that
+	This means that
 	\begin{equation*}
 		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y^n)} \le
 		\frac{1}{n} + \frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y_n), Z_n}.
 	\end{equation*}
-	We have to show that
+	Since $\frac{1}{n} \to 0$, we are left to show that
 	\begin{equation*}
 		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y_n), Z_n}
 	\end{equation*}
-	is small.
+	is small, \ie it goes to $0$ too.
+
 	We can break this up:
 	\begin{equation} \label{eq:eqbreak}
 	\begin{aligned}
 		\frac{1}{n} \cdot \Entropy{M_n | \phi_n(Y_n), Z_n}
 		= &~
-		\Pr{Z_n = 1} \cdot \Entropy{M_n | \phi_n(Y^n), Z_n = 1} +
+		\Pr{Z_n = 1} \cdot \Entropy{M_n | \phi_n(Y^n), Z_n = 1}
 		\\
 		&~+
 		\Pr{Z_n = 0} \cdot \Entropy{M_n | \phi_n(Y^n), Z_n = 0}.  
 	\end{aligned}
 	\end{equation}
-	Now we have to bring in the error probability.
+
+	For the case in which $Z_n = 1$, we bring in the error probability:
 	\begin{align*}
 	  \epsilon_n
 	  & =
@@ -492,24 +504,27 @@ He chooses $2^{n \, R}$ strings at random from $T^n_p$, given $P|\X$.
 		& \cdot
 		\Entropy{M_n | \phi_n(Y^n) = \phi_n(y), Z_n = 1}.
 	\end{align*}
-
-	$M_n \in \X^n$.
-	So that entropy is less than $\logtwo{\abs{\X^n}}$.
-	So the first term of \cref{eq:eqbreak} can be bounded by
+	We have that $M_n \in \X^n$, so its entropy is no more than $\logtwo{\abs{\X^n}}$.
+	The first term of \cref{eq:eqbreak} can thus be bounded by
 	\begin{equation*}
 		\epsilon_n \cdot
 		\frac{1}{n} \cdot
-		\Entropy{M_n | \phi_n(Y^n), Z_n = 1} \le
+		\Entropy{M_n | \phi_n(Y^n), Z_n = 1}
+		\le
 		\epsilon_n \cdot
 		\frac{1}{n} \cdot
-		\logtwo{\abs{\X^n}} =
-		\epsilon_n \cdot \logtwo{\abs{\X}} \to 0.
+		\logtwo{\abs{\X^n}}
+		=
+		\epsilon_n \cdot
+		\logtwo{\abs{\X}}
+		\to 0.
 	\end{equation*}
+
 	The second term of \cref{eq:eqbreak} is equal to 0.
 	\begin{equation*}
 		\frac{1}{n} \cdot \Pr{Z_n = 0} \cdot \Entropy{M_n | \phi_n(Y^n), Z_n = 0}.
 	\end{equation*}
-	To see why, note that there is no error, so $M_n = \phi_n(Y^n)$.
+	To see why, note that there is no error, so $M_n = \phi_n(Y^n)$, and thus $\Entropy{M_n | \phi_n(Y^n), Z_n} = 0$.
 \end{proof}
 
 
