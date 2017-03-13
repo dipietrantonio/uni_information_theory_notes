@@ -1,0 +1,53 @@
+\addvspace {10\p@ }
+\contentsline {definition}{Hamming Ball}{3}{definition.1}
+\contentsline {obs}{Radius of the Hamming ball}{3}{obs.1}
+\contentsline {definition}{Hamming weight}{3}{definition.2}
+\contentsline {definition}{Entropy}{4}{definition.3}
+\contentsline {thm}{Upper bound of the volume of the Hamming Ball}{4}{thm.1}
+\contentsline {thm}{Lower bound of the volume of the Hamming Ball}{6}{thm.2}
+\contentsline {obs}{Upper bound to factorial}{6}{obs.2}
+\contentsline {definition}{Frequency of an alphabet symbol}{7}{definition.4}
+\contentsline {definition}{Generalised Entropy}{8}{definition.5}
+\contentsline {thm}{Cardinality of $\mathcal {T}_P$}{8}{thm.3}
+\contentsline {obs}{Ratio between probability of types}{8}{obs.3}
+\addvspace {10\p@ }
+\contentsline {obs}{Logarithm cap-convex}{10}{obs.4}
+\contentsline {prop}{Log sum inequality}{10}{prop.1}
+\addvspace {10\p@ }
+\contentsline {prop}{Kraft's inequality}{12}{prop.2}
+\contentsline {prop}{Prefix codes and entropy}{13}{prop.3}
+\contentsline {obs}{Upper bound to the entropy of a distribution}{14}{obs.5}
+\contentsline {thm}{Kraft theorem}{14}{thm.4}
+\contentsline {prop}{Prefix codes and entropy $+1$}{15}{prop.4}
+\addvspace {10\p@ }
+\contentsline {definition}{Joint Entropy}{17}{definition.6}
+\contentsline {prop}{Upper bound to the entropy of a distribution}{17}{prop.5}
+\contentsline {prop}{Lower bound to joint entropy}{18}{prop.6}
+\contentsline {definition}{Conditional Entropy}{18}{definition.7}
+\contentsline {prop}{Upper bound to conditional entropy}{19}{prop.7}
+\contentsline {definition}{Mutual Information}{19}{definition.8}
+\contentsline {prop}{Chain Rule}{19}{prop.8}
+\contentsline {definition}{Stationary Information Source}{21}{definition.9}
+\contentsline {definition}{Memoryless Information Source}{21}{definition.10}
+\contentsline {thm}{Information rate of a stationary source}{21}{thm.5}
+\addvspace {10\p@ }
+\contentsline {thm}{Gilbert-Varshamov bound}{25}{thm.6}
+\contentsline {thm}{Hamming bound}{26}{thm.7}
+\contentsline {definition}{\acl {UD} code}{27}{definition.11}
+\contentsline {thm}{Kraft - McMillan theorem on \acl {UD} codes}{27}{thm.8}
+\contentsline {thm}{Plotkin bound}{28}{thm.9}
+\contentsline {obs}{Hamming distance of a linear code}{30}{obs.6}
+\contentsline {thm}{Hamming theorem on \aclp {ECC} for 1 error}{31}{thm.10}
+\addvspace {10\p@ }
+\contentsline {prop}{Achievable rate}{34}{prop.9}
+\contentsline {thm}{Shannon's Noisy Channel Theorem}{35}{thm.11}
+\contentsline {obs}{Achievable rate in \acl {BSC}}{36}{obs.7}
+\contentsline {thm}{Converse part of Shannon's Noisy Channel Theorem}{37}{thm.12}
+\contentsline {obs}{Support set in $\mathcal {X}^n$}{40}{obs.8}
+\contentsline {obs}{Disjoint support sets}{41}{obs.9}
+\contentsline {prop}{Noisy channels and graphs}{41}{prop.10}
+\contentsline {lem}{Fekete}{42}{lem.1}
+\contentsline {prop}{Graph capacity}{43}{prop.11}
+\contentsline {cor}{Graph capacity of perfect graphs}{44}{cor.1}
+\contentsline {definition}{Perfect graph}{44}{definition.12}
+\contentsline {definition}{Minimally imperfect graph}{44}{definition.13}
