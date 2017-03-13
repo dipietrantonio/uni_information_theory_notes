@@ -1,5 +1,4 @@
-
-\chapter{\aclp{ECC}}
+\chapter{Error Correcting Codes}
 
 \acp{ECC} arise in probabilistic contexts.
 Consider a memory device with $n$ cells.
@@ -199,12 +198,10 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 		\\
 		& =
 		\limsup_{n \to \infty}
-		\cancelto{0}{
-			\frac{1}{n} \logtwo{n+1}
-		}
+		\frac{1}{n} \logtwo{n+1}	
 		+ 1 - \entropy{
 			\frac{\cancel{n} \, \delta}{2 \, \cancel{n}}
-			- \cancelto{0}{\frac{1}{2n}}
+			- \frac{1}{2n}
 		},
 		\\
 		& \le
@@ -212,9 +209,9 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 	\end{align*}
 \end{proof}
 
-\section{\acl{UD} codes}
+\section{Uniquely decodable codes}
 
-\begin{definition}[\acl{UD} code]
+\begin{definition}[Uniquely decodable code]
 	Let $f : \M \to \{0,1\}^{\star}$, and define $f^{\star} : \M^{\star} \to \{0,1\}^{\star}$ as
 	\begin{equation*}
 		f^{\star} (\str{m}) = f(m_1) f(m_2) \dots f(m_t),
@@ -301,20 +298,20 @@ If $f$ is a prefix code, $f$ is \ac{UD}.
 	\end{equation*}
 \end{thm}
 
-% Recall that
-% \begin{equation*}
-% 	M(n, d) = \max_{\C \subseteq \{0, 1\}^n : \hdist{\C} \ge d} \abs{\C},
-% \end{equation*}
-% with
-% \begin{equation*}
-% 	\hdist{\C}
-% 	=
-% 	\min_{\{\str{x}, \str{y}\} \in \binom{\C}{2}} \hdist{\str{x}, \str{y}}.
-% \end{equation*}
-% The information rate is defined as
-% \begin{equation*}
-% 	R(\delta) = \limsup_{n \to \infty} \frac{M(n, n \delta)}{n}.
-% \end{equation*}
+Recall that
+\begin{equation*}
+	M(n, d) = \max_{\C \subseteq \{0, 1\}^n : \hdist{\C} \ge d} \abs{\C},
+\end{equation*}
+with
+\begin{equation*}
+	\hdist{\C}
+	=
+	\min_{\{\str{x}, \str{y}\} \in \binom{\C}{2}} \hdist{\str{x}, \str{y}}.
+\end{equation*}
+The information rate is defined as
+\begin{equation*}
+	R(\delta) = \limsup_{n \to \infty} \frac{M(n, n \delta)}{n}.
+\end{equation*}
 We already know that, if $\delta \leq \frac{1}{2}$,
 \begin{equation*}
 	1 - \entropy{\delta} \le R(\delta) \le 1 - \entropy{\frac{\delta}{2}}.

@@ -13,6 +13,8 @@
 \usepackage{acronym}
 \usepackage{cancel}
 
+\renewcommand{\subsection}[1]{
+\noindent\textbf{#1}\newline}
 \pagestyle{ruled}
 
 \title{Notes on Information Theory}
@@ -38,22 +40,9 @@
 	\input{chapters/ch05-entropy-random-variables}
 	\input{chapters/ch06-ecc}
 	\input{chapters/ch07-the-communication-model}
+  
+  \chapter{Acronyms}
 
-	\backmatter
-
-	\renewcommand{\listtheoremname}{List of Definitions}
-	\listoftheorems[ignoreall,show={definition}]
-	\clearpage
-
-	\renewcommand{\listtheoremname}{List of Main Results}
-	\listoftheorems[ignoreall,show={thm,prop,lem}]
-	\clearpage
-
-	\renewcommand{\listtheoremname}{List of Secondary Results}
-	\listoftheorems[ignoreall,show={obs,cor}]
-	\clearpage
-
-	\chapter{Acronyms}
-
-	\input{acronyms.tex}
+\input{acronyms.tex}
+	
 \end{document}
