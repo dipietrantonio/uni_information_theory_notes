@@ -13,7 +13,7 @@ The string $\str{x}$ can be converted into anything inside a ball of radius $np$
 We want that two strings $\str{x}$ and $\str{y}$ are distant, so that their balls do not intersect.
 The pairwise distance of the words should be $\ge 2np + 1$.
 
-Let $\C \subseteq \{0, 1\}^n$ be a block code.
+Let $\C \subseteq \{0, 1\}^n$ be a codeblock.
 The first property that we want from $\C$ is that $\abs{\C}$ should be large.
 
 Next, we extend the definition of Hamming Distance to sets, \ie we define
@@ -59,7 +59,6 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 	\begin{equation*}
 		R(\delta) \ge 1 - \entropy{\delta}.
 	\end{equation*}
-	If $\delta > \frac{1}{2}$ then $R(\delta) = 0$.
 \end{thm}
 
 \begin{proof}
@@ -109,11 +108,11 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 	where the last inequality holds since $d \le \frac{n}{2}$.
 	We have proven the thesis, since now
 	\begin{equation*}
-		M(n, d) \ge m \ge \frac{2^n}{2^{n \, \entropy{\frac{n}{d}}}}
+		M(n, d) \ge m \ge \frac{2^n}{2^{n \, \entropy{\frac{d}{n}}}}
 		=
-		2^{n \, \left[ 1 - \entropy{\frac{n}{d}} \right]},
+		2^{n \, \left[ 1 - \entropy{\frac{d}{n}} \right]},
 	\end{equation*}
-	where $\frac{n}{d} = \delta.$
+	where $\frac{d}{n} = \delta.$
 \end{proof}
 
 \begin{thm}[Hamming bound] \label{thm:hamming-bound}
@@ -174,7 +173,7 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 		=
 		\abs{\C} \cdot \abs{\hball{\zero}{\frac{d-1}{2}}}
 		\ge
-		\frac{\abs{\C}}{n+1} \cdot 2^{n \, \entropy{\frac{d-1}{2}}}.
+		\frac{\abs{\C}}{n+1} \cdot 2^{n \, \entropy{\frac{d-1}{2n}}}.
 	\end{equation*}
 	Now, since the Hamming Balls are disjoint, we have that
 	\begin{equation*}
@@ -182,7 +181,7 @@ We can easily see that $R(0) = 1$ and that $R(1) = 0$.
 	\end{equation*}
 	which in turn gives us that $M(n,d) = \abs{\C}$ can be upper bounded as
 	\begin{equation*}
-		M(n, d) = \abs{\C} \le (n+1) \cdot 2^{n \, \left[1 - \entropy{\frac{d-1}{2}}\right]}.
+		M(n, d) = \abs{\C} \le (n+1) \cdot 2^{n \, \left[1 - \entropy{\frac{d-1}{2n}}\right]}.
 	\end{equation*}
 	
 	We now take the logarithm and normalise by $n$, and obtain
@@ -239,7 +238,7 @@ If $f$ is a prefix code, $f$ is \ac{UD}.
 
 	We would like to prove that $q \le 1$.
 	To do so, we consider $q^n$, which will involve the length of concatenations of code words.
-	We will show that $q^n$ ``grows slowly'', \ie it does not grow exponentially, and thus is less than or equal to 1. 
+	We will show that $q^n$ ``grows slowly'', \ie it does not grow exponentially, and thus is asymptotically less than or equal to 1. 
 	\begin{align*}
 		q^n
 		& =
@@ -280,7 +279,7 @@ If $f$ is a prefix code, $f$ is \ac{UD}.
 		} 2^{-\abs{f^{\star}(\str{m})}}
 		\le
 		\sum_{t = n}^{nL} 2^t \cdot 2^{-t}
-		=
+		\leq
 		nL.
 	\end{equation*}
 	This follows from the fact that we can have at most $2^{t}$ messages encoded by binary strings of length $t$.
@@ -360,7 +359,7 @@ We already know that, if $\delta \leq \frac{1}{2}$,
 		M_i \cdot \left( M - M_i \right)
 		\\
 		& \le
-		\frac{2}{M (M-1)} \left( \frac{M}{2} \right)^2
+		\frac{2n}{M (M-1)} \left( \frac{M}{2} \right)^2
 		\\
 		& =
 		\frac{n M}{2 (M-1)}.
@@ -470,13 +469,13 @@ Given a matrix $A$ we have that
 	\Im A & = \left\{ \str{z} : \str{z} \in \{0, 1\}^m, \exists \str{x} \in \{0, 1\}^n . \str{x} \times A = \str{z} \right\}.
 \end{align*}
 So the set $\Im A$ is the linear combination of the rows of $A$.
-Consider the $i$-th canonical vector $e_i \in \{0, 1\}^m$, we have that
+Consider the $i$-th canonical vector $e_i \in \{0, 1\}^n$, we have that
 \begin{equation*}
 	e_i \times A = A_i^T
 \end{equation*}
 that is, the $i$-th row of $A$.
 
-Remind that given a code $\C$, if $\hdist{\C} = d$ then we can correct up to $\frac{d-1}{2}$.
+Remind that given a code $\C$, if $\hdist{\C} = d$ then we can correct up to $\frac{d-1}{2}$ errors.
 Also, recall the definition of Hamming weight:
 \begin{equation*}
 	\hweight{\str{x}} = \sum_{i = 1}^n x_i.

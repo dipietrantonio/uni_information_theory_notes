@@ -1,7 +1,7 @@
 \chapter{Variable-length codes}
 
 Let $\M$ be some message space, with $\abs{M} < \infty$.
-A variable-length binary code is a function $f^{\star} : \M^{\star} \to \{0,1\}^{\star}$, where $\{0, 1\}^* = \bigcup_{i = 1}^\infty \{0, 1\}^i$ denotes the set of all binary strings of any given length, and $\M^{\star}$ denotes the concatenation of messages, \ie if $m \in \M^*$, then $\exists i : m \in \M^i$.
+A variable-length binary code is a function $f^{*} : \M^{*} \to \{0,1\}^{*}$, where $\{0, 1\}^* = \bigcup_{i = 1}^\infty \{0, 1\}^i$ denotes the set of all binary strings of any given length, and $\M^{\star}$ denotes the concatenation of messages, \ie if $m \in \M^*$, then $\exists i : m \in \M^i$.
 We can write
 \begin{equation*}
 	m = m_1 m_2 \dots m_i.
@@ -185,7 +185,7 @@ We denote with $\abs{f(m)}$ the length of the codeword assigned to $m$ by $f$, \
 	\begin{equation*}
 		1 \leq \sum_{i = 1}^{t-1} 2^{-l(m_i)},
 	\end{equation*}
-	in contradiction with Kraft's inequality, since we have at least $t$ messages. 
+	in contradiction with Kraft's inequality, since we have at least $t$ messages. The $t$-th message makes the summation more than 1 in the case where there is equality. 
 
 	Now we show that $f$ is a prefix-code.
 	We have to show that
